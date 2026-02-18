@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+/* Base */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-[#FFFDF7] text-gray-900 antialiased;
+  }
+}
+
+/* Components */
+@layer components {
+
+  .auth-field {
+    @apply relative;
+  }
+
+  .auth-input {
+    @apply w-full h-12 rounded-full border border-gray-300 pl-11 pr-11 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400;
+  }
+
+  /* ❌ Error state */
+  .auth-input-error {
+    @apply border-red-500 focus:ring-red-400;
+  }
+
+  /* ✅ Success state */
+  .auth-input-success {
+    @apply border-blue-500 focus:ring-blue-400;
+  }
+
+  .auth-icon-left {
+    @apply absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none;
+  }
+
+  .auth-icon-right {
+    @apply absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 cursor-pointer;
+  }
+
+  .auth-error {
+    @apply text-xs text-red-500 ml-4 mt-1;
+  }
+}

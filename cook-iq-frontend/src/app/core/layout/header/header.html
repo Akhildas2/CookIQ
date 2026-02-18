@@ -1,0 +1,121 @@
+<header class="ci-header">
+  <!-- Left / Brand -->
+  <a routerLink="/" class="ci-logo">
+    <span class="ci-logo-icon">🍳</span>
+    <span class="ci-logo-text">CookIQ</span>
+    <span class="ci-logo-ai">AI</span>
+  </a>
+
+  <!-- Center Nav -->
+  <nav class="ci-nav-desktop">
+    @for (item of navItems; track item.label){
+    <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+      class="ci-link">
+      <mat-icon class="align-middle text-xs mr-1">{{ item.icon }}</mat-icon>
+      {{ item.label }}
+    </a>
+    }
+  </nav>
+
+  <!-- Right Actions -->
+  <div class="ci-actions">
+    <!-- Loading -->
+    @if(auth.loading()){
+    <div class="ci-skeleton-circle"></div>
+    <div class="ci-skeleton-rect"></div>
+    }
+
+    <!-- Logged Out -->
+    @if(!auth.user() && !auth.loading()){
+    <div class="hidden sm:flex items-center gap-2">
+      <button class="ci-btn outline" (click)="openAuth('login')">Login</button>
+    </div>
+    <button class="ci-btn primary" (click)="openAuth('register')">Get started</button>
+    }
+
+    <!-- Logged In -->
+    @if(auth.user()){
+    <div class="relative" appClickOutside (clickOutside)="menuOpen.set(false)">
+
+      <!-- Avatar -->
+      <button class="ci-avatar-wrapper" (click)="toggleMenu()" aria-label="User menu">
+        <img class="ci-avatar" [src]="avatarUrl()" (error)="setFallbackAvatar()" [alt]="userName" />
+        <span class="ci-status-indicator"></span>
+      </button>
+
+      @if(menuOpen()){
+      <!-- Dropdown Menu -->
+      <div *ngIf="menuOpen()" class="ci-dropdown">
+
+        <!-- User Info -->
+        <div class="ci-dropdown-header">
+          <img class="ci-avatar-lg" [src]="avatarUrl()" (error)="setFallbackAvatar()" [alt]="userName" />
+
+          <div class="flex flex-col">
+            <div class="ci-user-name">
+              {{ userName }}
+            </div>
+            <div class="ci-user-email">
+              {{ auth.user()?.email }}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="ci-divider"></div>
+
+        <!-- Menu Items -->
+        <ul class="ci-dropdown-list">
+          <li>
+            <a routerLink="/dashboard" class="ci-dropdown-item">
+              <mat-icon class="align-middle text-xs">dashboard</mat-icon> Dashboard
+            </a>
+          </li>
+          <li>
+            <a routerLink="/profile" class="ci-dropdown-item">
+              <mat-icon class="align-middle text-xs">settings</mat-icon> Settings
+            </a>
+          </li>
+        </ul>
+
+        <div class="ci-divider"></div>
+
+        <ul class="pt-2">
+          <li class="px-2">
+            <button class="ci-logout-btn" (click)="logout()">
+              <mat-icon class="align-middle text-xs">logout</mat-icon> Sign out
+            </button>
+          </li>
+        </ul>
+
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Mobile Menu Toggle -->
+    <button class="ci-mobile-toggle" (click)="mobileMenuOpen.set(!mobileMenuOpen())" [aria-expanded]="mobileMenuOpen()">
+      <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (mobileMenuOpen()) {
+  <div class="ci-mobile-overlay" appClickOutside (clickOutside)="mobileMenuOpen.set(false)">
+    <nav class="ci-mobile-menu" (click)="$event.stopPropagation()">
+      <div class="flex flex-col gap-2 w-full">
+        @for (item of navItems; track item.label) {
+        <a [routerLink]="item.route" (click)="mobileMenuOpen.set(false)" class="ci-mobile-link">
+          <mat-icon class="align-middle text-xs mr-1">{{ item.icon }}</mat-icon>
+          {{ item.label }}
+        </a>
+        }
+        @if (!auth.user()) {
+        <hr class="my-2 border-green-100" />
+        <button class="ci-btn outline w-full mt-2" (click)="openAuth('login')">Login</button>
+        }
+      </div>
+    </nav>
+  </div>
+  }
+</header>

@@ -1,0 +1,154 @@
+<div class="w-full max-w-sm sm:max-w-md md:max-w-lg p-6 sm:p-8 rounded-3xl bg-white shadow-xl border border-gray-100">
+
+    <!-- Brand -->
+    <div class="flex justify-center mb-3">
+        <span class="text-xl sm:text-2xl font-semibold text-green-700 tracking-tight">
+            CookIQ
+        </span>
+    </div>
+
+    <!-- Header -->
+    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-900 text-center">
+        {{ mode() === 'login' ? 'Welcome back 👋' : 'Join CookIQ 🍲' }}
+    </h2>
+
+    <p class="text-sm text-gray-600 mt-1 text-center">
+        {{ mode() === 'login'
+        ? 'Sign in to continue cooking smarter'
+        : 'Create your account and start cooking smarter' }}
+    </p>
+
+    <!-- Google -->
+    <button type="button" (click)="googleLogin()" [disabled]="isLoading()"
+        class="w-full mt-5 h-12 rounded-full bg-gray-100 border border-gray-200 
+           hover:bg-white transition flex items-center justify-center gap-3 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+
+        <ng-container *ngIf="!isLoading(); else googleLoading">
+            <img src="assets/icons/google.svg" alt="Google" class="w-5 h-5" />
+            <span class="text-sm font-medium text-gray-700">
+                Continue with Google
+            </span>
+        </ng-container>
+
+        <ng-template #googleLoading>
+            <mat-spinner diameter="20"></mat-spinner>
+            <span class="ml-2 text-sm text-gray-600">Redirecting…</span>
+        </ng-template>
+
+    </button>
+
+    <!-- Divider -->
+    <div class="flex items-center gap-3 my-3">
+        <div class="flex-1 h-px bg-gray-200"></div>
+        <span class="text-xs text-gray-400 uppercase">or</span>
+        <div class="flex-1 h-px bg-gray-200"></div>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col space-y-4"
+        [class.pointer-events-none]="isLoading()" [class.opacity-90]="isLoading()">
+
+        <!-- Email -->
+        <div>
+            <div class="auth-field">
+                <mat-icon class="auth-icon-left">mail</mat-icon>
+
+                <input type="email" formControlName="email" placeholder="Email address" autocomplete="email"
+                    class="auth-input" [ngClass]="{
+                'auth-input-error': control('email').touched && control('email').invalid,
+                'auth-input-success': control('email').touched && control('email').valid
+                }" />
+            </div>
+
+            <p class="auth-error" *ngIf="control('email').touched && control('email').errors">
+                <span *ngIf="control('email').hasError('required')">Email is required</span>
+                <span *ngIf="control('email').hasError('email')">Enter a valid email</span>
+            </p>
+        </div>
+
+        <!-- Password -->
+        <div>
+            <div class="auth-field">
+                <mat-icon class="auth-icon-left">lock</mat-icon>
+
+                <input [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Password"
+                    autocomplete="current-password" class="auth-input" [ngClass]="{
+                'auth-input-error': control('password').touched && control('password').invalid,
+                'auth-input-success': control('password').touched && control('password').valid
+                }" />
+
+                <button type="button" class="auth-icon-right" (click)="togglePassword()">
+                    <mat-icon class="align-middle">{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+            </div>
+
+            <p class="auth-error" *ngIf="control('password').touched && control('password').errors">
+                <span *ngIf="control('password').hasError('required')">Password is required</span>
+                <span *ngIf="control('password').hasError('minlength')">Minimum 6 characters</span>
+            </p>
+        </div>
+
+        <!-- Confirm Password -->
+        <ng-container *ngIf="mode() === 'register'">
+            <div>
+                <div class="auth-field">
+                    <mat-icon class="auth-icon-left">lock_outline</mat-icon>
+
+                    <input [type]="hideConfirmPassword() ? 'password' : 'text'" formControlName="confirmPassword"
+                        placeholder="Confirm password" autocomplete="new-password" class="auth-input" [ngClass]="{
+                        'auth-input-error':
+                        control('confirmPassword').touched &&
+                        control('confirmPassword').value !== control('password').value,
+                        'auth-input-success':
+                        control('confirmPassword').touched &&
+                        control('confirmPassword').value === control('password').value
+                    }" />
+
+                    <button type="button" class="auth-icon-right" (click)="toggleConfirmPassword()">
+                        <mat-icon class="align-middle">{{ hideConfirmPassword() ? 'visibility_off' : 'visibility'
+                            }}</mat-icon>
+                    </button>
+                </div>
+
+                <p class="auth-error" *ngIf="control('confirmPassword').touched &&
+                control('confirmPassword').value !== control('password').value">
+                    Passwords do not match
+                </p>
+            </div>
+        </ng-container>
+
+        <!-- Submit -->
+        <button type="submit" [disabled]="form.invalid || isLoading()" class="mt-2 h-12 rounded-full
+           bg-linear-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600
+           text-white font-medium shadow-md transition active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+
+            <!-- Normal state -->
+            <ng-container *ngIf="!isLoading(); else loadingTpl">
+                {{ mode() === 'login' ? 'Sign in' : 'Create account' }}
+            </ng-container>
+
+            <!-- Loading state -->
+            <ng-template #loadingTpl>
+                <mat-spinner diameter="18" strokeWidth="3" class="text-white">
+                </mat-spinner>
+                <span>Processing...</span>
+            </ng-template>
+
+        </button>
+
+    </form>
+
+    <!-- Footer -->
+    <p class="text-xs text-gray-500 mt-4 text-center">
+        {{ mode() === 'login' ? 'New to CookIQ?' : 'Already have an account?' }}
+        <button type="button" class="text-green-700 font-medium ml-1 hover:underline" (click)="switchMode()">
+            {{ mode() === 'login' ? 'Create account' : 'Sign in' }}
+        </button>
+    </p>
+
+    <!-- Trust -->
+    <p class="text-xs text-gray-400 mt-2 text-center">
+        No spam. No ads. Just cooking 🍳
+    </p>
+</div>
