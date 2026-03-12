@@ -1,6 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { SupabaseService } from '../supabase/supabase-service';
 import { ToastService } from '../../../shared/ui/toast/toast.service';
+import { StrapiService } from '../strapi/strapi-service';
+import { BillingService } from '../../../features/billing/services/billing/billing-service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,29 +10,49 @@ import { ToastService } from '../../../shared/ui/toast/toast.service';
 export class AuthService {
   user = signal<any>(null); // Holds authenticated user state
   loading = signal<boolean>(false); // Global auth loading state
+  private hasSynced = false;
 
-  constructor(private supabaseService: SupabaseService, private toast: ToastService) {
-    // Only restore session silently on app init.
-    this.supabaseService.client.auth.getSession().then(({ data }) => {
-      const user = data.session?.user ?? null;
-      this.user.set(user);
+  constructor(private supabaseService: SupabaseService, private billingService: BillingService, private toast: ToastService, private strapi: StrapiService) {
+    this.initializeAuth();
+  }
 
-      const oauth = sessionStorage.getItem('oauth-login');
+  private async initializeAuth() {
+    const { data } = await this.supabaseService.client.auth.getSession(); // Get current session on app load
+    const user = data.session?.user ?? null; // Set initial user state
 
-      if (oauth && user) {
-        this.toast.add({
-          severity: 'success',
-          summary: 'Google Sign-in Successful',
-          detail: 'Welcome to CookIQ!',
-        });
+    this.user.set(user);
 
-        sessionStorage.removeItem('oauth-login');
+    // Google OAuth success toast (after redirect)
+    if (sessionStorage.getItem('oauth-login') && user) {
+      this.toast.add({
+        severity: 'success',
+        summary: 'Google Sign-in Successful',
+        detail: 'Welcome to CookIQ!',
+      });
+      sessionStorage.removeItem('oauth-login');
+    }
+
+    // Sync user profile + load subscription on app boot
+    if (user && !this.hasSynced) {
+      this.hasSynced = true;
+      await this.handleUserSync(user);
+    }
+
+    // Keep auth state in sync with Supabase auth events
+    this.supabaseService.client.auth.onAuthStateChange(async (event, session) => {
+      const currentUser = session?.user ?? null;
+      this.user.set(currentUser);
+
+      if (event === 'SIGNED_IN' && currentUser && !this.hasSynced) {
+        this.hasSynced = true;
+        await this.handleUserSync(currentUser);
       }
-    });
 
-    // Only update user state on auth changes, without triggering silent refresh.
-    supabaseService.client.auth.onAuthStateChange((_event, session) => {
-      this.user.set(session?.user ?? null);
+      if (event === 'SIGNED_OUT') {
+        this.hasSynced = false;
+        // Clear subscription state so stale data isn't shown on next login
+        this.billingService.clearSubscription();
+      }
     });
   }
 
@@ -42,6 +64,7 @@ export class AuthService {
     const { data, error } = await this.supabaseService.client.auth.signInWithPassword({ email, password });
     this.loading.set(false);
 
+    // Handle login errors with user-friendly messages
     if (error) {
       this.toast.add({
         severity: 'error',
@@ -54,6 +77,7 @@ export class AuthService {
 
     this.user.set(data.user);
 
+    // Show welcome toast on successful login
     this.toast.add({
       severity: 'success',
       summary: 'Welcome Back!',
@@ -71,6 +95,7 @@ export class AuthService {
     const { data, error } = await this.supabaseService.client.auth.signUp({ email, password });
     this.loading.set(false);
 
+    // Handle registration errors with user-friendly messages
     if (error) {
       this.toast.add({
         severity: 'error',
@@ -81,6 +106,7 @@ export class AuthService {
       return false;
     }
 
+    // Check if email is confirmed
     if (!data.user?.confirmed_at) {
       this.toast.add({
         severity: 'info',
@@ -91,8 +117,9 @@ export class AuthService {
       return false;
     }
 
-    this.user.set(data.user);
+    this.user.set(data.user); // Set user state on successful registration
 
+    // Show success toast on successful registration
     this.toast.add({
       severity: 'success',
       summary: 'Account Created',
@@ -111,6 +138,7 @@ export class AuthService {
     // Save intent before redirect
     sessionStorage.setItem('oauth-login', 'google');
 
+    // Initiate Google OAuth flow
     const { error } = await this.supabaseService.client.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -118,9 +146,11 @@ export class AuthService {
       }
     });
 
+    // Handle OAuth errors
     if (error) {
       sessionStorage.removeItem('oauth-login');
 
+      // Show error toast if Google Sign-in fails
       this.toast.add({
         severity: 'error',
         summary: 'Google Sign-in Failed',
@@ -138,6 +168,7 @@ export class AuthService {
     await this.supabaseService.client.auth.signOut();
     this.user.set(null);
 
+    // Show logout toast
     this.toast.add({
       severity: 'info',
       summary: 'Logged Out',
@@ -146,19 +177,45 @@ export class AuthService {
 
   }
 
+  // ==========================
+  // STRAPI SYNC
+  //  Sync user profile with Strapi + load subscription
+  // ==========================
+  private async handleUserSync(user: any) {
+    if (!user) return;
+
+    try {
+      // Ensure Strapi user record exists 
+      await this.strapi.syncUserWithStrapi(user);
+    } catch (err) {
+      console.error('Strapi user sync failed', err);
+    }
+
+    await this.billingService.fetchMySubscription(true);
+  }
+
 
   // ==========================
   // HELPERS
   // ==========================
+  plan = computed(() => {
+    if (this.billingService.subscriptionLoading()) return 'loading';
+    return this.billingService.currentPlan();
+  });
+
+  // Expose loading state
+  subscriptionLoading = computed(() => this.billingService.subscriptionLoading());
+
+  // Check if user is authenticated
+  isLoggedIn() {
+    return !!this.user();
+  }
+
   private mapAuthError(message: string): string {
     if (message.includes('Invalid login')) return 'Invalid email or password';
     if (message.includes('Email not confirmed')) return 'Please verify your email';
     if (message.includes('User already registered')) return 'User already exists';
     return 'Something went wrong. Please try again.';
-  }
-
-  isLoggedIn() {
-    return !!this.user();
   }
 
 }

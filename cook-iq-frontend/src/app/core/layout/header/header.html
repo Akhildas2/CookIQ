@@ -11,7 +11,6 @@
     @for (item of navItems; track item.label){
     <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
       class="ci-link">
-      <mat-icon class="align-middle text-xs mr-1">{{ item.icon }}</mat-icon>
       {{ item.label }}
     </a>
     }
@@ -20,7 +19,7 @@
   <!-- Right Actions -->
   <div class="ci-actions">
     <!-- Loading -->
-    @if(auth.loading()){
+    @if(auth.loading() && !auth.user()){
     <div class="ci-skeleton-circle"></div>
     <div class="ci-skeleton-rect"></div>
     }
@@ -35,11 +34,31 @@
 
     <!-- Logged In -->
     @if(auth.user()){
-    <div class="relative" appClickOutside (clickOutside)="menuOpen.set(false)">
+    <div class="relative flex items-center gap-2" appClickOutside (clickOutside)="menuOpen.set(false)">
+
+      <!-- Skeleton -->
+      @if(subscriptionLoading()){
+      <button class="ci-Pro-btn hidden md:inline-flex animate-pulse">
+        <div class="w-5 h-5 bg-white rounded-full"></div>
+        <div class="h-4 w-16 bg-white"></div>
+        <div class="w-4 h-4 bg-white rounded-full"></div>
+      </button>
+      }
+
+      <!-- Get Pro showPlus() && -->
+      @if(!subscriptionLoading()){
+      <button class="ci-Pro-btn hidden md:inline-flex" aria-label="Get Pro" (click)="openPricingModal()">
+        <mat-icon class="ci-Pro-icon">auto_awesome</mat-icon>
+        <span>Get Pro</span>
+        <mat-icon class="ci-Pro-close" (click)="hidePlus($event)">
+          close
+        </mat-icon>
+      </button>
+      }
 
       <!-- Avatar -->
       <button class="ci-avatar-wrapper" (click)="toggleMenu()" aria-label="User menu">
-        <img class="ci-avatar" [src]="avatarUrl()" (error)="setFallbackAvatar()" [alt]="userName" />
+        <img class="ci-avatar" [src]="avatarUrl()" [alt]="userName()" (error)="handleAvatarError($event)" />
         <span class="ci-status-indicator"></span>
       </button>
 
@@ -49,12 +68,22 @@
 
         <!-- User Info -->
         <div class="ci-dropdown-header">
-          <img class="ci-avatar-lg" [src]="avatarUrl()" (error)="setFallbackAvatar()" [alt]="userName" />
 
-          <div class="flex flex-col">
+          <!-- Plan Badge -->
+          <span class="ci-plan-badge flex items-center gap-1" [ngClass]="planBadgeClass()">
+            <mat-icon>{{ planIcon() }}</mat-icon>
+            {{ plan() === 'loading' ? 'loading ...' : (plan() | uppercase) }}
+          </span>
+
+          <!-- Avatar -->
+          <img class="ci-avatar-lg" [src]="avatarUrl()" [alt]="userName()" (error)="handleAvatarError($event)" />
+
+          <!-- Name + Email -->
+          <div class="ci-user-info">
             <div class="ci-user-name">
-              {{ userName }}
+              {{ userName() | titlecase }}
             </div>
+
             <div class="ci-user-email">
               {{ auth.user()?.email }}
             </div>
@@ -62,10 +91,8 @@
 
         </div>
 
-        <div class="ci-divider"></div>
-
         <!-- Menu Items -->
-        <ul class="ci-dropdown-list">
+        <ul class="ci-dropdown-list space-y-1">
           <li>
             <a routerLink="/dashboard" class="ci-dropdown-item">
               <mat-icon class="align-middle text-xs">dashboard</mat-icon> Dashboard
@@ -73,6 +100,11 @@
           </li>
           <li>
             <a routerLink="/profile" class="ci-dropdown-item">
+              <mat-icon class="align-middle text-xs">person</mat-icon> Profile
+            </a>
+          </li>
+          <li>
+            <a routerLink="/settings" class="ci-dropdown-item">
               <mat-icon class="align-middle text-xs">settings</mat-icon> Settings
             </a>
           </li>
@@ -110,6 +142,15 @@
           {{ item.label }}
         </a>
         }
+        @if(auth.user() && auth.plan() === 'free'){
+        <hr class="my-2 border-green-100" />
+
+        <button class="ci-btn primary w-full flex items-center justify-center gap-2" (click)="openPricingModal()">
+          <mat-icon>auto_awesome</mat-icon>
+          Upgrade Plan
+        </button>
+        }
+
         @if (!auth.user()) {
         <hr class="my-2 border-green-100" />
         <button class="ci-btn outline w-full mt-2" (click)="openAuth('login')">Login</button>

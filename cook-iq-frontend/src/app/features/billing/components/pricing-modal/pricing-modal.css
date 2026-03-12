@@ -1,0 +1,21 @@
+/* Ensure the spinner color matches the text when in bordered mode */
+::ng-deep .mat-mdc-progress-spinner circle {
+  stroke: currentColor !important;
+}
+
+/* Smooth transition for the scaling effect */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Specific styling for the 'Active' badge to contrast with bordered buttons */
+.active-badge {
+  background-color: #16a34a;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}

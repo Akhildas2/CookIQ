@@ -80,13 +80,6 @@
     "imageUrl": {
       "type": "string"
     },
-    "subscriptionTier": {
-      "type": "enumeration",
-      "enum": [
-        "free ",
-        "pro"
-      ]
-    },
     "recipes": {
       "type": "relation",
       "relation": "oneToMany",
@@ -103,6 +96,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::saved-recipe.saved-recipe",
+      "mappedBy": "user"
+    },
+    "subscription": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::subscription.subscription",
       "mappedBy": "user"
     }
   }

@@ -27,7 +27,7 @@
 }
 
 .ci-link {
-  @apply text-sm font-medium text-gray-700 relative transition-colors hover:text-green-700;
+  @apply text-sm font-bold text-gray-800 relative transition-colors hover:text-green-700;
 }
 
 .ci-link::after {
@@ -50,12 +50,12 @@
 
 /* Actions */
 .ci-actions {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-3 whitespace-nowrap;
 }
 
 /* Buttons */
 .ci-btn {
-  @apply h-8 sm:h-10 px-5 rounded-full text-xs sm:text-sm font-medium transition-all active:scale-95;
+  @apply h-10 px-5 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-all active:scale-95;
 }
 
 /* Outline button (Login) */
@@ -65,15 +65,80 @@
 
 /* Logout button */
 .ci-logout-btn {
-  @apply flex items-center justify-center gap-2 w-full py-2
-         rounded-lg text-red-600 font-medium
-         hover:bg-red-50 transition;
+  @apply flex items-center justify-center gap-2 w-full py-2 rounded-lg text-red-600 font-medium hover:bg-red-50 transition;
 }
 
 .ci-btn.primary {
   @apply text-white shadow-sm bg-linear-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600;
 }
 
+/* Get Pro Button */
+.ci-Pro-btn {
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #16a34a;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.ci-Pro-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #22c55e, #4ade80, #16a34a);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+
+/* Hover Effect */
+.ci-Pro-btn:hover {
+  color: white;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+}
+
+/* Icon */
+.ci-Pro-icon {
+  font-size: 20px;
+}
+
+/* Active */
+.ci-Pro-btn:active {
+  transform: scale(0.96);
+}
+
+/* Close icon */
+.ci-Pro-close {
+  font-size: 20px;
+  margin-left: 4px;
+  opacity: 0.7;
+  border-radius: 50%;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+/* Button hover → icon white */
+.ci-Pro-btn:hover .ci-Pro-close {
+  color: white;
+  opacity: 1;
+}
+
+/* Close hover */
+.ci-Pro-close:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.08);
+}
 
 /* Avatar wrapper */
 .ci-avatar-wrapper {
@@ -106,9 +171,30 @@
 
 /* Dropdown */
 .ci-dropdown {
-  @apply absolute right-0 mt-3 w-56 rounded-2xl bg-white shadow-xl border border-gray-100 py-2 z-50;
-
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 14rem;
+  border-radius: 1rem;
+  background: white;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem 0;
+  z-index: 50;
   animation: dropdownFade 0.18s ease-out;
+}
+
+.ci-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 16px;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  transform: rotate(45deg);
 }
 
 /* Mobile Navigation Design */
@@ -129,9 +215,26 @@
   @apply w-full text-lg font-semibold text-gray-800 py-3 px-4 rounded-xl hover:bg-green-50 hover:text-green-700 transition;
 }
 
-/* Header Section */
+/* Dropdown header layout */
 .ci-dropdown-header {
-  @apply px-4 py-3 flex items-center gap-3;
+  @apply flex items-center gap-2 px-3 py-3 bg-gray-100 rounded-xl m-1.5;
+}
+
+/* User info */
+.ci-user-info {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+/* Plan badge */
+.ci-plan-badge {
+  @apply absolute top-1.5 right-4 text-xs font-semibold px-1.5 py-0.5 rounded-md border shadow-sm flex items-center gap-1;
+}
+
+.ci-plan-badge mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
 }
 
 /* Large avatar */

@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscriptions",
+  "info": {
+    "singularName": "subscription",
+    "pluralName": "subscriptions",
+    "displayName": "Subscription"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "subscription"
+    },
+    "plan": {
+      "type": "enumeration",
+      "default": "free",
+      "enum": [
+        "free",
+        "pro",
+        "premium"
+      ]
+    },
+    "subscriptionStatus": {
+      "type": "enumeration",
+      "default": "pending",
+      "enum": [
+        "active",
+        "cancelled",
+        "expired",
+        "pending",
+        "halted"
+      ]
+    },
+    "currentPeriodStart": {
+      "type": "datetime"
+    },
+    "currentPeriodEnd": {
+      "type": "datetime"
+    },
+    "cancelAtPeriodEnd": {
+      "type": "boolean",
+      "default": false
+    },
+    "razorpayCustomerId": {
+      "type": "string"
+    },
+    "razorpaySubscriptionId": {
+      "type": "string"
+    },
+    "billingCycle": {
+      "type": "enumeration",
+      "enum": [
+        "monthly",
+        "yearly"
+      ]
+    }
+  }
+}

@@ -1,5 +1,10 @@
 <div class="w-full max-w-sm sm:max-w-md md:max-w-lg p-6 sm:p-8 rounded-3xl bg-white shadow-xl border border-gray-100">
 
+    <!-- Close -->
+    <button class="absolute right-5 top-5 text-gray-700 hover:text-green-700 transition" (click)="close()">
+        <mat-icon class="scale-110">close</mat-icon>
+    </button>
+
     <!-- Brand -->
     <div class="flex justify-center mb-3">
         <span class="text-xl sm:text-2xl font-semibold text-green-700 tracking-tight">
@@ -24,15 +29,15 @@
            hover:bg-white transition flex items-center justify-center gap-3 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
 
         <ng-container *ngIf="!isLoading(); else googleLoading">
-            <img src="assets/icons/google.svg" alt="Google" class="w-5 h-5" />
+            <img src="assets/icons/google.svg" alt="Google" class="w-6 h-6" />
             <span class="text-sm font-medium text-gray-700">
                 Continue with Google
             </span>
         </ng-container>
 
         <ng-template #googleLoading>
-            <mat-spinner diameter="20"></mat-spinner>
-            <span class="ml-2 text-sm text-gray-600">Redirecting…</span>
+            <div class="ci-spinner ci-spinner-dark"></div>
+            <span class="ml-2 text-sm text-gray-600">Redirecting...</span>
         </ng-template>
 
     </button>
@@ -130,9 +135,8 @@
 
             <!-- Loading state -->
             <ng-template #loadingTpl>
-                <mat-spinner diameter="18" strokeWidth="3" class="text-white">
-                </mat-spinner>
-                <span>Processing...</span>
+                <div class="ci-spinner"></div>
+                <span class="text-sm text-white">Processing...</span>
             </ng-template>
 
         </button>
@@ -151,4 +155,20 @@
     <p class="text-xs text-gray-400 mt-2 text-center">
         No spam. No ads. Just cooking 🍳
     </p>
+</div>
+
+<!-- Global Loading Overlay -->
+<div *ngIf="isLoading()" class="absolute inset-0 z-50 bg-white/70 backdrop-blur-sm 
+            flex items-center justify-center rounded-3xl transition-all duration-300">
+
+    <div class="flex flex-col items-center gap-3">
+
+        <mat-spinner diameter="45" color="primary"></mat-spinner>
+
+        <p class="text-sm text-gray-600 font-medium">
+            {{ mode() === 'login' ? 'Signing you in...' : 'Creating your account...' }}
+        </p>
+
+    </div>
+
 </div>

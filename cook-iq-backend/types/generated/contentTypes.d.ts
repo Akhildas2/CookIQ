@@ -612,6 +612,51 @@ export interface ApiSavedRecipeSavedRecipe extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSubscriptionSubscription
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'subscriptions';
+  info: {
+    displayName: 'Subscription';
+    pluralName: 'subscriptions';
+    singularName: 'subscription';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    billingCycle: Schema.Attribute.Enumeration<['monthly', 'yearly']>;
+    cancelAtPeriodEnd: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    currentPeriodEnd: Schema.Attribute.DateTime;
+    currentPeriodStart: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subscription.subscription'
+    > &
+      Schema.Attribute.Private;
+    plan: Schema.Attribute.Enumeration<['free', 'pro', 'premium']> &
+      Schema.Attribute.DefaultTo<'free'>;
+    publishedAt: Schema.Attribute.DateTime;
+    razorpayCustomerId: Schema.Attribute.String;
+    razorpaySubscriptionId: Schema.Attribute.String;
+    subscriptionStatus: Schema.Attribute.Enumeration<
+      ['active', 'cancelled', 'expired', 'pending', 'halted']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1111,7 +1156,10 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::saved-recipe.saved-recipe'
     >;
-    subscriptionTier: Schema.Attribute.Enumeration<['free ', 'pro']>;
+    subscription: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::subscription.subscription'
+    >;
     supabaseId: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
@@ -1142,6 +1190,7 @@ declare module '@strapi/strapi' {
       'api::pantry-item.pantry-item': ApiPantryItemPantryItem;
       'api::recipe.recipe': ApiRecipeRecipe;
       'api::saved-recipe.saved-recipe': ApiSavedRecipeSavedRecipe;
+      'api::subscription.subscription': ApiSubscriptionSubscription;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
