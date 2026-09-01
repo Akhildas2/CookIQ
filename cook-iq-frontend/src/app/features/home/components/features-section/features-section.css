@@ -1,0 +1,228 @@
+/* ─── FEATURES SECTION ────────────────────────────────── */
+.features {
+  background: var(--cream);
+  padding: 8rem 4rem;
+}
+
+.features__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+.section-title em {
+  color: var(--spice);
+  font-style: italic;
+}
+
+.section-sub {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #5A5248;
+  max-width: 320px;
+  margin: 0;
+}
+
+/* ── Cards grid ── */
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* ── Claymorphic card base ── */
+.feat-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s var(--ease-back), box-shadow 0.4s var(--ease-expo);
+  transform-style: preserve-3d;
+}
+
+/* Theme variants */
+.feat-card--forest {
+  background: #edf4ef;
+  border-color: rgba(28, 58, 43, 0.12);
+  box-shadow: 0 2px 0 2px rgba(28, 58, 43, 0.07), 0 8px 24px rgba(28, 58, 43, 0.06);
+}
+
+.feat-card--forest:hover {
+  box-shadow: 0 2px 0 2px rgba(28, 58, 43, 0.07), 0 20px 60px rgba(28, 58, 43, 0.12);
+}
+
+.feat-card--spice {
+  background: #fff4f0;
+  border-color: rgba(200, 70, 26, 0.12);
+  box-shadow: 0 2px 0 2px rgba(200, 70, 26, 0.06), 0 8px 24px rgba(200, 70, 26, 0.06);
+}
+
+.feat-card--spice:hover {
+  box-shadow: 0 2px 0 2px rgba(200, 70, 26, 0.06), 0 20px 60px rgba(200, 70, 26, 0.12);
+}
+
+.feat-card--gold {
+  background: #fef9ed;
+  border-color: rgba(201, 151, 58, 0.14);
+  box-shadow: 0 2px 0 2px rgba(201, 151, 58, 0.06), 0 8px 24px rgba(201, 151, 58, 0.06);
+}
+
+.feat-card--gold:hover {
+  box-shadow: 0 2px 0 2px rgba(201, 151, 58, 0.06), 0 20px 60px rgba(201, 151, 58, 0.12);
+}
+
+.feat-card--sage {
+  background: #f1f5f1;
+  border-color: rgba(107, 143, 113, 0.16);
+  box-shadow: 0 2px 0 2px rgba(107, 143, 113, 0.06), 0 8px 24px rgba(107, 143, 113, 0.06);
+}
+
+.feat-card--sage:hover {
+  box-shadow: 0 2px 0 2px rgba(107, 143, 113, 0.06), 0 20px 60px rgba(107, 143, 113, 0.12);
+}
+
+/* ── Icon ── */
+.feat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 0.75rem;
+  transition: transform 0.4s var(--ease-back);
+}
+
+.feat-card:hover .feat-icon {
+  transform: rotate(-8deg) scale(1.15);
+}
+
+.feat-card--forest .feat-icon {
+  background: var(--forest);
+}
+
+.feat-card--spice .feat-icon {
+  background: var(--spice);
+}
+
+.feat-card--gold .feat-icon {
+  background: var(--gold);
+}
+
+.feat-card--sage .feat-icon {
+  background: var(--sage);
+}
+
+/* ── Tag ── */
+.feat-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1.5px solid;
+  margin-bottom: 0.75rem;
+}
+
+.feat-card--forest .feat-tag {
+  background: rgba(28, 58, 43, 0.08);
+  color: var(--forest);
+  border-color: rgba(28, 58, 43, 0.2);
+}
+
+.feat-card--spice .feat-tag {
+  background: rgba(200, 70, 26, 0.08);
+  color: var(--spice);
+  border-color: rgba(200, 70, 26, 0.2);
+}
+
+.feat-card--gold .feat-tag {
+  background: rgba(201, 151, 58, 0.1);
+  color: #9a6e1a;
+  border-color: rgba(201, 151, 58, 0.24);
+}
+
+.feat-card--sage .feat-tag {
+  background: rgba(107, 143, 113, 0.1);
+  color: #4a6e50;
+  border-color: rgba(107, 143, 113, 0.22);
+}
+
+/* ── Text ── */
+.feat-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
+}
+
+.feat-desc {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #5A5248;
+  margin: 0;
+}
+
+/* ── BG number ── */
+.feat-num {
+  position: absolute;
+  bottom: -0.5rem;
+  right: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 8rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.05;
+  color: var(--charcoal);
+  pointer-events: none;
+  letter-spacing: -0.04em;
+  transition: opacity 0.3s, transform 0.4s var(--ease-expo);
+}
+
+.feat-card:hover .feat-num {
+  opacity: 0.08;
+  transform: scale(1.05) translateY(-4px);
+}
+
+@media (max-width: 900px) {
+  .features {
+    padding: 5rem 1.5rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .features__grid {
+    grid-template-columns: 1fr;
+  }
+}

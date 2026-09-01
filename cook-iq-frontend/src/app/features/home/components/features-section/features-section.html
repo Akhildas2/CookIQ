@@ -1,0 +1,36 @@
+<section class="features" id="features">
+  <div class="features__inner">
+
+    <div class="section-header">
+      <!-- SECTION HEADER -->
+      <h2 class="section-title" data-reveal>
+        Your smart<br><em>kitchen</em> partner.
+      </h2>
+
+      <p class="section-sub" data-reveal="right">
+        Everything you need to stop wasting food and start eating well — starting free.
+      </p>
+    </div>
+
+    <!-- FEATURES GRID -->
+    <div class="features__grid">
+      <div *ngFor="let feat of features; trackBy: trackByFeature" class="feat-card"
+        [class]="'feat-card feat-card--' + feat.theme" data-reveal>
+        <!-- Icon -->
+        <div class="feat-icon">
+          <lucide-icon [name]="feat.icon" [size]="22" class="text-white"></lucide-icon>
+        </div>
+
+        <!-- TAG -->
+        <span class="feat-tag">{{ feat.tag }}</span>
+         <!-- TITLE -->
+        <h3 class="feat-title">{{ feat.title }}</h3>
+         <!-- DESCRIPTION -->
+        <p class="feat-desc">{{ feat.desc }}</p>
+        <!-- BIG NUMBER -->
+        <span class="feat-num">{{ feat.num }}</span>
+      </div>
+    </div>
+
+  </div>
+</section>

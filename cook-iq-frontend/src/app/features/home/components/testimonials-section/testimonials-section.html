@@ -1,0 +1,29 @@
+<section class="testimonials" id="testimonials">
+  <div class="testimonials__inner">
+
+    <div class="section-header">
+      <h2 class="section-title" data-reveal>
+        Real people.<br><em>Real kitchens.</em>
+      </h2>
+      <p class="section-sub" data-reveal="right">
+        They stopped wasting. You can too.
+      </p>
+    </div>
+
+    <div class="testimonials__grid">
+      <div *ngFor="let t of testimonials" class="tcard" data-reveal [style.transition-delay]="t.delay">
+        <div class="tcard-quote">❝</div>
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"{{ t.text }}"</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">{{ t.initials }}</div>
+          <div>
+            <div class="tcard-name">{{ t.name }}</div>
+            <div class="tcard-loc">{{ t.location }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

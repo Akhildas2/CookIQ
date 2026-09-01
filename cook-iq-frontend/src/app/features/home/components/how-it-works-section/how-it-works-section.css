@@ -1,0 +1,78 @@
+/* ─── HOW IT WORKS SECTION ────────────────────────────── */
+.hiw {
+  background: var(--charcoal); padding: 8rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hiw::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(200,70,26,0.1) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(28,58,43,0.18) 0%, transparent 45%);
+  pointer-events: none;
+}
+.hiw__inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+.hiw-label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--spice); margin-bottom: 1.25rem;
+}
+.hiw-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 600; line-height: 1.04; letter-spacing: -0.025em;
+  color: var(--cream); margin: 0 0 5rem;
+}
+.hiw-title em { font-style: italic; color: var(--spice); }
+
+/* ── Steps grid ── */
+.hiw-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; position: relative;
+}
+
+/* ── Animated SVG connector ── */
+.hiw-connector {
+  position: absolute; top: 48px; left: 33.33%; right: 33.33%;
+  width: 33.33%; height: 2px;
+  overflow: visible; pointer-events: none;
+}
+.hiw-connector path {
+  stroke: rgba(200,70,26,0.35); stroke-width: 1.5;
+  fill: none; stroke-linecap: round;
+  stroke-dasharray: 300; stroke-dashoffset: 300;
+  transition: stroke-dashoffset 1.4s 0.2s var(--ease-expo);
+}
+.hiw-connector.draw path { stroke-dashoffset: 0; }
+
+/* ── Individual step ── */
+.hiw-step {
+  display: flex; flex-direction: column; padding-right: 3rem;
+}
+.step-num {
+  font-family: var(--font-display); font-size: 5rem; font-weight: 700;
+  line-height: 1; letter-spacing: -0.04em;
+  color: var(--spice); margin-bottom: 1.5rem; opacity: 0.85;
+}
+.step-title {
+  font-family: var(--font-display); font-size: 2.2rem; font-weight: 600;
+  letter-spacing: -0.02em; color: var(--cream); margin: 0 0 0.6rem; line-height: 1.1;
+}
+.step-desc {
+  font-size: 0.95rem; font-weight: 500;
+  color: rgba(250,247,240,0.7); line-height: 1.6; margin: 0 0 0.3rem;
+}
+.step-detail {
+  font-size: 0.85rem; color: rgba(250,247,240,0.4); line-height: 1.6; margin: 0;
+}
+
+/* ─── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hiw { padding: 5rem 1.5rem; }
+  .hiw-steps { grid-template-columns: 1fr; gap: 3rem; }
+  .hiw-connector { display: none; }
+  .hiw-step {
+    padding-right: 0; padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .hiw-step:last-child { border-bottom: none; padding-bottom: 0; }
+}

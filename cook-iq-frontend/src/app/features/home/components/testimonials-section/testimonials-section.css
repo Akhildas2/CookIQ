@@ -1,0 +1,146 @@
+/* ─── TESTIMONIALS SECTION ────────────────────────────── */
+.testimonials {
+  background: var(--mist);
+  padding: 8rem 4rem;
+  border-top: 2px solid rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.testimonials__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+.section-title em {
+  color: var(--spice);
+  font-style: italic;
+}
+
+.section-sub {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #5A5248;
+  max-width: 320px;
+  margin: 0;
+}
+
+/* ── Glassmorphic testimonial cards ── */
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.tcard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(1.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow:
+    0 4px 0 1px rgba(0, 0, 0, 0.03),
+    0 12px 40px rgba(0, 0, 0, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.4s var(--ease-back), box-shadow 0.4s;
+}
+
+.tcard:hover {
+  transform: translateY(-8px) rotate(0.5deg);
+  box-shadow:
+    0 4px 0 1px rgba(0, 0, 0, 0.03),
+    0 28px 60px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.tcard-quote {
+  color: var(--spice);
+  opacity: 0.5;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.tcard-stars {
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+.tcard-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--charcoal);
+  flex: 1;
+}
+
+.tcard-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.tcard-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--cream);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tcard-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+
+.tcard-loc {
+  font-size: 0.72rem;
+  color: #888;
+}
+
+@media (max-width: 900px) {
+  .testimonials {
+    padding: 5rem 1.5rem;
+  }
+
+  .testimonials__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}

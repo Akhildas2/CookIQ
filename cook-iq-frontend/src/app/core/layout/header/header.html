@@ -45,8 +45,8 @@
       </button>
       }
 
-      <!-- Get Pro showPlus() && -->
-      @if(!subscriptionLoading()){
+      <!-- Get Pro -->
+      @if(showPlus() && !subscriptionLoading()){
       <button class="ci-Pro-btn hidden md:inline-flex" aria-label="Get Pro" (click)="openPricingModal()">
         <mat-icon class="ci-Pro-icon">auto_awesome</mat-icon>
         <span>Get Pro</span>

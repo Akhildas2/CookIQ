@@ -1,0 +1,45 @@
+/* ─── STATS SECTION ───────────────────────────────────── */
+.stats {
+  background: var(--forest);
+  padding: 5rem 4rem;
+  position: relative; overflow: hidden;
+}
+.stats::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 28px,
+    rgba(255,255,255,0.02) 28px, rgba(255,255,255,0.02) 29px
+  );
+  pointer-events: none;
+}
+.stats__inner {
+  max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
+}
+.stats__grid {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+}
+.stat-item {
+  flex: 1; min-width: 150px; text-align: center;
+  position: relative;
+}
+.stat-val {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 4.8rem);
+  font-weight: 700; color: var(--cream);
+  line-height: 1; letter-spacing: -0.03em; margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--spice);
+}
+.stat-divider {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 1px; height: 64px; background: rgba(255,255,255,0.1);
+}
+
+@media (max-width: 900px) {
+  .stats { padding: 3rem 1.5rem; }
+  .stat-divider { display: none; }
+}

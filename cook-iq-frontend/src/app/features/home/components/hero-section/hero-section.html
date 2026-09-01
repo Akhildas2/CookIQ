@@ -1,0 +1,118 @@
+<section class="hero">
+
+  <!-- Background grain texture -->
+  <div class="hero__grain" aria-hidden="true"></div>
+
+  <!-- Floating ambient blobs -->
+  <div class="hero__blob hero__blob--1" aria-hidden="true"></div>
+  <div class="hero__blob hero__blob--2" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+
+    <!-- ── Left: Text ─────────────────────────────────────────── -->
+    <div class="hero__text">
+
+      <div class="hero__eyebrow">
+        <span class="hero__eyebrow-dot"></span>
+        AI-Powered Kitchen Intelligence
+      </div>
+
+      <h1 class="hero__headline">
+        Turn your<br>
+        <span class="hero__rotating-word" [class.hero__rotating-word--exit]="isAnimating">
+          {{ currentWord }}
+        </span><br>
+        into dinner.
+      </h1>
+
+      <p class="hero__subline">
+        Snap your fridge. Get a gourmet recipe in seconds.
+        Zero waste. Zero stress. Just great food.
+      </p>
+
+      <div class="hero__cta-group">
+        <a routerLink="/dashboard" class="btn btn--primary">
+          <lucide-icon name="sparkles" [size]="18"></lucide-icon>
+          Start Cooking Free
+        </a>
+        <a routerLink="/recipes" class="btn btn--ghost">
+          Browse Recipes
+          <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
+        </a>
+      </div>
+
+      <div class="hero__social-proof">
+        <div class="hero__avatars">
+          <div class="hero__avatar">P</div>
+          <div class="hero__avatar">M</div>
+          <div class="hero__avatar">S</div>
+          <div class="hero__avatar">A</div>
+        </div>
+        <div class="hero__proof-text">
+          <span class="hero__proof-stars">★★★★★</span>
+          <span>Loved by <strong>10k+ cooks</strong> last month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Right: Visual Card Stack ──────────────────────────── -->
+    <div class="hero__visual" aria-hidden="true">
+
+      <!-- Main food image card -->
+      <div class="hero__card hero__card--main">
+        <img src="/assets/pasta-dish.png" alt="Delicious pasta dish" class="hero__card-img" />
+        <!-- Overlay label -->
+        <div class="hero__card-label">
+          <lucide-icon name="flame" [size]="14"></lucide-icon>
+          Chef's Pick
+        </div>
+      </div>
+
+      <!-- Floating recipe match card -->
+      <div class="hero__match-card">
+        <div class="hero__match-header">
+          <div class="hero__match-icon">
+            <lucide-icon name="chef-hat" [size]="16"></lucide-icon>
+          </div>
+          <div>
+            <div class="hero__match-title">Rustic Tomato Basil Pasta</div>
+            <div class="hero__match-stars">★★★★★</div>
+          </div>
+          <span class="hero__match-badge">98%</span>
+        </div>
+        <div class="hero__match-meta">
+          <span>
+            <lucide-icon name="clock" [size]="12"></lucide-icon>
+            25 mins
+          </span>
+          <span>
+            <lucide-icon name="users" [size]="12"></lucide-icon>
+            2 servings
+          </span>
+          <span>
+            <lucide-icon name="leaf" [size]="12"></lucide-icon>
+            Vegetarian
+          </span>
+        </div>
+      </div>
+
+      <!-- Floating ingredient scan card -->
+      <div class="hero__scan-card">
+        <div class="hero__scan-row">
+          <lucide-icon name="scan-line" [size]="14"></lucide-icon>
+          <span>Scanning pantry…</span>
+        </div>
+        <div class="hero__scan-items">
+          <span class="hero__scan-chip">🍅 Tomatoes</span>
+          <span class="hero__scan-chip">🧄 Garlic</span>
+          <span class="hero__scan-chip">🌿 Basil</span>
+          <span class="hero__scan-chip hero__scan-chip--more">+4 more</span>
+        </div>
+      </div>
+
+      <!-- Decorative ring -->
+      <div class="hero__ring"></div>
+
+    </div>
+  </div>
+</section>

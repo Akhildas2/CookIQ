@@ -1,0 +1,26 @@
+<section class="stats">
+  <div class="stats__inner">
+
+    <div class="stats__grid">
+
+      <div class="stat-item" *ngFor="
+          let stat of stats;
+          let last = last;
+          trackBy: trackByLabel ">
+
+        <div #statValue class="stat-val">
+          {{ stat.display }}
+        </div>
+
+        <div class="stat-label">
+          {{ stat.label }}
+        </div>
+
+        <div *ngIf="!last" class="stat-divider"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
