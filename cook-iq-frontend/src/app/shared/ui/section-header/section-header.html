@@ -1,0 +1,138 @@
+<header class="section-header" [class.section-header--default]="variant() === 'default'"
+    [class.section-header--process]="variant() === 'process'" [class.section-header--split]="variant() === 'split'"
+    appReveal="up" [revealDelay]="revealDelay()">
+    <!-- =====================================================
+       PROCESS IDENTITY
+       Used by How It Works
+       ===================================================== -->
+
+    @if (variant() === 'process' && showIdentity()) {
+    <div class="section-header__identity">
+        <span class="section-header__identity-mark" aria-hidden="true">
+            <span></span>
+        </span>
+
+        <span class="section-header__identity-label">
+            {{ identity() }}
+        </span>
+    </div>
+    }
+
+    <!-- =====================================================
+       PROCESS HEADER RULE
+       ===================================================== -->
+
+    @if (variant() === 'process' && showRule()) {
+    <div class="section-header__rule" aria-hidden="true"></div>
+    }
+
+    <!-- =====================================================
+       SECTION INDEX
+       ===================================================== -->
+
+    @if (variant() === 'process' && index()) {
+    <span class="section-header__index">
+        {{ index() }}
+    </span>
+    }
+
+    <!-- =====================================================
+       DEFAULT / SPLIT HEADER
+       ===================================================== -->
+
+    @if (variant() !== 'process') {
+    <div class="section-header__eyebrow">
+        <span class="section-header__eyebrow-dot" aria-hidden="true"></span>
+
+        <span>
+            {{ eyebrow() }}
+        </span>
+    </div>
+
+    <div class="section-header__content">
+
+        <!-- HEADING -->
+
+        <div class="section-header__heading">
+            <h2 class="section-header__title">
+                {{ title() }}
+
+                @if (highlight()) {
+                <br />
+
+                <em>
+                    {{ highlight() }}
+                </em>
+                }
+            </h2>
+        </div>
+
+        <!-- DESCRIPTION -->
+
+        @if (description()) {
+        <div class="section-header__side">
+
+            <p>
+                {{ description() }}
+            </p>
+
+            @if (meta()) {
+            <div class="section-header__meta">
+                <span class="section-header__meta-line" aria-hidden="true"></span>
+
+                <span>
+                    {{ meta() }}
+                </span>
+            </div>
+            }
+
+            @if (index()) {
+            <span class="section-header__side-index">
+                {{ index() }}
+            </span>
+            }
+
+        </div>
+        }
+
+    </div>
+    }
+
+    <!-- =====================================================
+       PROCESS HEADER CONTENT
+       ===================================================== -->
+
+    @if (variant() === 'process') {
+    <div class="section-header__process-content">
+
+        <div class="section-header__process-heading">
+
+            @if (eyebrow()) {
+            <span class="section-header__eyebrow">
+                {{ eyebrow() }}
+            </span>
+            }
+
+            <h2 class="section-header__title">
+                {{ title() }}
+
+                @if (highlight()) {
+                <br />
+
+                <em>
+                    {{ highlight() }}
+                </em>
+                }
+            </h2>
+
+        </div>
+
+        @if (description()) {
+        <p class="section-header__process-description">
+            {{ description() }}
+        </p>
+        }
+
+    </div>
+    }
+</header>

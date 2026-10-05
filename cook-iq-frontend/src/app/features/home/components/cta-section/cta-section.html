@@ -1,18 +1,307 @@
-<section class="cta">
-  <div class="cta-liquid"></div>
-  <div class="cta__grain"></div>
+<section class="cta" id="cta" aria-labelledby="cta-title">
+  <!-- =====================================================
+       AMBIENT BACKGROUND
+       ===================================================== -->
 
-  <div class="cta__inner">
-    <div class="cta-badge" data-reveal> {{ cta.badge }}</div>
-    <h2 class="cta-title" data-reveal>
-      {{ cta.title }}
-    </h2>
-    <p class="cta-sub" data-reveal>
-      {{ cta.subtitle }}
-    </p>
-    <div class="cta-actions" data-reveal>
-      <a href="#" class="btn btn-spice"> {{ cta.primaryBtn }}</a>
-      <a href="#" class="btn btn-outline-light"> {{ cta.secondaryBtn }}</a>
+  <div class="cta__ambient cta__ambient--one" aria-hidden="true"></div>
+  <div class="cta__ambient cta__ambient--two" aria-hidden="true"></div>
+
+
+  <!-- =====================================================
+       MAIN CONTAINER
+       ===================================================== -->
+
+  <div class="cta__container">
+
+    <!-- ===================================================
+         MAIN CONTENT
+         =================================================== -->
+
+    <div class="cta__content">
+
+      <!-- =================================================
+           LEFT SIDE
+           ================================================= -->
+
+      <div class="cta__copy" appReveal="left">
+
+        <!-- EYEBROW -->
+
+        <div class="cta__eyebrow">
+
+          <span class="cta__eyebrow-dot"></span>
+
+          <span>
+            {{ cta.eyebrow }}
+          </span>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h2 class="cta__title" id="cta-title">
+
+          <span>
+            {{ cta.title.first }}
+          </span>
+
+          <span class="cta__title-highlight">
+            {{ cta.title.highlight }}
+          </span>
+
+        </h2>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="cta__description">
+          {{ cta.description }}
+        </p>
+
+
+        <!-- =================================================
+             BENEFITS
+             ================================================= -->
+
+        <div class="cta__benefits">
+
+          @for (benefit of cta.benefits; track benefit.label) {
+
+          <div class="cta__benefit">
+
+            <span class="cta__benefit-icon">
+
+              <lucide-icon [name]="benefit.icon" [size]="15" />
+
+            </span>
+
+            <span class="cta__benefit-label">
+              {{ benefit.label }}
+            </span>
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- =================================================
+             ACTIONS
+             ================================================= -->
+
+        <div class="cta__actions">
+
+          <!-- PRIMARY -->
+
+          <button type="button" class="cta__primary" (click)="openPricing()">
+
+            <span>
+              {{ cta.primaryAction.label }}
+            </span>
+
+            <span class="cta__primary-icon">
+
+              <lucide-icon name="arrow-up-right" [size]="17" />
+
+            </span>
+
+          </button>
+
+
+          <!-- SECONDARY -->
+
+          <a class="cta__secondary" [routerLink]="cta.secondaryAction.route">
+
+            <span>
+              {{ cta.secondaryAction.label }}
+            </span>
+
+            <lucide-icon name="arrow-right" [size]="15" />
+
+          </a>
+
+        </div>
+
+
+        <!-- =================================================
+             TRUST
+             ================================================= -->
+
+        <div class="cta__trust">
+
+          @for (item of cta.trust; track item.label) {
+
+          <div class="cta__trust-item">
+
+            <span class="cta__trust-icon">
+
+              <lucide-icon [name]="item.icon" [size]="12" />
+
+            </span>
+
+            <span>
+              {{ item.label }}
+            </span>
+
+          </div>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           RIGHT SIDE — PREMIUM FOOD CARD
+           ================================================= -->
+
+      <div class="cta__visual" appReveal="right" [revealDelay]="0.15" aria-hidden="true">
+
+        <div class="cta__food-card">
+
+          <!-- =============================================
+               FOOD IMAGE
+               ============================================= -->
+
+          <div class="cta__food-image">
+
+            <img src="/assets/recipes/Basil_Tomato_Pasta Feast.png" alt="" />
+
+            <div class="cta__ingredient cta__ingredient--tomato">
+              <span></span>
+            </div>
+
+            <div class="cta__ingredient cta__ingredient--basil">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="cta__ingredient cta__ingredient--garlic">
+              <span></span>
+            </div>
+
+            <div class="cta__ingredient cta__ingredient--spoon">
+              <span></span>
+            </div>
+
+            <div class="cta__food-image-overlay"></div>
+
+            <div class="cta__food-tag">
+              <lucide-icon name="sparkles" [size]="14" />
+              <span>COOKIQ AI</span>
+            </div>
+
+          </div>
+
+
+          <!-- =============================================
+               CARD CONTENT
+               ============================================= -->
+
+          <div class="cta__food-content">
+
+            <!-- SMALL LABEL -->
+
+            <div class="cta__food-eyebrow">
+
+              <span>
+                FROM PANTRY
+              </span>
+
+              <span class="cta__food-line"></span>
+
+            </div>
+
+
+            <!-- MAIN MESSAGE -->
+
+            <h3>
+
+              <span>
+                What you have
+              </span>
+
+              <br />
+
+              <em>
+                becomes what you crave.
+              </em>
+
+            </h3>
+
+
+            <!-- CARD FOOTER -->
+
+            <div class="cta__food-bottom">
+
+              <span>
+                SMARTER COOKING
+              </span>
+
+              <div class="cta__food-arrow">
+
+                <lucide-icon name="arrow-up-right" [size]="17" />
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =============================================
+             DECORATIVE DETAILS
+             ============================================= -->
+
+        <div class="cta__food-dot cta__food-dot--one" aria-hidden="true"></div>
+
+        <div class="cta__food-dot cta__food-dot--two" aria-hidden="true"></div>
+
+        <span class="cta__food-number" aria-hidden="true">
+          01
+        </span>
+
+      </div>
+
     </div>
+
+
+    <!-- ===================================================
+         BOTTOM STATEMENT
+         =================================================== -->
+
+    <div class="cta__bottom" appReveal="up" [revealDelay]="0.2">
+
+      <div class="cta__bottom-line"></div>
+
+
+      <div class="cta__bottom-statement">
+
+        @for (item of cta.bottomStatement.items; track item) {
+
+        <span>
+          {{ item }}
+        </span>
+
+        }
+
+        <strong>
+          {{ cta.bottomStatement.highlight }}
+        </strong>
+
+      </div>
+
+
+      <div class="cta__bottom-line"></div>
+
+    </div>
+
   </div>
+
 </section>

@@ -1,29 +1,164 @@
-<section class="testimonials" id="testimonials">
-  <div class="testimonials__inner">
+<section class="testimonials" id="testimonials" aria-labelledby="testimonials-title">
+  <div class="testimonials__container">
 
-    <div class="section-header">
-      <h2 class="section-title" data-reveal>
-        Real people.<br><em>Real kitchens.</em>
-      </h2>
-      <p class="section-sub" data-reveal="right">
-        They stopped wasting. You can too.
-      </p>
-    </div>
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+    <app-section-header variant="split" headingId="testimonials-title" eyebrow="REAL KITCHENS · REAL RESULTS"
+      title="Less waste." highlight="More good food."
+      description="From forgotten leftovers to last-minute dinners, CookIQ helps turn what you already have into something worth cooking."
+      meta="WHAT COOKIQ USERS ARE SAYING" />
 
-    <div class="testimonials__grid">
-      <div *ngFor="let t of testimonials" class="tcard" data-reveal [style.transition-delay]="t.delay">
-        <div class="tcard-quote">❝</div>
-        <div class="tcard-stars">★★★★★</div>
-        <p class="tcard-text">"{{ t.text }}"</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">{{ t.initials }}</div>
-          <div>
-            <div class="tcard-name">{{ t.name }}</div>
-            <div class="tcard-loc">{{ t.location }}</div>
-          </div>
-        </div>
+    <div class="testimonials__divider" aria-hidden="true"></div>
+
+    <!-- TRUST -->
+    <div class="testimonials__trust">
+
+      <div class="testimonials__trust-copy">
+        <span class="testimonials__trust-label">
+          Loved by curious home cooks
+        </span>
+
+        <span class="testimonials__trust-count">
+          1,000+ kitchens and counting
+        </span>
       </div>
+
+
+      <!-- AVATAR STACK -->
+      <div class="testimonials__avatar-stack" aria-label="CookIQ community">
+        @for ( t of testimonials.slice(0, 5);
+        track t.name) {
+        <img [src]="t.avatarUrl" [alt]="t.name" class="testimonials__trust-avatar" loading="lazy" />
+        }
+      </div>
+
     </div>
+
+    <!-- =====================================================
+         TESTIMONIAL GRID
+         ===================================================== -->
+    <ul class="testimonials__grid" aria-live="polite">
+
+      @for (t of visibleTestimonials();track t.name;let i = $index) {
+
+      <li class="tcard" [class.tcard--active]="i === 0" appReveal="up" [revealDelay]="0.1 + i * 0.08">
+
+        <!-- CARD TOP -->
+        <div class="tcard__top">
+
+          <!-- TESTIMONIAL NUMBER -->
+          <span class="tcard__number">
+            {{
+            (activeIndex() + i) %
+            testimonials.length + 1
+            }}
+          </span>
+
+
+          <!-- CATEGORY -->
+          <span class="tcard__category">
+            <span aria-hidden="true"></span>
+            {{ t.category }}
+          </span>
+
+        </div>
+
+
+        <!-- CARD BODY -->
+        <div class="tcard__body">
+
+          <!-- QUOTE MARK -->
+          <span class="tcard__quote-mark" aria-hidden="true">
+            “
+          </span>
+
+
+          <!-- TESTIMONIAL TEXT -->
+          <p class="tcard__text">
+            {{ t.text }}
+          </p>
+
+        </div>
+
+        <!-- CARD FOOTER -->
+        <div class="tcard__footer">
+
+          <!-- AVATAR -->
+          <img [src]="t.avatarUrl" [alt]="t.name" class="tcard__avatar" loading="lazy" />
+
+
+          <!-- AUTHOR -->
+          <div class="tcard__author">
+
+            <span class="tcard__name">
+              {{ t.name }}
+            </span>
+
+            <span class="tcard__location">
+              {{ t.location }}
+            </span>
+
+          </div>
+
+
+          <!-- POST LINK -->
+          @if (t.postUrl && t.postUrl !== '#') {
+          <a [href]="t.postUrl" class="tcard__link" target="_blank" rel="noopener noreferrer"
+            aria-label="View testimonial post">
+            <lucide-icon name="arrow-up-right" [size]="16" [strokeWidth]="1.8" aria-hidden="true" />
+          </a>
+          }
+
+        </div>
+
+      </li>
+
+      }
+
+    </ul>
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+    @if (testimonials.length > visibleCount()) {
+    <div class="testimonials__bottom" appReveal="up" [revealDelay]="0.2">
+
+      <div class="testimonials__bottom-line" aria-hidden="true">
+      </div>
+
+      <div class="testimonials__nav">
+
+        <button type="button" class="testimonials__nav-btn" (click)="prevSlide()" aria-label="Previous testimonials">
+          <lucide-icon name="arrow-left" [size]="18" [strokeWidth]="1.7" aria-hidden="true" />
+        </button>
+
+        <span class="testimonials__nav-count" aria-live="polite">
+
+          {{ firstVisibleNumber() }}
+
+          <span>–</span>
+
+          {{ lastVisibleNumber() }}
+
+          <span>/</span>
+
+          {{ testimonials.length }}
+
+        </span>
+
+        <button type="button" class="testimonials__nav-btn" (click)="nextSlide()" aria-label="Next testimonials">
+          <lucide-icon name="arrow-right" [size]="18" [strokeWidth]="1.7" aria-hidden="true" />
+        </button>
+
+      </div>
+
+      <div class="testimonials__bottom-line" aria-hidden="true">
+      </div>
+
+    </div>
+    }
 
   </div>
 </section>

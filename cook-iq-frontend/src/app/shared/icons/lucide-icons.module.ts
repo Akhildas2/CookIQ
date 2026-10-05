@@ -1,36 +1,38 @@
 import { NgModule } from '@angular/core';
-import { LucideAngularModule } from 'lucide-angular';
 
 import {
-  // Hero Section
-  Sparkles,
+  LucideAngularModule,
+  ArrowLeft,
   ArrowRight,
-  Flame,
+  ArrowUpRight,
+  ArrowDownRight,
+  BookOpen,
+  Camera,
+  Check,
   ChefHat,
   Clock,
-  Users,
+  Flame,
   Leaf,
+  Quote,
   ScanLine,
-
-  // Features Section 
-  Camera,
   Search,
-  BookOpen,
-
-  // How It Works / General
-  Check,
+  Shield,
+  SlidersHorizontal,
+  Sparkles,
   Star,
   TrendingUp,
+  Users,
   Zap,
-  Shield,
-  Quote,
 } from 'lucide-angular';
 
 @NgModule({
   imports: [
     LucideAngularModule.pick({
       Sparkles,
+      ArrowLeft,
       ArrowRight,
+      ArrowUpRight,
+      ArrowDownRight,
       Flame,
       ChefHat,
       Clock,
@@ -46,8 +48,9 @@ import {
       Zap,
       Shield,
       Quote,
-    })
+      SlidersHorizontal,
+    }),
   ],
-  exports: [LucideAngularModule]
+  exports: [LucideAngularModule],
 })
 export class LucideIconsModule { }

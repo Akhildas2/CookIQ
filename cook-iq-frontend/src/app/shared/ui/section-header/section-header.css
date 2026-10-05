@@ -1,0 +1,357 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.section-header {
+    position: relative;
+    width: 100%;
+    padding-bottom: 3rem;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.section-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    margin-bottom: 1.5rem;
+
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    color: var(--text-muted);
+}
+
+.section-header__eyebrow-dot {
+    width: 7px;
+    height: 7px;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+    background: var(--spice);
+
+    box-shadow:
+        0 0 0 4px rgb(200 70 26 / 10%);
+}
+
+
+/* =========================================================
+   DEFAULT / SPLIT
+   ========================================================= */
+
+.section-header--default,
+.section-header--split {
+    display: block;
+}
+
+.section-header__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.65fr);
+
+    align-items: end;
+
+    gap: clamp(3rem, 7vw, 8rem);
+}
+
+.section-header__heading {
+    min-width: 0;
+}
+
+.section-header__title {
+    margin: 0;
+
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 6vw, 6.5rem);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+
+    color: var(--forest);
+}
+
+.section-header__title em {
+    color: var(--spice);
+    font-style: italic;
+}
+
+.section-header__side {
+    position: relative;
+
+    max-width: 390px;
+
+    padding-bottom: 0.15rem;
+}
+
+.section-header__side p {
+    margin: 0;
+
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.75;
+
+    color: var(--text-muted);
+}
+
+.section-header__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+
+    margin-top: 1.5rem;
+
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: var(--text-subtle);
+}
+
+.section-header__meta-line {
+    width: 34px;
+    height: 1px;
+
+    flex: 0 0 auto;
+
+    background: currentColor;
+}
+
+.section-header__side-index {
+    display: block;
+
+    margin-top: 1.2rem;
+
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: var(--text-subtle);
+}
+
+
+/* =========================================================
+   PROCESS / HOW IT WORKS
+   ========================================================= */
+
+.section-header--process {
+    display: grid;
+
+    grid-template-columns:
+        auto minmax(40px, 1fr) auto;
+
+    align-items: center;
+
+    gap: 1.5rem;
+
+    margin-bottom: 3rem;
+}
+
+.section-header__identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+
+    white-space: nowrap;
+}
+
+.section-header__identity-mark {
+    position: relative;
+
+    display: grid;
+    place-items: center;
+
+    width: 24px;
+    height: 24px;
+
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 50%;
+}
+
+.section-header__identity-mark span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--spice);
+    box-shadow: 0 0 12px rgb(200 70 26 / 50%);
+}
+
+.section-header__identity-label {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: rgb(255 255 255 / 72%);
+}
+
+.section-header__rule {
+    width: 100%;
+    height: 1px;
+
+    background: rgb(255 255 255 / 14%);
+}
+
+.section-header__index {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: rgb(255 255 255 / 42%);
+
+    white-space: nowrap;
+}
+
+.section-header__process-content {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.6fr);
+
+    align-items: end;
+
+    gap: clamp(3rem, 8vw, 9rem);
+
+    margin-top: 2.5rem;
+}
+
+.section-header__process-heading .section-header__eyebrow {
+    color: rgb(255 255 255 / 52%);
+}
+
+.section-header__process-heading .section-header__title {
+    color: var(--white);
+}
+
+.section-header__process-heading .section-header__title em {
+    color: var(--spice-light);
+}
+
+.section-header__process-description {
+    max-width: 390px;
+
+    margin: 0;
+
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.75;
+
+    color: rgb(255 255 255 / 58%);
+}
+
+
+/* =========================================================
+   DARK SECTION SUPPORT
+   ========================================================= */
+
+:host-context(.on-dark) .section-header__title {
+    color: var(--white);
+}
+
+:host-context(.on-dark) .section-header__title em {
+    color: var(--spice-light);
+}
+
+:host-context(.on-dark) .section-header__side p {
+    color: rgb(255 255 255 / 58%);
+}
+
+:host-context(.on-dark) .section-header__eyebrow {
+    color: rgb(255 255 255 / 52%);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .section-header__content,
+    .section-header__process-content {
+        grid-template-columns: 1fr;
+
+        gap: 2rem;
+    }
+
+    .section-header__side,
+    .section-header__process-description {
+        max-width: 600px;
+    }
+
+    .section-header--process {
+        grid-template-columns: auto 1fr auto;
+
+        gap: 1rem;
+    }
+}
+
+
+@media (max-width: 640px) {
+    .section-header__title {
+        font-size: clamp(3rem, 13vw, 4.5rem);
+    }
+
+    .section-header__content,
+    .section-header__process-content {
+        gap: 1.5rem;
+    }
+
+    .section-header--process {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .section-header__rule {
+        order: 3;
+
+        flex: 1 1 100%;
+    }
+
+    .section-header__index {
+        margin-left: auto;
+    }
+
+    .section-header__process-content {
+        width: 100%;
+
+        margin-top: 1.5rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .section-header {
+        transition: none;
+    }
+}

@@ -1,142 +1,1114 @@
-/* ─── CTA SECTION ─────────────────────────────────────── */
+:host {
+  display: block;
+}
+
+
+/* =========================================================
+   CTA SECTION
+   ========================================================= */
+
 .cta {
-  background: var(--forest);
-  padding: 10rem 4rem;
-  text-align: center;
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-}
 
-/* Liquid animated gradient */
-.cta-liquid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  padding: var(--section-y) var(--section-x);
+  color: var(--white);
+
   background:
-    radial-gradient(circle at 25% 50%, rgba(200, 70, 26, 0.18) 0%, transparent 50%),
-    radial-gradient(circle at 75% 50%, rgba(201, 151, 58, 0.1) 0%, transparent 50%);
-  animation: liquidShift 10s ease-in-out infinite alternate;
+    radial-gradient(circle at 50% -15%,
+      rgb(201 151 58 / 0.13),
+      transparent 32%),
+    radial-gradient(circle at 8% 80%,
+      rgb(107 143 113 / 0.09),
+      transparent 30%),
+    radial-gradient(circle at 92% 85%,
+      rgb(200 70 26 / 0.065),
+      transparent 28%),
+    linear-gradient(135deg,
+      #152019 0%,
+      #18251e 45%,
+      #131b17 100%);
 }
 
-@keyframes liquidShift {
-  from {
-    transform: scale(1) rotate(0deg);
-  }
 
-  to {
-    transform: scale(1.15) rotate(8deg);
-  }
-}
+/* =========================================================
+   TOP EDGE
+   ========================================================= */
 
-/* Grain texture */
-.cta__grain {
+.cta::before {
+  content: '';
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.5;
+  inset: 0 0 auto;
+  height: 1px;
+
+  background:
+    linear-gradient(90deg,
+      transparent,
+      rgb(201 151 58 / 0.45) 25%,
+      rgb(201 151 58 / 0.65) 50%,
+      rgb(201 151 58 / 0.45) 75%,
+      transparent);
+
   pointer-events: none;
 }
 
-.cta__inner {
+
+/* =========================================================
+   AMBIENT LIGHT
+   ========================================================= */
+
+.cta__ambient {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(2px);
+  z-index: 0;
+}
+
+.cta__ambient--one {
+  width: 420px;
+  height: 420px;
+
+  top: -240px;
+  right: -120px;
+
+  background:
+    radial-gradient(circle,
+      rgb(201 151 58 / 0.1),
+      transparent 68%);
+}
+
+.cta__ambient--two {
+  width: 360px;
+  height: 360px;
+
+  bottom: -220px;
+  left: -140px;
+
+  background:
+    radial-gradient(circle,
+      rgb(200 70 26 / 0.09),
+      transparent 68%);
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.cta__container {
   position: relative;
   z-index: 1;
-  max-width: 700px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
+  width: min(100%, var(--container));
+  margin-inline: auto;
 }
 
-.cta-badge {
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.cta__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 500px);
+  align-items: center;
+  gap: clamp(3rem, 6vw, 7rem);
+}
+
+
+/* =========================================================
+   LEFT COPY
+   ========================================================= */
+
+.cta__copy {
+  position: relative;
+  max-width: 600px;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.cta__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  gap: 10px;
+
+  margin-bottom: 1.6rem;
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 800;
+
+  line-height: 1;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--spice);
-  background: rgba(200, 70, 26, 0.12);
-  border: 1px solid rgba(200, 70, 26, 0.3);
-  padding: 6px 14px;
-  border-radius: 100px;
 }
 
-.cta-title {
+.cta__eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--spice);
+  box-shadow: 0 0 0 5px rgb(200 70 26 / 0.12);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.cta__title {
+  max-width: 680px;
+  margin: 0;
+
+  color: #f7f2e8;
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 6.5vw, 6rem);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  color: var(--cream);
-  margin: 0.5rem 0 0;
+  font-size: clamp(3.6rem, 6.2vw, 6.3rem);
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: -0.055em;
 }
 
-.cta-title em {
+.cta__title>span {
+  display: block;
+}
+
+.cta__title-highlight {
+  margin-top: 0.12em;
+  padding-left: clamp(1.5rem, 4vw, 4rem);
+  color: var(--gold);
   font-style: italic;
-  color: var(--spice);
 }
 
-.cta-sub {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: rgba(250, 247, 240, 0.6);
-  max-width: 480px;
-  margin: 0.25rem 0 1rem;
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.cta__description {
+  max-width: 490px;
+  margin: 2rem 0 0;
+
+  color: rgb(247 242 232 / 0.66);
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  line-height: 1.75;
 }
 
-.cta-actions {
+
+/* =========================================================
+   BENEFITS
+   ========================================================= */
+
+.cta__benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.2rem;
+  margin-top: 2rem;
+}
+
+.cta__benefit {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+  color: rgb(247 242 232 / 0.76);
+
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cta__benefit-icon {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
   justify-content: center;
+
+  width: 27px;
+  height: 27px;
+  flex: 0 0 auto;
+
+  color: var(--gold);
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid rgb(201 151 58 / 0.22);
+  border-radius: 50%;
 }
 
-/* Button variants */
-.btn {
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.cta__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 1.25rem;
+  margin-top: 2.25rem;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.cta__primary {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 13px;
+  min-height: 54px;
+  padding: 7px 8px 7px 21px;
+
+  border: 0;
+  border-radius: var(--radius-pill);
+
+  color: var(--forest);
+  background: var(--gold);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 800;
+
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__primary:hover {
+    transform: translateY(-2px);
+    background: #d5aa58;
+    box-shadow: 0 12px 30px rgb(201 151 58 / 0.22);
+  }
+
+}
+
+.cta__primary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #f7f2e8;
+  background: var(--forest);
+
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__primary:hover .cta__primary-icon {
+    transform: translate(2px, -2px);
+  }
+
+}
+
+
+/* =========================================================
+   SECONDARY LINK
+   ========================================================= */
+
+.cta__secondary {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+  color: rgb(247 242 232 / 0.78);
+
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+  text-decoration: none;
+
+  transition: color 0.25s ease,
+    gap 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__secondary:hover {
+    gap: 12px;
+    color: var(--white);
+  }
+
+}
+
+
+/* =========================================================
+   TRUST
+   ========================================================= */
+
+.cta__trust {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 1rem 1.4rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(247 242 232 / 0.09);
+}
+
+.cta__trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: rgb(247 242 232 / 0.48);
+  font-family: var(--font-body);
+  font-size: 0.56rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cta__trust-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  flex: 0 0 auto;
+  color: #8faf93;
+  background: rgb(107 143 113 / 0.2);
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   RIGHT VISUAL
+   ========================================================= */
+
+.cta__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 500px;
+
+  min-height: 520px;
+  margin-inline: auto;
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   FOOD CARD
+   ========================================================= */
+
+.cta__food-card {
+  position: relative;
+  width: min(100%, 430px);
+
+  overflow: hidden;
+  border-radius: 28px;
+  background: #f7f2e8;
+  box-shadow:
+    0 35px 70px rgb(0 0 0 / 0.22),
+    0 10px 25px rgb(0 0 0 / 0.12);
+
+  transform: rotate(-2deg);
+
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s ease;
+}
+
+
+/* =========================================================
+   FOOD CARD HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__visual:hover .cta__food-card {
+    transform:
+      rotate(0deg) translateY(-8px);
+
+    box-shadow:
+      0 45px 85px rgb(0 0 0 / 0.27),
+      0 15px 30px rgb(0 0 0 / 0.15);
+  }
+
+}
+
+
+/* =========================================================
+   FOOD IMAGE
+   ========================================================= */
+
+.cta__food-image {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+
+  overflow: hidden;
+  background: #ded5c6;
+}
+
+.cta__food-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  transform: scale(1.03);
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__visual:hover .cta__food-image img {
+    transform: scale(1.08);
+  }
+
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+   ========================================================= */
+
+.cta__food-image-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(to bottom,
+      rgb(0 0 0 / 0.02) 0%,
+      rgb(0 0 0 / 0.06) 40%,
+      rgb(0 0 0 / 0.45) 100%);
+}
+
+
+/* =========================================================
+   COOKIQ TAG
+   ========================================================= */
+
+.cta__food-tag {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 9px 13px;
+
+  color: var(--white);
+  background: rgb(20 39 29 / 0.72);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(12px);
+
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 100px;
-  padding: 14px 28px;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-expo);
-  letter-spacing: 0.01em;
+  font-size: 0.56rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.14);
 }
 
-.btn-spice {
-  background: var(--spice);
-  color: #fff !important;
-  border-color: var(--spice);
-  box-shadow: 0 4px 28px rgba(200, 70, 26, 0.4);
+.cta__food-tag lucide-icon {
+  display: flex;
 }
 
-.btn-spice:hover {
-  background: #b53d17;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(200, 70, 26, 0.5);
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.cta__food-content {
+  position: relative;
+  padding: 30px 30px 25px;
+  background: #f7f2e8;
 }
 
-.btn-outline-light {
+
+/* =========================================================
+   FOOD EYEBROW
+   ========================================================= */
+
+.cta__food-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+  margin-bottom: 18px;
+
+  color: var(--sage);
+  font-family: var(--font-body);
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.18em;
+}
+
+.cta__food-line {
+  width: 42px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--gold);
+}
+
+
+/* =========================================================
+   FOOD MESSAGE
+   ========================================================= */
+
+.cta__food-content h3 {
+  margin: 0;
+  color: var(--forest);
+  font-family: var(--font-display);
+
+  font-size: clamp(2.45rem, 4vw, 3.35rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.cta__food-content h3 em {
+  color: var(--spice);
+  font-style: italic;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   CARD FOOTER
+   ========================================================= */
+
+.cta__food-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 30px;
+  padding-top: 17px;
+  border-top: 1px solid rgb(28 58 43 / 0.12);
+
+  color: #6b6f63;
+  font-family: var(--font-body);
+  font-size: 0.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.17em;
+}
+
+
+/* =========================================================
+   FOOD ARROW
+   ========================================================= */
+
+.cta__food-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 auto;
+  color: var(--forest);
   background: transparent;
-  color: var(--cream) !important;
-  border-color: rgba(250, 247, 240, 0.3);
+  border: 1px solid rgb(28 58 43 / 0.15);
+  border-radius: 50%;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s var(--ease-out-expo);
 }
 
-.btn-outline-light:hover {
-  border-color: var(--cream);
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+
+  .cta__visual:hover .cta__food-arrow {
+    transform: translate(2px, -2px);
+    color: var(--white);
+    background: var(--forest);
+  }
+
 }
+
+
+/* =========================================================
+   DECORATIVE DOTS
+   ========================================================= */
+
+.cta__food-dot {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cta__food-dot--one {
+  width: 11px;
+  height: 11px;
+  top: 72px;
+  right: 22px;
+
+  background: var(--gold);
+  box-shadow: 0 0 0 7px rgb(201 151 58 / 0.12);
+}
+
+.cta__food-dot--two {
+  width: 7px;
+  height: 7px;
+
+  bottom: 78px;
+  left: 24px;
+
+  background: var(--spice);
+  box-shadow: 0 0 0 6px rgb(200 70 26 / 0.1);
+}
+
+
+/* =========================================================
+   DECORATIVE NUMBER
+   ========================================================= */
+
+.cta__food-number {
+  position: absolute;
+  right: 3px;
+  bottom: 28px;
+  color: rgb(247 242 232 / 0.22);
+
+  font-family: var(--font-body);
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   BOTTOM STATEMENT
+   ========================================================= */
+
+.cta__bottom {
+  display: grid;
+  grid-template-columns: minmax(60px, 1fr) auto minmax(60px, 1fr);
+
+  align-items: center;
+  gap: 2rem;
+  margin-top: clamp(4rem, 7vw, 7rem);
+}
+
+.cta__bottom-line {
+  height: 1px;
+  background: rgb(247 242 232 / 0.1);
+}
+
+.cta__bottom-statement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 0.45rem;
+  color: rgb(247 242 232 / 0.48);
+
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cta__bottom-statement strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   TABLET — 900px
+   ========================================================= */
 
 @media (max-width: 900px) {
-  .cta {
-    padding: 6rem 1.5rem;
+
+  .cta__content {
+    grid-template-columns: 1fr;
+    gap: 4rem;
   }
+
+  .cta__copy {
+    max-width: 680px;
+  }
+
+  .cta__title {
+    font-size: clamp(3.5rem, 6vw, 5rem);
+  }
+
+  .cta__visual {
+    width: 100%;
+    max-width: 500px;
+
+    min-height: 490px;
+    margin-inline: auto;
+  }
+
+  .cta__food-card {
+    width: min(100%, 410px);
+  }
+
+  .cta__food-image {
+    height: 285px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE — 600px
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .cta {
+    padding: var(--section-y) var(--section-x);
+  }
+
+  .cta__content {
+    gap: 3.5rem;
+  }
+
+  .cta__eyebrow {
+    margin-bottom: 1.35rem;
+    font-size: 0.56rem;
+  }
+
+  .cta__title {
+    font-size: clamp(3.1rem, 12vw, 4.8rem);
+    line-height: 0.88;
+  }
+
+  .cta__title-highlight {
+    padding-left: 1.2rem;
+  }
+
+  .cta__description {
+    margin-top: 1.5rem;
+    font-size: 0.94rem;
+    line-height: 1.7;
+  }
+
+
+  /* -------------------------------------------------------
+     BENEFITS
+     ------------------------------------------------------- */
+
+  .cta__benefits {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+  }
+
+
+  /* -------------------------------------------------------
+     ACTIONS
+     ------------------------------------------------------- */
+
+  .cta__actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.15rem;
+    margin-top: 2rem;
+  }
+
+
+  /* -------------------------------------------------------
+     TRUST
+     ------------------------------------------------------- */
+
+  .cta__trust {
+    gap: 0.8rem 1rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+  }
+
+
+  /* -------------------------------------------------------
+     VISUAL
+     ------------------------------------------------------- */
+
+  .cta__visual {
+    width: 100%;
+    max-width: 440px;
+    min-height: 470px;
+    margin-inline: auto;
+  }
+
+  .cta__food-card {
+    width: min(100%, 390px);
+    border-radius: 24px;
+  }
+
+  .cta__food-image {
+    height: 260px;
+  }
+
+  .cta__food-content {
+    padding: 25px 25px 22px;
+  }
+
+  .cta__food-content h3 {
+    font-size: clamp(2.25rem, 9vw, 3rem);
+  }
+
+  .cta__food-bottom {
+    margin-top: 25px;
+  }
+
+
+  /* -------------------------------------------------------
+     BOTTOM
+     ------------------------------------------------------- */
+
+  .cta__bottom {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    margin-top: 4rem;
+  }
+
+  .cta__bottom-line {
+    width: 100%;
+  }
+
+  .cta__bottom-statement {
+    white-space: normal;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE — 420px
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .cta__content {
+    gap: 3rem;
+  }
+
+  .cta__eyebrow {
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+  }
+
+  .cta__title {
+    font-size: clamp(2.9rem, 14vw, 4rem);
+  }
+
+  .cta__title-highlight {
+    padding-left: 0.7rem;
+  }
+
+  .cta__description {
+    font-size: 0.9rem;
+  }
+
+  .cta__trust-item {
+    font-size: 0.5rem;
+  }
+
+
+  /* -------------------------------------------------------
+     VISUAL
+     ------------------------------------------------------- */
+
+  .cta__visual {
+    min-height: 420px;
+  }
+
+  .cta__food-card {
+    width: calc(100% - 20px);
+    border-radius: 21px;
+    transform: rotate(-1.5deg);
+  }
+
+  .cta__food-image {
+    height: 225px;
+  }
+
+  .cta__food-tag {
+    top: 15px;
+    left: 15px;
+    padding: 8px 11px;
+    font-size: 0.5rem;
+  }
+
+  .cta__food-content {
+    padding: 22px 21px 20px;
+  }
+
+  .cta__food-eyebrow {
+    margin-bottom: 14px;
+    font-size: 0.5rem;
+  }
+
+  .cta__food-content h3 {
+    font-size: 2.25rem;
+  }
+
+  .cta__food-bottom {
+    margin-top: 22px;
+    padding-top: 14px;
+  }
+
+  .cta__food-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .cta__food-dot--one {
+    right: 4px;
+  }
+
+  .cta__food-dot--two {
+    left: 5px;
+  }
+
+  .cta__food-number {
+    display: none;
+  }
+
+  .cta__bottom-statement {
+    font-size: 1.15rem;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES — 340px
+   ========================================================= */
+
+@media (max-width: 340px) {
+
+  .cta__content {
+    gap: 2.75rem;
+  }
+
+  .cta__title {
+    font-size: 2.75rem;
+  }
+
+  .cta__description {
+    font-size: 0.86rem;
+  }
+
+  .cta__visual {
+    min-height: 390px;
+  }
+
+  .cta__food-card {
+    width: calc(100% - 12px);
+    border-radius: 19px;
+  }
+
+  .cta__food-image {
+    height: 205px;
+  }
+
+  .cta__food-content {
+    padding: 20px 18px 18px;
+  }
+
+  .cta__food-content h3 {
+    font-size: 2rem;
+  }
+
+  .cta__food-bottom {
+    margin-top: 18px;
+    padding-top: 12px;
+  }
+
+  .cta__food-arrow {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cta__bottom-statement {
+    font-size: 1.05rem;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cta__primary,
+  .cta__primary-icon,
+  .cta__secondary,
+  .cta__food-card,
+  .cta__food-image img,
+  .cta__food-arrow {
+    transition: none;
+  }
+
+  .cta__primary:hover {
+    transform: none;
+  }
+
+  .cta__primary:hover .cta__primary-icon {
+    transform: none;
+  }
+
+  .cta__secondary:hover {
+    gap: 8px;
+  }
+
+  .cta__visual:hover .cta__food-card {
+    transform: rotate(-2deg);
+  }
+
+  .cta__visual:hover .cta__food-image img {
+    transform: scale(1.03);
+  }
+
+  .cta__visual:hover .cta__food-arrow {
+    transform: none;
+  }
+
 }

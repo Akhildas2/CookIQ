@@ -1,26 +1,157 @@
-<section class="stats">
-  <div class="stats__inner">
+<section class="stats" aria-label="CookIQ at a glance">
+  <div class="stats__ambient" aria-hidden="true">
+    <span class="stats__ambient-orb stats__ambient-orb--one"></span>
+    <span class="stats__ambient-orb stats__ambient-orb--two"></span>
+  </div>
 
-    <div class="stats__grid">
+  <div class="stats__container">
 
-      <div class="stat-item" *ngFor="
-          let stat of stats;
-          let last = last;
-          trackBy: trackByLabel ">
+    <!-- =====================================================
+         SECTION HEADER
+         ===================================================== -->
 
-        <div #statValue class="stat-val">
-          {{ stat.display }}
-        </div>
+    <header class="stats__header" appReveal="up">
+      <div class="stats__identity">
+        <span class="stats__identity-mark" aria-hidden="true">
+          <span></span>
+        </span>
 
-        <div class="stat-label">
-          {{ stat.label }}
-        </div>
+        <span class="stats__identity-label">
+          CookIQ intelligence
+        </span>
+      </div>
 
-        <div *ngIf="!last" class="stat-divider"></div>
+      <div class="stats__header-rule" aria-hidden="true"></div>
 
+      <span class="stats__header-index">
+        LIVE / 04 SIGNALS
+      </span>
+    </header>
+
+
+    <!-- =====================================================
+         EDITORIAL INTRO
+         ===================================================== -->
+
+    <div class="stats__intro" appReveal="up" [revealDelay]="0.1" aria-hidden="true">
+
+      <div class="stats__intro-line">
+        <span></span>
+      </div>
+
+      <div class="stats__intro-copy">
+        <span class="stats__eyebrow">
+          Built for better cooking
+        </span>
+
+        <p>
+          Less waste. Better decisions.
+          <em>More satisfying dinners.</em>
+        </p>
+      </div>
+
+      <div class="stats__intro-line stats__intro-line--right">
+        <span></span>
       </div>
 
     </div>
+
+
+    <!-- =====================================================
+         STATS
+         ===================================================== -->
+
+    <ul class="stats__grid">
+
+      @for (stat of stats; track stat.label; let i = $index) {
+
+      <li class="stat" appReveal="up" [revealDelay]="0.15 + i * 0.1" [attr.aria-label]="spoken(stat)">
+
+        <div class="stat__topline" aria-hidden="true">
+          <span class="stat__index">
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+
+          <span class="stat__topline-line"></span>
+
+          <span class="stat__signal">
+            <span></span>
+          </span>
+        </div>
+
+
+        <div class="stat__number">
+
+          <span class="stat__value" aria-hidden="true">
+
+            @if (stat.text) {
+
+            <span class="stat__text">{{ stat.text }}</span>
+
+            } @else {
+
+            <span [appCountUp]="stat.value!" [prefix]="stat.prefix ?? ''" [suffix]="stat.suffix ?? ''"
+              [decimals]="stat.decimals ?? 0"></span>
+
+            }
+
+          </span>
+
+        </div>
+
+
+        <div class="stat__detail" aria-hidden="true">
+
+          <span class="stat__accent">
+            <span></span>
+          </span>
+
+          <span class="stat__label">
+            {{ stat.label }}
+          </span>
+
+        </div>
+
+      </li>
+
+      }
+
+    </ul>
+
+
+    <!-- =====================================================
+         FOOTER SIGNAL
+         ===================================================== -->
+
+    <footer class="stats__footer" appReveal="up" [revealDelay]="0.2" aria-hidden="true">
+
+      <div class="stats__footer-line"></div>
+
+      <div class="stats__footer-content">
+
+        <span class="stats__footer-separator"></span>
+
+        <span>
+          Intelligence active
+        </span>
+
+        <span class="stats__footer-separator"></span>
+
+        <span>Ingredient-first</span>
+
+        <span class="stats__footer-separator"></span>
+
+        <span>Personalized</span>
+
+        <span class="stats__footer-separator"></span>
+
+        <span>Made for real kitchens</span>
+
+      </div>
+
+      <div class="stats__footer-line"></div>
+
+    </footer>
 
   </div>
 </section>

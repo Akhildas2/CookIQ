@@ -1,36 +1,127 @@
 <section class="features" id="features">
-  <div class="features__inner">
 
-    <div class="section-header">
-      <!-- SECTION HEADER -->
-      <h2 class="section-title" data-reveal>
-        Your smart<br><em>kitchen</em> partner.
-      </h2>
+  <div class="features__container">
 
-      <p class="section-sub" data-reveal="right">
-        Everything you need to stop wasting food and start eating well — starting free.
-      </p>
-    </div>
+    <!-- =====================================================
+         SECTION HEADER
+         ===================================================== -->
 
-    <!-- FEATURES GRID -->
-    <div class="features__grid">
-      <div *ngFor="let feat of features; trackBy: trackByFeature" class="feat-card"
-        [class]="'feat-card feat-card--' + feat.theme" data-reveal>
-        <!-- Icon -->
-        <div class="feat-icon">
-          <lucide-icon [name]="feat.icon" [size]="22" class="text-white"></lucide-icon>
+    <app-section-header variant="default" eyebrow="What CookIQ does" title="Your smart" highlight="kitchen partner."
+      description="Everything you need to stop wasting food and start eating well — starting free."
+      meta="Built around you" index="06 capabilities" />
+
+    <!-- =====================================================
+         FEATURE GRID
+         ===================================================== -->
+
+    <ul class="features__grid" aria-live="polite">
+
+      @for (feat of features; track feat.title; let i = $index) {
+
+      <li class="feat-card" [class.feat-card--forest]="feat.theme === 'forest'"
+        [class.feat-card--spice]="feat.theme === 'spice'" [class.feat-card--gold]="feat.theme === 'gold'"
+        [class.feat-card--sage]="feat.theme === 'sage'" appReveal="up" [revealDelay]="0.1 + i * 0.08" appTilt>
+
+        <!-- Ambient layer -->
+
+        <div class="feat-card__ambient" aria-hidden="true"></div>
+
+
+        <!-- Top system row -->
+
+        <div class="feat-card__top">
+
+          <span class="feat-num">
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+
+          <span class="feat-status">
+            <span></span>
+            COOKIQ / {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+
+          <span class="feat-arrow" aria-hidden="true">
+            <lucide-icon name="arrow-up-right" [size]="18" />
+          </span>
+
         </div>
 
-        <!-- TAG -->
-        <span class="feat-tag">{{ feat.tag }}</span>
-         <!-- TITLE -->
-        <h3 class="feat-title">{{ feat.title }}</h3>
-         <!-- DESCRIPTION -->
-        <p class="feat-desc">{{ feat.desc }}</p>
-        <!-- BIG NUMBER -->
-        <span class="feat-num">{{ feat.num }}</span>
+
+        <!-- Icon -->
+
+        <div class="feat-icon" aria-hidden="true">
+          <lucide-icon [name]="feat.icon" [size]="21" />
+        </div>
+
+
+        <!-- Tag -->
+
+        <span class="pill feat-tag" [class.pill--spice]="feat.theme === 'spice'"
+          [class.pill--gold]="feat.theme === 'gold'" [class.pill--sage]="feat.theme === 'sage'">
+          {{ feat.tag }}
+        </span>
+
+
+        <!-- Main copy -->
+
+        <div class="feat-card__copy">
+
+          <h3 class="feat-title">
+            {{ feat.title }}
+          </h3>
+
+          <p class="feat-desc">
+            {{ feat.desc }}
+          </p>
+
+        </div>
+
+
+        <!-- Bottom line -->
+
+        <div class="feat-card__footer">
+
+          <span class="feat-card__footer-line"></span>
+
+          <span class="feat-card__footer-label">
+            Explore capability
+          </span>
+
+        </div>
+
+      </li>
+
+      }
+
+    </ul>
+
+
+    <!-- =====================================================
+         BOTTOM STATEMENT
+         ===================================================== -->
+
+    <div class="features__bottom" appReveal="up" [revealDelay]="0.15">
+
+       <span class="features__bottom-line features__bottom-line--left"></span>
+
+      <div class="features__bottom-copy">
+
+        <span>
+          Ingredient-first intelligence
+        </span>
+
+        <strong>
+          Less waste.
+          Better decisions.
+          <em>Better dinners.</em>
+        </strong>
+
       </div>
+
+       <span class="features__bottom-line features__bottom-line--right"></span>
+
     </div>
 
   </div>
+
 </section>

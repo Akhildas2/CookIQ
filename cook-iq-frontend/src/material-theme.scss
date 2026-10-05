@@ -1,7 +1,5 @@
 @use '@angular/material' as mat;
 
-/* Material Design 3 Theme */
-
 html {
   height: 100%;
 
@@ -18,51 +16,4 @@ html {
       density: 0,
     )
   );
-}
-
-/* Design Tokens (shared with Tailwind) */
-:root {
-  /* Brand Colors */
-  --primary: #2e7d32;
-  --primary-light: #4caf50;
-  --accent: #f57c00;
-  --accent-soft: #ffb74d;
-
-  /* Surfaces */
-  --surface: #fffdf7;
-  --surface-card: #ffffff;
-
-  /* Text */
-  --text-primary: #1c1c1c;
-  --text-secondary: #6b6b6b;
-
-  /* UI */
-  --border: #e8e8e8;
-  --radius: 14px;
-
-  --cream: #faf7f0;
-  --forest: #1c3a2b;
-  --spice: #c8461a;
-  --gold: #c9973a;
-  --sage: #6b8f71;
-  --charcoal: #1a1a1a;
-  --mist: #ede8de;
-  --white: #ffffff;
-
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Base */
-
-body {
-  margin: 0;
-  height: 100%;
-
-  font-family: 'Inter', sans-serif;
-
-  background: var(--color-surface);
-  color: var(--color-text);
 }

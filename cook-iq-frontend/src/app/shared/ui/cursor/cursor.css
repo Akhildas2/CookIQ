@@ -1,0 +1,44 @@
+:host {
+    display: none;
+}
+
+:host(.active) {
+    display: contents;
+}
+
+.cursor-dot,
+.cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+    z-index: 9999;
+    width: 10px;
+    height: 10px;
+    background: var(--spice);
+    mix-blend-mode: multiply;
+    transition: width 0.3s var(--ease-back), height 0.3s var(--ease-back), background 0.3s;
+}
+
+.cursor-ring {
+    z-index: 9998;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgb(200 70 26 / 0.5);
+    transition: width 0.4s var(--ease-out-expo), height 0.4s var(--ease-out-expo), opacity 0.3s;
+}
+
+:host(.hovering) .cursor-dot {
+    width: 50px;
+    height: 50px;
+    background: rgb(200 70 26 / 0.15);
+}
+
+:host(.hovering) .cursor-ring {
+    opacity: 0;
+}
