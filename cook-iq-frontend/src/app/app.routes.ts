@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
-import { AuthLayout } from './core/layout/auth-layout/auth-layout';
 import { AppLayout } from './core/layout/app-layout/app-layout';
 
 export const routes: Routes = [
-    // Home
+    // =========================================================
+    // HOME
+    // =========================================================
+
     {
         path: '',
         component: AppLayout,
@@ -11,40 +13,36 @@ export const routes: Routes = [
             {
                 path: '',
                 loadChildren: () =>
-                    import('./features/home/home.routes').then(m => m.homeRoutes)
+                    import('./features/home/home.routes').then(m => m.HOME_ROUTES)
             },
         ],
     },
 
-
-    // Auth layout
-    /* {
-        path: '',
-        component: AuthLayout,
-        children: [
-            {
-                path: '',
-                loadChildren: () =>
-                    import('./features/auth/auth.routes').then(m => m.authRoutes),
-            },
-        ],
-    },
- */
-    // App layout 
-    /* {
+    // =========================================================
+    // APP
+    // =========================================================
+    {
         path: 'app',
         component: AppLayout,
         children: [
+            // Dashboard
             {
                 path: 'dashboard',
                 loadChildren: () =>
-                    import('./features/dashboard/dashboard.routes').then(
-                        m => m.DASHBOARD_ROUTES
-                    ),
+                    import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
+            },
+            // My Recipes
+            {
+                path: 'my-recipes',
+                loadChildren: () =>
+                    import('./features/my-recipes/my-recipes.routes').then((m) => m.MY_RECIPES_ROUTES),
             },
         ],
+
     },
- */
-    // fallback
+
+    // =========================================================
+    // FALLBACK
+    // =========================================================
     { path: '**', redirectTo: 'login' }
 ];

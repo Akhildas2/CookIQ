@@ -1,0 +1,729 @@
+/* =========================================================
+   HOST
+   ========================================================= */
+
+:host {
+    display: block;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.quick-actions {
+    position: relative;
+
+    margin-top: clamp(4.5rem, 8vw, 7rem);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.quick-actions__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.quick-actions__heading {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   SYSTEM LINE
+   ========================================================= */
+
+.quick-actions__system-line {
+    display: flex;
+    align-items: center;
+
+    gap: 0.55rem;
+
+    margin-bottom: 1rem;
+
+    color: var(--text-subtle);
+
+    font-family: var(--font-body);
+    font-size: 0.46rem;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+}
+
+
+.quick-actions__status-dot {
+    width: 5px;
+    height: 5px;
+
+    flex: 0 0 auto;
+
+    border-radius: 50%;
+
+    background: var(--spice);
+
+    box-shadow:
+        0 0 0 4px color-mix(
+            in srgb,
+            var(--spice) 9%,
+            transparent
+        ),
+        0 0 10px color-mix(
+            in srgb,
+            var(--spice) 35%,
+            transparent
+        );
+}
+
+
+.quick-actions__system-divider {
+    width: 18px;
+    height: 1px;
+
+    background: color-mix(
+        in srgb,
+        var(--forest) 16%,
+        transparent
+    );
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.quick-actions__eyebrow {
+    display: block;
+
+    margin-bottom: 0.65rem;
+
+    color: var(--spice);
+
+    font-family: var(--font-body);
+    font-size: 0.58rem;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: 0.17em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.quick-actions__header h2 {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: var(--forest);
+
+    font-family: var(--font-display);
+    font-size: clamp(
+        2.7rem,
+        5vw,
+        4.5rem
+    );
+
+    font-weight: 500;
+
+    line-height: 0.9;
+
+    letter-spacing: -0.045em;
+}
+
+
+.quick-actions__header h2 span {
+    color: var(--spice);
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.quick-actions__intro {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 0.8rem;
+
+    width: min(100%, 300px);
+}
+
+
+.quick-actions__intro-index {
+    color: var(--forest);
+
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+.quick-actions__intro p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.quick-actions__grid {
+    display: grid;
+
+    grid-template-columns: repeat(
+        4,
+        minmax(0, 1fr)
+    );
+
+    gap: 0.85rem;
+}
+
+
+/* =========================================================
+   ACTION
+   ========================================================= */
+
+.quick-action {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    min-height: 270px;
+
+    padding: clamp(
+        1.15rem,
+        2vw,
+        1.5rem
+    );
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    border: 1px solid color-mix(
+        in srgb,
+        var(--forest) 11%,
+        transparent
+    );
+
+    border-radius: var(--radius-card);
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--surface),
+            color-mix(
+                in srgb,
+                var(--cream) 65%,
+                var(--surface)
+            )
+        );
+
+    color: inherit;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 1px 0 rgb(255 255 255 / 0.75) inset;
+
+    transition:
+        transform 0.55s var(--ease-out-expo),
+        border-color 0.4s ease,
+        box-shadow 0.55s var(--ease-out-expo);
+}
+
+
+/* =========================================================
+   AMBIENT
+   ========================================================= */
+
+.quick-action__ambient {
+    position: absolute;
+    z-index: -1;
+
+    width: 180px;
+    height: 180px;
+
+    top: -100px;
+    right: -70px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            color-mix(
+                in srgb,
+                var(--action-color) 12%,
+                transparent
+            ),
+            transparent 68%
+        );
+
+    filter: blur(8px);
+
+    transition:
+        transform 0.7s var(--ease-out-expo),
+        opacity 0.5s ease;
+}
+
+
+/* =========================================================
+   TOP
+   ========================================================= */
+
+.quick-action__top {
+    display: grid;
+
+    grid-template-columns: auto 1fr auto;
+
+    align-items: center;
+
+    gap: 0.6rem;
+
+    padding-bottom: 0.9rem;
+
+    border-bottom: 1px solid color-mix(
+        in srgb,
+        var(--forest) 8%,
+        transparent
+    );
+}
+
+
+.quick-action__index {
+    color: var(--forest);
+
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+.quick-action__type {
+    color: var(--text-subtle);
+
+    font-family: var(--font-body);
+    font-size: 0.43rem;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.quick-action__arrow {
+    display: grid;
+    place-items: center;
+
+    width: 29px;
+    height: 29px;
+
+    border: 1px solid color-mix(
+        in srgb,
+        var(--forest) 13%,
+        transparent
+    );
+
+    border-radius: 50%;
+
+    color: var(--forest);
+
+    transition:
+        transform 0.45s var(--ease-out-expo),
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.quick-action__icon-wrap {
+    margin-top: 1.35rem;
+}
+
+
+.quick-action__icon {
+    display: grid;
+    place-items: center;
+
+    width: 3.1rem;
+    height: 3.1rem;
+
+    border: 1px solid color-mix(
+        in srgb,
+        var(--action-color) 16%,
+        transparent
+    );
+
+    border-radius: 14px;
+
+    background: color-mix(
+        in srgb,
+        var(--action-color) 8%,
+        var(--surface)
+    );
+
+    color: var(--action-color);
+
+    box-shadow:
+        0 8px 20px color-mix(
+            in srgb,
+            var(--action-color) 8%,
+            transparent
+        );
+
+    transition:
+        transform 0.5s var(--ease-out-expo),
+        background 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.4s ease;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.quick-action__content {
+    margin-top: 0.5rem;
+}
+
+
+.quick-action__content h3 {
+    margin: 0 0 0.5rem;
+
+    color: var(--forest);
+
+    font-family: var(--font-display);
+    font-size: clamp(
+        1.5rem,
+        2vw,
+        1.85rem
+    );
+
+    font-weight: 500;
+
+    line-height: 0.95;
+
+    letter-spacing: -0.025em;
+}
+
+
+.quick-action__content p {
+    max-width: 250px;
+
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-family: var(--font-body);
+    font-size: 0.76rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.quick-action__footer {
+    display: flex;
+    align-items: center;
+
+    gap: 0.55rem;
+
+    margin-top: 1.25rem;
+
+    color: var(--text-subtle);
+
+    font-family: var(--font-body);
+    font-size: 0.42rem;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+}
+
+
+.quick-action__footer-line {
+    width: 22px;
+    height: 1px;
+
+    background: color-mix(
+        in srgb,
+        var(--action-color) 55%,
+        transparent
+    );
+}
+
+
+/* =========================================================
+   ACCENT SYSTEM
+   ========================================================= */
+
+.quick-action--spice {
+    --action-color: var(--spice);
+}
+
+
+.quick-action--forest {
+    --action-color: var(--forest);
+}
+
+
+.quick-action--gold {
+    --action-color: var(--gold);
+}
+
+
+.quick-action--sage {
+    --action-color: var(--sage);
+}
+
+
+/* =========================================================
+   DESKTOP HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .quick-action:hover {
+        transform: translateY(-4px);
+
+        border-color: color-mix(
+            in srgb,
+            var(--action-color) 24%,
+            transparent
+        );
+
+        box-shadow:
+            0 1px 0 rgb(255 255 255 / 0.8) inset,
+            0 20px 45px rgb(28 58 43 / 8%);
+    }
+
+
+    .quick-action:hover .quick-action__ambient {
+        transform: scale(1.25);
+
+        opacity: 1.2;
+    }
+
+
+    .quick-action:hover .quick-action__icon {
+        transform: rotate(-4deg) scale(1.06);
+
+        background: var(--action-color);
+
+        color: var(--white);
+
+        box-shadow:
+            0 12px 25px color-mix(
+                in srgb,
+                var(--action-color) 17%,
+                transparent
+            );
+    }
+
+
+    .quick-action:hover .quick-action__arrow {
+        transform: translate(
+            2px,
+            -2px
+        );
+
+        border-color: var(--forest);
+
+        background: var(--forest);
+
+        color: var(--white);
+    }
+
+
+    .quick-action:hover .quick-action__footer-line {
+        width: 30px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .quick-actions__grid {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    }
+
+
+    .quick-action {
+        min-height: 250px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .quick-actions__header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 1.25rem;
+    }
+
+
+    .quick-actions__intro {
+        width: min(100%, 500px);
+    }
+
+
+    .quick-actions__grid {
+        gap: 0.75rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    .quick-actions {
+        margin-top: 4rem;
+    }
+
+
+    .quick-actions__system-line {
+        margin-bottom: 0.85rem;
+    }
+
+
+    .quick-actions__header h2 {
+        font-size: clamp(
+            2.5rem,
+            12vw,
+            3.5rem
+        );
+    }
+
+
+    .quick-actions__grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .quick-action {
+        min-height: 225px;
+    }
+
+
+    .quick-action__content h3 {
+        font-size: 1.7rem;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .quick-actions__header h2 {
+        font-size: 2.35rem;
+    }
+
+
+    .quick-action {
+        min-height: 215px;
+
+        padding: 1rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .quick-action,
+    .quick-action__ambient,
+    .quick-action__icon,
+    .quick-action__arrow,
+    .quick-action__footer-line {
+        transition: none;
+    }
+
+
+    .quick-action:hover {
+        transform: none;
+    }
+
+
+    .quick-action:hover .quick-action__ambient,
+    .quick-action:hover .quick-action__icon,
+    .quick-action:hover .quick-action__arrow {
+        transform: none;
+    }
+}

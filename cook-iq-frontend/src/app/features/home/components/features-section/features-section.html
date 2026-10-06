@@ -47,20 +47,21 @@
         </div>
 
 
-        <!-- Icon -->
+        <div class="feat-card__meta">
 
-        <div class="feat-icon" aria-hidden="true">
-          <lucide-icon [name]="feat.icon" [size]="21" />
+          <!-- Icon -->
+          <div class="feat-icon" aria-hidden="true">
+            <lucide-icon [name]="feat.icon" [size]="21" />
+          </div>
+
+
+          <!-- Tag -->
+          <span class="pill feat-tag" [class.pill--spice]="feat.theme === 'spice'"
+            [class.pill--gold]="feat.theme === 'gold'" [class.pill--sage]="feat.theme === 'sage'">
+            {{ feat.tag }}
+          </span>
+
         </div>
-
-
-        <!-- Tag -->
-
-        <span class="pill feat-tag" [class.pill--spice]="feat.theme === 'spice'"
-          [class.pill--gold]="feat.theme === 'gold'" [class.pill--sage]="feat.theme === 'sage'">
-          {{ feat.tag }}
-        </span>
-
 
         <!-- Main copy -->
 
@@ -102,7 +103,7 @@
 
     <div class="features__bottom" appReveal="up" [revealDelay]="0.15">
 
-       <span class="features__bottom-line features__bottom-line--left"></span>
+      <span class="features__bottom-line features__bottom-line--left"></span>
 
       <div class="features__bottom-copy">
 
@@ -118,7 +119,7 @@
 
       </div>
 
-       <span class="features__bottom-line features__bottom-line--right"></span>
+      <span class="features__bottom-line features__bottom-line--right"></span>
 
     </div>
 

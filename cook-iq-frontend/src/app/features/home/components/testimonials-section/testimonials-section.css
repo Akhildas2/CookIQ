@@ -68,7 +68,6 @@
 
   gap: 2rem;
   margin: 0;
-  padding: clamp(1.35rem, 2vw, 1.75rem) 0 clamp(2rem, 3vw, 2.5rem);
 }
 
 
@@ -167,7 +166,7 @@
   width: 100%;
 
   margin: 0;
-  padding: 0;
+  padding-top: 1rem;
   list-style: none;
 }
 
@@ -578,7 +577,7 @@
   align-items: center;
 
   gap: 1.5rem;
-  margin-top: clamp(2.75rem, 4vw, 3.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
 }
 
 

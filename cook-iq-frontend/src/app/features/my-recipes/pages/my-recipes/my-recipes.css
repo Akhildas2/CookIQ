@@ -1,0 +1,13 @@
+:host {
+    display: block;
+}
+
+.my-recipes {
+    min-height: 100vh;
+    background: var(--cream);
+}
+
+.my-recipes__section {
+    position: relative;
+    overflow: hidden;
+}

@@ -1,0 +1,98 @@
+:host {
+    display: block;
+}
+
+.my-recipes-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--mist);
+}
+
+.my-recipes-toolbar__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    max-width: 560px;
+}
+
+.my-recipes-toolbar__search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-subtle);
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    pointer-events: none;
+}
+
+.my-recipes-toolbar__search input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 1px solid var(--mist);
+    border-radius: var(--radius-pill);
+    outline: none;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    transition:
+        border-color 200ms ease,
+        box-shadow 200ms ease;
+}
+
+.my-recipes-toolbar__search input::placeholder {
+    color: var(--text-subtle);
+}
+
+.my-recipes-toolbar__search input:focus {
+    border-color: color-mix(in srgb,
+            var(--forest) 35%,
+            var(--mist));
+
+    box-shadow:
+        0 0 0 3px color-mix(in srgb,
+            var(--forest) 8%,
+            transparent);
+}
+
+.my-recipes-toolbar__filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem 0.75rem 1.15rem;
+    border: 1px solid var(--mist);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--forest);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.my-recipes-toolbar__filter:hover {
+    border-color: color-mix(in srgb,
+            var(--forest) 25%,
+            var(--mist));
+}
+
+@media (max-width: 600px) {
+    .my-recipes-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .my-recipes-toolbar__search {
+        max-width: none;
+    }
+
+    .my-recipes-toolbar__filter {
+        width: 100%;
+    }
+}

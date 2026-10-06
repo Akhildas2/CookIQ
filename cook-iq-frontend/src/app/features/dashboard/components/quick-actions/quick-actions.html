@@ -1,0 +1,128 @@
+<section class="quick-actions" aria-labelledby="quick-actions-title">
+
+    <!-- =====================================================
+         SECTION HEADER
+         ===================================================== -->
+
+    <div class="quick-actions__header">
+
+        <div class="quick-actions__heading">
+
+            <div class="quick-actions__system-line">
+                <span class="quick-actions__status-dot" aria-hidden="true"></span>
+
+                <span>Kitchen / 02</span>
+
+                <span class="quick-actions__system-divider" aria-hidden="true"></span>
+
+                <span>Choose your path</span>
+            </div>
+
+            <span class="quick-actions__eyebrow">
+                Your cooking shortcuts
+            </span>
+
+            <h2 id="quick-actions-title">
+                Start with what
+                <span>you have.</span>
+            </h2>
+
+        </div>
+
+        <div class="quick-actions__intro">
+
+            <span class="quick-actions__intro-index">
+                04
+            </span>
+
+            <p>
+                Pick a starting point and let CookIQ
+                take care of the rest.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTION GRID
+         ===================================================== -->
+
+    <div class="quick-actions__grid">
+
+        @for (
+        action of actions;
+        track action.title;
+        let i = $index
+        ) {
+
+        <a class="quick-action" [class.quick-action--spice]="action.accent === 'spice'"
+            [class.quick-action--forest]="action.accent === 'forest'"
+            [class.quick-action--gold]="action.accent === 'gold'" [class.quick-action--sage]="action.accent === 'sage'"
+            [routerLink]="action.route">
+
+            <!-- Ambient decoration -->
+            <span class="quick-action__ambient" aria-hidden="true"></span>
+
+            <!-- Top system row -->
+            <div class="quick-action__top">
+
+                <span class="quick-action__index">
+                    {{ (i + 1).toString().padStart(2, '0') }}
+                </span>
+
+                <span class="quick-action__type">
+                    Kitchen action
+                </span>
+
+                <span class="quick-action__arrow" aria-hidden="true">
+                    <lucide-icon name="arrow-up-right" [size]="17" [strokeWidth]="1.8" />
+                </span>
+
+            </div>
+
+
+            <!-- Icon -->
+            <div class="quick-action__icon-wrap">
+
+                <div class="quick-action__icon">
+                    <lucide-icon [name]="action.icon" [size]="22" [strokeWidth]="1.7" aria-hidden="true" />
+                </div>
+
+            </div>
+
+
+            <!-- Content -->
+            <div class="quick-action__content">
+
+                <h3>
+                    {{ action.title }}
+                </h3>
+
+                <p>
+                    {{ action.description }}
+                </p>
+
+            </div>
+
+
+            <!-- Bottom system line -->
+            <div class="quick-action__footer">
+
+                <span class="quick-action__footer-line" aria-hidden="true">
+                </span>
+
+                <span>
+                    Explore
+                </span>
+
+            </div>
+
+        </a>
+
+        }
+
+    </div>
+
+</section>

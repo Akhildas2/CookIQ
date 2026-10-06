@@ -250,6 +250,22 @@
     opacity 0.3s ease;
 }
 
+/* =========================================================
+   ICON + TAG
+   ========================================================= */
+
+.feat-card__meta {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+
+  margin-bottom: 1rem;
+}
+
 
 /* =========================================================
    ICON
@@ -266,7 +282,6 @@
   width: 44px;
   height: 44px;
 
-  margin-bottom: 1rem;
   border-radius: 13px;
   background: var(--theme);
   color: var(--white);
@@ -290,9 +305,7 @@
   position: relative;
   z-index: 2;
 
-  align-self: flex-start;
   --pill-c: var(--theme);
-  margin-bottom: 0.8rem;
 }
 
 .feat-card--gold .feat-tag {
@@ -541,7 +554,6 @@
   .feat-icon {
     width: 42px;
     height: 42px;
-    margin-bottom: 0.9rem;
   }
 
   .feat-title {

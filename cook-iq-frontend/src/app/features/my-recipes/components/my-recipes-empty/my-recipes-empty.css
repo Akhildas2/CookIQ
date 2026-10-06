@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.my-recipes-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 680px;
+  margin: clamp(4rem, 9vw, 7rem) auto 0;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+  text-align: center;
+}
+
+.my-recipes-empty__mark {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid
+    color-mix(in srgb, var(--gold) 40%, var(--mist));
+  border-radius: 50%;
+  background:
+    color-mix(in srgb, var(--gold) 7%, var(--surface));
+  color: var(--gold);
+  font-size: 1.5rem;
+}
+
+.my-recipes-empty__eyebrow {
+  color: var(--spice);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.my-recipes-empty h2 {
+  max-width: 620px;
+  margin: 0.75rem 0 0;
+  color: var(--forest);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.my-recipes-empty h2 span {
+  color: var(--spice);
+  font-style: italic;
+}
+
+.my-recipes-empty p {
+  max-width: 500px;
+  margin: 1.25rem 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.my-recipes-empty .btn {
+  margin-top: 1.75rem;
+}

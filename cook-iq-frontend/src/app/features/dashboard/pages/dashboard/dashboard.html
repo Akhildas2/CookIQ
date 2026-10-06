@@ -1,0 +1,20 @@
+<main class="dashboard">
+
+    <section class="dashboard__hero section" aria-labelledby="dashboard-title">
+
+        <div class="container">
+
+            <app-dashboard-header />
+
+            @if (recipeOfTheDay$ | async; as meal) {
+
+            <app-recipe-of-the-day [meal]="meal" />
+
+            }
+
+            <app-quick-actions />
+        </div>
+
+    </section>
+
+</main>

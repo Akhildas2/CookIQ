@@ -1,0 +1,231 @@
+<section class="recipe-day" aria-labelledby="recipe-day-title">
+
+    <!-- =====================================================
+         SECTION HEADER
+         ===================================================== -->
+
+    <div class="recipe-day__header">
+
+        <div class="recipe-day__heading-group">
+
+            <div class="recipe-day__system">
+
+                <span class="recipe-day__system-dot" aria-hidden="true"></span>
+
+                <span>CookIQ / Daily selection</span>
+
+                <span class="recipe-day__system-line" aria-hidden="true"></span>
+
+                <span>01 / 07</span>
+
+            </div>
+
+            <span class="recipe-day__eyebrow">
+                CookIQ recommendation
+            </span>
+
+            <h2 id="recipe-day-title" class="recipe-day__heading">
+                Recipe of the day
+            </h2>
+
+        </div>
+
+        <span class="recipe-day__spark" aria-hidden="true">
+            ✦
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         FEATURED RECIPE
+         ===================================================== -->
+
+    <article class="recipe-card">
+
+        <!-- =================================================
+             IMAGE
+             ================================================= -->
+
+        <div class="recipe-card__media">
+
+            <img class="recipe-card__image" [src]="meal().strMealThumb" [alt]="meal().strMeal" />
+
+            <div class="recipe-card__overlay" aria-hidden="true">
+            </div>
+
+            <div class="recipe-card__image-meta">
+
+                <span class="recipe-card__category">
+                    {{ meal().strCategory }}
+                </span>
+
+                <span class="recipe-card__image-index">
+                    COOKIQ / 01
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENT
+             ================================================= -->
+
+        <div class="recipe-card__content">
+
+            <!-- Meta -->
+
+            <div class="recipe-card__meta">
+
+                <span>
+                    {{ meal().strArea }}
+                </span>
+
+                <span class="recipe-card__meta-dot" aria-hidden="true">
+                    •
+                </span>
+
+                <span>
+                    CookIQ pick
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h3 class="recipe-card__title">
+                {{ meal().strMeal }}
+            </h3>
+
+
+            <!-- Tags -->
+
+            @if (meal().strTags) {
+
+            <div class="recipe-card__tags">
+
+                @for (
+                tag of meal().strTags!.split(',');
+                track tag
+                ) {
+
+                <span class="recipe-card__tag">
+                    {{ tag.trim() }}
+                </span>
+
+                }
+
+            </div>
+
+            }
+
+
+            <!-- Description -->
+
+            <p class="recipe-card__description">
+                A fresh recipe idea selected from the CookIQ
+                collection. Explore the ingredients, follow the
+                method, and make it your own.
+            </p>
+
+
+            <!-- Facts -->
+
+            <div class="recipe-card__facts">
+
+                <div class="recipe-card__fact">
+
+                    <span class="recipe-card__fact-value">
+                        {{ meal().strCategory }}
+                    </span>
+
+                    <span class="recipe-card__fact-label">
+                        Recipe
+                    </span>
+
+                </div>
+
+                <div class="recipe-card__fact">
+
+                    <span class="recipe-card__fact-value">
+                        {{ meal().strArea }}
+                    </span>
+
+                    <span class="recipe-card__fact-label">
+                        Cuisine
+                    </span>
+
+                </div>
+
+                <div class="recipe-card__fact">
+
+                    <span class="recipe-card__fact-value">
+                        CookIQ
+                    </span>
+
+                    <span class="recipe-card__fact-label">
+                        Selection
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CTA -->
+
+            <div class="recipe-card__footer">
+
+                <div class="recipe-card__footer-line" aria-hidden="true">
+                </div>
+
+                <a class="btn btn--primary recipe-card__cta" [routerLink]="['/recipes', meal().idMeal]">
+
+                    <span>
+                        Explore recipe
+                    </span>
+
+                    <span class="recipe-card__cta-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+    <!-- =====================================================
+         BOTTOM STATEMENT
+         ===================================================== -->
+
+    <div class="recipe-day__bottom">
+
+        <span class="recipe-day__bottom-line" aria-hidden="true">
+        </span>
+
+        <div class="recipe-day__bottom-copy">
+
+            <span>
+                CookIQ / Daily selection
+            </span>
+
+            <strong>
+                Something good is already
+                <em>waiting.</em>
+            </strong>
+
+        </div>
+
+        <span class="recipe-day__bottom-line" aria-hidden="true">
+        </span>
+
+    </div>
+
+</section>
