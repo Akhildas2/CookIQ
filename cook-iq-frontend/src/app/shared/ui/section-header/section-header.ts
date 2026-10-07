@@ -1,27 +1,55 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RevealVariant, ScrollReveal } from '../../directives/scroll-reveal/scroll-reveal';
 import { SectionHeaderVariant } from '../../../features/home/models/home.models';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-section-header',
-  imports: [ScrollReveal],
+  imports: [ScrollReveal, RouterLink],
   templateUrl: './section-header.html',
   styleUrl: './section-header.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SectionHeader {
-  //Visual layout variant
-  readonly variant = input<SectionHeaderVariant>('default');
-  readonly eyebrow = input(''); // Small eyebrow / identity label
-  readonly title = input('');// Main heading first part
-  readonly highlight = input(''); // Highlighted / italic heading part
-  readonly description = input(''); // Optional description
-  readonly meta = input(''); // Optional meta / subheading
-  readonly index = input(''); // Optional section index / system label
+  // =========================================================
+  // VISUAL
+  // =========================================================
 
-  readonly identity = input('');// Process-header identity label
-  readonly showIdentity = input(false); // Whether the process identity should be displayed
-  readonly showRule = input(true);//  Whether the decorative horizontal rule is displayed
-  readonly reveal = input<RevealVariant>('up');// Reveal animation variant
-  readonly revealDelay = input(0); // Reveal delay
+  readonly variant = input<SectionHeaderVariant>('default');
+
+  // =========================================================
+  // CONTENT
+  // =========================================================
+
+  readonly eyebrow = input('');
+  readonly title = input('');
+  readonly highlight = input('');
+  readonly description = input('');
+
+  readonly meta = input('');
+  readonly index = input('');
+
+  // =========================================================
+  // PROCESS VARIANT
+  // =========================================================
+
+  readonly identity = input('');
+  readonly showIdentity = input(false);
+  readonly showRule = input(true);
+
+  // =========================================================
+  // ACTION
+  // =========================================================
+
+  readonly actionLabel = input('');
+  readonly actionNote = input('');
+  readonly actionLink = input('');
+
+  // =========================================================
+  // REVEAL
+  // =========================================================
+
+  readonly reveal = input<RevealVariant>('up');
+  readonly revealDelay = input(0);
+
 }

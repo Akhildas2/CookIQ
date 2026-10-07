@@ -10,4 +10,5 @@ import { MyRecipeCard } from '../my-recipe-card/my-recipe-card';
 })
 export class MyRecipesGrid {
   readonly recipes = input.required<readonly MyRecipe[]>();
+
 }

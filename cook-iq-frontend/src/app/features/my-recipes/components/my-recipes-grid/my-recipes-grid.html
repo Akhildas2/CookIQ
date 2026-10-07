@@ -1,8 +1,9 @@
 <div class="my-recipes-grid">
-    @for (
-    recipe of recipes();
-    track recipe.id
-    ) {
-    <app-my-recipe-card [recipe]="recipe" />
+
+    @for (recipe of recipes(); track recipe.id; let i = $index) {
+
+    <app-my-recipe-card [recipe]="recipe" [index]="i + 1" />
+
     }
+
 </div>

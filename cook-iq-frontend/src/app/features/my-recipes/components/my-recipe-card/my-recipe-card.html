@@ -1,39 +1,68 @@
-<article class="my-recipe-card">
+<article class="my-recipe-card" appReveal="up" [revealDelay]="0.08">
+
+    <!-- =====================================================
+       IMAGE
+       ===================================================== -->
+
     <a class="my-recipe-card__media" [routerLink]="[
-      '/my-recipes',
-      recipe().id,
-      'edit'
-    ]" [attr.aria-label]="'Edit ' + recipe().title">
+      '/my-recipes',recipe().id, 'edit' ]" [attr.aria-label]="'Edit ' + recipe().title">
+
         @if (recipe().imageUrl) {
+
         <img class="my-recipe-card__image" [src]="recipe().imageUrl" [alt]="recipe().title" loading="lazy" />
+
         } @else {
+
         <div class="my-recipe-card__placeholder" aria-hidden="true">
             <span>✦</span>
         </div>
+
         }
 
         <div class="my-recipe-card__overlay" aria-hidden="true"></div>
 
+        <span class="my-recipe-card__number" aria-hidden="true">
+            {{ index() }}
+        </span>
+
         @if (recipe().category) {
+
         <span class="my-recipe-card__category">
             {{ recipe().category }}
         </span>
+
         }
+
+        <span class="my-recipe-card__arrow" aria-hidden="true">
+            ↗
+        </span>
+
     </a>
 
+    <!-- =====================================================
+       CONTENT
+       ===================================================== -->
+
     <div class="my-recipe-card__body">
+
         <div class="my-recipe-card__meta">
+
             @if (recipe().cuisine) {
-            <span>{{ recipe().cuisine }}</span>
+            <span>
+                {{ recipe().cuisine }}
+            </span>
             }
 
             @if (recipe().cuisine && recipe().cookTime) {
-            <span aria-hidden="true">•</span>
+            <span aria-hidden="true">·</span>
             }
 
             @if (recipe().cookTime) {
-            <span>{{ recipe().cookTime }} min</span>
+            <span>
+                {{ recipe().cookTime }} min
+            </span>
             }
+
         </div>
 
         <h2 class="my-recipe-card__title">
@@ -45,6 +74,7 @@
         </p>
 
         <div class="my-recipe-card__footer">
+
             <span class="my-recipe-card__servings">
                 @if (recipe().servings) {
                 {{ recipe().servings }} servings
@@ -52,12 +82,16 @@
             </span>
 
             <a class="my-recipe-card__edit" [routerLink]="[
-          '/my-recipes',
-          recipe().id,
-          'edit'
-        ]">
-                Edit
+          '/my-recipes',  recipe().id, 'edit' ]">
+                <span>Edit recipe</span>
+
+                <span aria-hidden="true">
+                    ↗
+                </span>
             </a>
+
         </div>
+
     </div>
+
 </article>

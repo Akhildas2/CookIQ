@@ -1,17 +1,35 @@
 <div class="my-recipes-toolbar">
-    <label class="my-recipes-toolbar__search" for="recipe-search">
-        <span class="my-recipes-toolbar__search-icon" aria-hidden="true">
-            ⌕
+
+    <div class="my-recipes-toolbar__label">
+        <span class="my-recipes-toolbar__index">
+            01
         </span>
 
-        <input id="recipe-search" type="search" placeholder="Search your recipes..." autocomplete="off" />
-    </label>
-
-    <button class="my-recipes-toolbar__filter" type="button" aria-label="Filter recipes">
-        <span>All recipes</span>
-
-        <span aria-hidden="true">
-            ▾
+        <span>
+            Browse collection
         </span>
-    </button>
+    </div>
+
+    <div class="my-recipes-toolbar__controls">
+
+        <label class="my-recipes-toolbar__search" for="recipe-search">
+            <span class="my-recipes-toolbar__search-icon" aria-hidden="true">
+                <lucide-icon name="search" [size]="17" [strokeWidth]="1.8" />
+            </span>
+
+            <input id="recipe-search" type="search" placeholder="Search your recipes..." autocomplete="off" />
+        </label>
+
+        <button class="my-recipes-toolbar__filter" type="button" aria-label="Filter recipes">
+            <span>
+                All recipes
+            </span>
+
+            <span class="my-recipes-toolbar__filter-icon" aria-hidden="true">
+                <lucide-icon name="arrow-down" [size]="17" [strokeWidth]="1.8" />
+            </span>
+        </button>
+
+    </div>
+
 </div>

@@ -1,11 +1,49 @@
 <main class="my-recipes">
     <section class="my-recipes__section section" aria-labelledby="my-recipes-title">
-        <div class="container">
-            <app-my-recipes-header />
+        <div class="container my-recipes__container">
+
+            <!-- =====================================================
+           HEADER
+           ===================================================== -->
+
+            <app-section-header variant="default" eyebrow="Your kitchen" title="My" highlight="Recipes."
+                description="Keep the recipes you've created, customized, and made your own — all in one place."
+                meta="Personal collection" index="07 / MY RECIPES" actionLabel="Create recipe"
+                actionNote="Start with your ingredients" actionLink="/my-recipes/create" />
+
+            <!-- =====================================================
+           COLLECTION TOOLBAR
+           ===================================================== -->
 
             <app-my-recipes-toolbar />
-            
+
+            <!-- =====================================================
+           RECIPE COLLECTION
+           ===================================================== -->
+
             <app-my-recipes-grid [recipes]="recipes" />
+
+            <!-- =====================================================
+           BOTTOM STATEMENT
+           ===================================================== -->
+
+            <div class="my-recipes__statement" appReveal="up" [revealDelay]="0.15">
+                <span class="my-recipes__statement-line" aria-hidden="true"></span>
+
+                <div class="my-recipes__statement-copy">
+                    <span>
+                        Your kitchen archive
+                    </span>
+
+                    <strong>
+                        Recipes you've made.
+                        <em>Ideas worth keeping.</em>
+                    </strong>
+                </div>
+
+                <span class="my-recipes__statement-line" aria-hidden="true"></span>
+            </div>
+
         </div>
     </section>
 </main>

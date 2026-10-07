@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import {
   LucideAngularModule,
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
@@ -23,12 +24,14 @@ import {
   TrendingUp,
   Users,
   Zap,
+
 } from 'lucide-angular';
 
 @NgModule({
   imports: [
     LucideAngularModule.pick({
       Sparkles,
+      ArrowDown,
       ArrowLeft,
       ArrowRight,
       ArrowUpRight,

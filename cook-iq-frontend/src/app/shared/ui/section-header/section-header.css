@@ -92,7 +92,8 @@
 .section-header__side {
     position: relative;
 
-    max-width: 390px;
+    width: 100%;
+    max-width: 420px;
 
     padding-bottom: 0.15rem;
 }
@@ -265,27 +266,48 @@
     color: rgb(255 255 255 / 58%);
 }
 
-
 /* =========================================================
-   DARK SECTION SUPPORT
+   ACTION
    ========================================================= */
 
-:host-context(.on-dark) .section-header__title {
-    color: var(--white);
+.section-header__action-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+
+    margin-top: 1.75rem;
 }
 
-:host-context(.on-dark) .section-header__title em {
-    color: var(--spice-light);
+.section-header__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    white-space: nowrap;
 }
 
-:host-context(.on-dark) .section-header__side p {
-    color: rgb(255 255 255 / 58%);
+.section-header__action-icon {
+    display: inline-grid;
+    place-items: center;
+
+    font-size: 1rem;
+    line-height: 1;
+
+    transition: transform 250ms ease;
 }
 
-:host-context(.on-dark) .section-header__eyebrow {
-    color: rgb(255 255 255 / 52%);
+.section-header__action:hover .section-header__action-icon {
+    transform: translate(2px, -2px);
 }
 
+.section-header__action-note {
+    color: var(--text-subtle);
+
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+}
 
 /* =========================================================
    RESPONSIVE
@@ -342,6 +364,15 @@
         width: 100%;
 
         margin-top: 1.5rem;
+    }
+
+    .section-header__action-wrap {
+        width: 100%;
+    }
+
+    .section-header__action {
+        width: 100%;
+        justify-content: center;
     }
 }
 
