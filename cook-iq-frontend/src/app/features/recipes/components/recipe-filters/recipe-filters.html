@@ -1,0 +1,293 @@
+<div class="recipe-filters">
+
+    <!-- =======================================================
+       MAIN FILTER CONTROLS
+       ======================================================= -->
+
+    <div class="recipe-filters__controls">
+
+        <!-- =====================================================
+         SEARCH
+         ===================================================== -->
+
+        <form class="recipe-filters__search" (submit)="$event.preventDefault(); onSearch(searchInput.value)">
+
+            <label class="recipe-filters__label" for="recipe-search">
+                Find a recipe
+            </label>
+
+            <div class="recipe-filters__search-field">
+
+                <lucide-icon name="search" [size]="18" [strokeWidth]="1.8" aria-hidden="true" />
+
+                <input #searchInput id="recipe-search" type="search" name="recipeSearch"
+                    placeholder="Search recipes, ingredients..." [value]="searchQuery()" autocomplete="off" />
+
+                <button type="submit" class="recipe-filters__search-button" aria-label="Search recipes">
+                    <span>Search</span>
+
+                    <lucide-icon name="arrow-up-right" [size]="16" [strokeWidth]="1.8" aria-hidden="true" />
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- =====================================================
+         CATEGORY
+         ===================================================== -->
+
+        <div class="recipe-filters__field">
+
+            <span class="recipe-filters__label">
+                Category
+            </span>
+
+            <div class="recipe-filters__dropdown">
+
+                <button type="button" class="recipe-filters__dropdown-trigger"
+                    [class.recipe-filters__dropdown-trigger--open]="categoryOpen()"
+                    [attr.aria-expanded]="categoryOpen()" aria-haspopup="listbox" (click)="toggleCategoryDropdown()">
+
+                    <span class="recipe-filters__dropdown-icon">
+                        <lucide-icon name="layers-3" [size]="16" [strokeWidth]="1.7" aria-hidden="true" />
+                    </span>
+
+                    <span class="recipe-filters__dropdown-content">
+
+                        <span class="recipe-filters__dropdown-caption">
+                            Category
+                        </span>
+
+                        <span class="recipe-filters__dropdown-value">
+                            {{ selectedCategory() || 'All categories' }}
+                        </span>
+
+                    </span>
+
+                    <lucide-icon class="recipe-filters__dropdown-chevron" name="chevron-down" [size]="16"
+                        [strokeWidth]="1.8" aria-hidden="true" />
+
+                </button>
+
+
+                @if (categoryOpen()) {
+
+                <div class="recipe-filters__menu" role="listbox" aria-label="Recipe category">
+
+                    <!-- ALL -->
+
+                    <button type="button" class="recipe-filters__option"
+                        [class.recipe-filters__option--active]="!selectedCategory()"
+                        [attr.aria-selected]="!selectedCategory()" (click)="selectCategory('')">
+
+                        <span class="recipe-filters__option-content">
+
+                            <span class="recipe-filters__option-dot"></span>
+
+                            <span>All categories</span>
+
+                        </span>
+
+                        @if (!selectedCategory()) {
+
+                        <lucide-icon name="check" [size]="15" [strokeWidth]="2" aria-hidden="true" />
+
+                        }
+
+                    </button>
+
+
+                    <!-- CATEGORIES -->
+
+                    @for (category of categories(); track category) {
+
+                    <button type="button" class="recipe-filters__option" [class.recipe-filters__option--active]="
+                  selectedCategory() === category " [attr.aria-selected]=" selectedCategory() === category "
+                        (click)="selectCategory(category)">
+
+                        <span class="recipe-filters__option-content">
+
+                            <span class="recipe-filters__option-dot"></span>
+
+                            <span>{{ category }}</span>
+
+                        </span>
+
+                        @if (selectedCategory() === category) {
+
+                        <lucide-icon name="check" [size]="15" [strokeWidth]="2" aria-hidden="true" />
+
+                        }
+
+                    </button>
+
+                    }
+
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+         CUISINE
+         ===================================================== -->
+
+        <div class="recipe-filters__field">
+
+            <span class="recipe-filters__label">
+                Cuisine
+            </span>
+
+            <div class="recipe-filters__dropdown">
+
+                <button type="button" class="recipe-filters__dropdown-trigger"
+                    [class.recipe-filters__dropdown-trigger--open]="cuisineOpen()" [attr.aria-expanded]="cuisineOpen()"
+                    aria-haspopup="listbox" (click)="toggleCuisineDropdown()">
+
+                    <span class="recipe-filters__dropdown-icon">
+                        <lucide-icon name="globe-2" [size]="16" [strokeWidth]="1.7" aria-hidden="true" />
+                    </span>
+
+                    <span class="recipe-filters__dropdown-content">
+
+                        <span class="recipe-filters__dropdown-caption">
+                            Cuisine
+                        </span>
+
+                        <span class="recipe-filters__dropdown-value">
+                            {{ selectedCuisine() || 'All cuisines' }}
+                        </span>
+
+                    </span>
+
+                    <lucide-icon class="recipe-filters__dropdown-chevron" name="chevron-down" [size]="16"
+                        [strokeWidth]="1.8" aria-hidden="true" />
+
+                </button>
+
+
+                @if (cuisineOpen()) {
+
+                <div class="recipe-filters__menu" role="listbox" aria-label="Recipe cuisine">
+
+                    <!-- ALL -->
+
+                    <button type="button" class="recipe-filters__option"
+                        [class.recipe-filters__option--active]="!selectedCuisine()"
+                        [attr.aria-selected]="!selectedCuisine()" (click)="selectCuisine('')">
+
+                        <span class="recipe-filters__option-content">
+
+                            <span class="recipe-filters__option-dot"></span>
+
+                            <span>All cuisines</span>
+
+                        </span>
+
+                        @if (!selectedCuisine()) {
+
+                        <lucide-icon name="check" [size]="15" [strokeWidth]="2" aria-hidden="true" />
+
+                        }
+
+                    </button>
+
+
+                    <!-- CUISINES -->
+
+                    @for (cuisine of cuisines(); track cuisine) {
+
+                    <button type="button" class="recipe-filters__option" [class.recipe-filters__option--active]="
+                  selectedCuisine() === cuisine  " [attr.aria-selected]="   selectedCuisine() === cuisine  "
+                        (click)="selectCuisine(cuisine)">
+
+                        <span class="recipe-filters__option-content">
+
+                            <span class="recipe-filters__option-dot"></span>
+
+                            <span>{{ cuisine }}</span>
+
+                        </span>
+
+                        @if (selectedCuisine() === cuisine) {
+
+                        <lucide-icon name="check" [size]="15" [strokeWidth]="2" aria-hidden="true" />
+
+                        }
+
+                    </button>
+
+                    }
+
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =======================================================
+       ACTIVE FILTER
+       ======================================================= -->
+
+    @if (
+    searchQuery() ||
+    selectedCategory() ||
+    selectedCuisine()
+    ) {
+
+    <div class="recipe-filters__active">
+
+        <div class="recipe-filters__active-info">
+
+            <span class="recipe-filters__active-icon">
+
+                <lucide-icon name="sliders-horizontal" [size]="15" [strokeWidth]="1.8" aria-hidden="true" />
+
+            </span>
+
+            <span class="recipe-filters__active-text">
+
+                @if (searchQuery()) {
+
+                Searching for
+                <strong>"{{ searchQuery() }}"</strong>
+
+                } @else if (selectedCategory()) {
+
+                {{ selectedCategory() }} recipes
+
+                } @else if (selectedCuisine()) {
+
+                {{ selectedCuisine() }} cuisine
+
+                }
+
+            </span>
+
+        </div>
+
+
+        <button type="button" class="recipe-filters__clear" (click)="onClear()">
+
+            <span>Clear filters</span>
+
+            <lucide-icon name="x" [size]="14" [strokeWidth]="1.8" aria-hidden="true" />
+
+        </button>
+
+    </div>
+
+    }
+
+</div>

@@ -1,62 +1,70 @@
 export interface Meal {
-    idMeal: string;
-    strMeal: string;
-    strDrinkAlternate: string | null;
-    strCategory: string | null;
-    strArea: string | null;
-    strInstructions: string | null;
-    strMealThumb: string;
-    strTags: string | null;
-    strYoutube: string | null;
-    strSource: string | null;
-    strImageSource: string | null;
-    strCreativeCommonsConfirmed: string | null;
-    dateModified: string | null;
+  readonly idMeal: string;
+  readonly strMeal: string;
+  readonly strDrinkAlternate: string | null;
+  readonly strCategory: string | null;
+  readonly strArea: string | null;
+  readonly strInstructions: string | null;
+  readonly strMealThumb: string;
+  readonly strTags: string | null;
+  readonly strYoutube: string | null;
+  readonly strSource: string | null;
+  readonly strImageSource: string | null;
+  readonly strCreativeCommonsConfirmed: string | null;
+  readonly dateModified: string | null;
 
-    [key: `strIngredient${number}`]: string | null;
-    [key: `strMeasure${number}`]: string | null;
+  [key: `strIngredient${number}`]: string | null;
+  [key: `strMeasure${number}`]: string | null;
 }
 
 export interface MealSummary {
-    idMeal: string;
-    strMeal: string;
-    strMealThumb: string;
+  readonly idMeal: string;
+  readonly strMeal: string;
+  readonly strMealThumb: string;
 }
 
 export interface MealCategory {
-    idCategory: string;
-    strCategory: string;
-    strCategoryThumb: string;
-    strCategoryDescription: string;
+  readonly idCategory: string;
+  readonly strCategory: string;
+  readonly strCategoryThumb: string;
+  readonly strCategoryDescription: string;
+}
+
+export interface MealCategoryListItem {
+  readonly strCategory: string;
 }
 
 export interface MealArea {
-    strArea: string;
+  readonly strArea: string;
 }
 
 export interface MealIngredient {
-    idIngredient: string;
-    strIngredient: string;
-    strDescription: string | null;
-    strType: string | null;
+  readonly idIngredient: string;
+  readonly strIngredient: string;
+  readonly strDescription: string | null;
+  readonly strType: string | null;
 }
 
 export interface MealResponse {
-    meals: Meal[] | null;
+  readonly meals: Meal[] | null;
 }
 
 export interface MealSummaryResponse {
-    meals: MealSummary[] | null;
+  readonly meals: MealSummary[] | null;
 }
 
 export interface MealCategoryResponse {
-    categories: MealCategory[] | null;
+  readonly categories: MealCategory[] | null;
+}
+
+export interface MealCategoryListResponse {
+  readonly meals: MealCategoryListItem[] | null;
 }
 
 export interface MealAreaResponse {
-    meals: MealArea[] | null;
+  readonly meals: MealArea[] | null;
 }
 
 export interface MealIngredientResponse {
-    meals: MealIngredient[] | null;
+  readonly meals: MealIngredient[] | null;
 }

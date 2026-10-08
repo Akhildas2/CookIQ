@@ -1,0 +1,81 @@
+<article class="recipe-card">
+
+    <!-- =====================================================
+         IMAGE
+         ===================================================== -->
+
+    <a class="recipe-card__media" [routerLink]="['/app/recipes', meal().idMeal]"
+        [attr.aria-label]="'View ' + meal().strMeal">
+
+        <img class="recipe-card__image" [src]="meal().strMealThumb" [alt]="meal().strMeal" loading="lazy" />
+
+
+        <div class="recipe-card__overlay" aria-hidden="true"></div>
+
+
+        <!-- CATEGORY -->
+
+        <span class="recipe-card__category">
+            Recipe
+        </span>
+
+
+        <!-- FAVOURITE -->
+
+        <button type="button" class="recipe-card__favorite" aria-label="Add recipe to favourites"
+            (click)="$event.preventDefault(); $event.stopPropagation()">
+            <lucide-icon name="heart" [size]="17" [strokeWidth]="1.8" />
+        </button>
+
+
+        <!-- ARROW -->
+
+        <span class="recipe-card__arrow" aria-hidden="true">
+            <lucide-icon name="arrow-up-right" [size]="17" [strokeWidth]="1.8" />
+        </span>
+
+    </a>
+
+
+    <!-- =====================================================
+         BODY
+         ===================================================== -->
+
+    <div class="recipe-card__body">
+
+        <div class="recipe-card__meta">
+
+            <span>
+                CookIQ collection
+            </span>
+
+            <span class="recipe-card__meta-line"></span>
+
+            <span>
+                {{ meal().idMeal }}
+            </span>
+
+        </div>
+
+
+        <h2 class="recipe-card__title">
+            {{ meal().strMeal }}
+        </h2>
+
+
+        <div class="recipe-card__footer">
+
+            <span class="recipe-card__footer-label">
+                Discover recipe
+            </span>
+
+            <a class="recipe-card__link" [routerLink]="['/app/recipes', meal().idMeal]"
+                [attr.aria-label]="'Explore ' + meal().strMeal">
+                <lucide-icon name="arrow-right" [size]="16" [strokeWidth]="1.8" />
+            </a>
+
+        </div>
+
+    </div>
+
+</article>

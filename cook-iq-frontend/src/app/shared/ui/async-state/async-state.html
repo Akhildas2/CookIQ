@@ -1,0 +1,87 @@
+<section class="async-state" [class.async-state--loading]="state() === 'loading'"
+    [class.async-state--error]="state() === 'error'" [class.async-state--empty]="state() === 'empty'"
+    [class.async-state--not-found]="state() === 'not-found'" aria-live="polite">
+    <!-- =======================================================
+       TOP RULE
+       ======================================================= -->
+
+    <div class="async-state__rule" aria-hidden="true">
+        <span class="async-state__rule-line"></span>
+
+        <span class="async-state__rule-label">
+            {{ eyebrow() }}
+        </span>
+
+        <span class="async-state__rule-line"></span>
+    </div>
+
+
+    <!-- =======================================================
+       ICON
+       ======================================================= -->
+
+    <div class="async-state__icon-wrap">
+
+        @if (state() === 'loading') {
+
+        <div class="async-state__loader" aria-hidden="true">
+            <lucide-icon name="loader-circle" [size]="25" [strokeWidth]="1.5" />
+        </div>
+
+        } @else if (state() === 'error') {
+
+        <div class="async-state__icon async-state__icon--error">
+            <lucide-icon name="triangle-alert" [size]="24" [strokeWidth]="1.6" aria-hidden="true" />
+        </div>
+
+        } @else if (state() === 'not-found') {
+
+        <div class="async-state__icon async-state__icon--not-found">
+            <lucide-icon name="search-x" [size]="25" [strokeWidth]="1.5" aria-hidden="true" />
+        </div>
+
+        } @else {
+
+        <div class="async-state__icon async-state__icon--empty">
+            <lucide-icon name="search" [size]="24" [strokeWidth]="1.5" aria-hidden="true" />
+        </div>
+
+        }
+
+    </div>
+
+
+    <!-- =======================================================
+       CONTENT
+       ======================================================= -->
+
+    <div class="async-state__content">
+
+        <h2 class="async-state__title">
+            {{ title() }}
+        </h2>
+
+        @if (description()) {
+        <p class="async-state__description">
+            {{ description() }}
+        </p>
+        }
+
+    </div>
+
+
+    <!-- =======================================================
+       ACTION
+       ======================================================= -->
+
+    @if (actionLabel()) {
+
+    <button type="button" class="async-state__action" [disabled]="actionDisabled()" (click)="onAction()">
+        <span>{{ actionLabel() }}</span>
+
+        <lucide-icon [name]="actionIcon()" [size]="16" [strokeWidth]="1.8" aria-hidden="true" />
+    </button>
+
+    }
+
+</section>

@@ -1,0 +1,363 @@
+/* =========================================================
+   HOST
+   ========================================================= */
+
+:host {
+    display: block;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.recipes-page {
+    min-height: 100%;
+
+    background:
+        radial-gradient(circle at 88% 8%,
+            rgb(201 151 58 / 0.055),
+            transparent 25%),
+        radial-gradient(circle at 5% 42%,
+            rgb(107 143 113 / 0.045),
+            transparent 24%),
+        linear-gradient(180deg,
+            var(--cream) 0%,
+            var(--surface) 100%);
+}
+
+
+/* =========================================================
+   HERO / PAGE INTRO
+   ========================================================= */
+
+.recipes-page__hero {
+    padding-top: clamp(3.5rem, 6vw, 5.5rem);
+    padding-bottom: clamp(5rem, 9vw, 8rem);
+}
+
+
+/* =========================================================
+   FILTER → CONTENT SPACING
+   ========================================================= */
+
+.recipes-page app-recipe-filters {
+    display: block;
+
+    margin-top: clamp(3rem, 5vw, 4.5rem);
+}
+
+
+/* =========================================================
+   RESULTS HEADER
+   ========================================================= */
+
+.recipes-page__results-head {
+    display: grid;
+    grid-template-columns: auto minmax(40px, 1fr);
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.recipes-page__results-head>div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+
+/* =========================================================
+   RESULTS LABEL
+   ========================================================= */
+
+.recipes-page__results-label {
+    color: var(--forest);
+    font-family: var(--font-body);
+    font-size: 0.48rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.recipes-page__results-count {
+    color: var(--text-subtle);
+    font-family: var(--font-body);
+    font-size: 0.52rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.06em;
+}
+
+
+/* =========================================================
+   RESULTS RULE
+   ========================================================= */
+
+.recipes-page__results-line {
+    width: 100%;
+    height: 1px;
+    background:
+        linear-gradient(90deg, rgb(28 58 43 / 0.16), transparent);
+}
+
+
+/* =========================================================
+   CONTENT STATES
+   ========================================================= */
+
+.recipes-page__state {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.9rem;
+    padding: 3rem;
+    border: 1px solid color-mix(in srgb,
+            var(--forest) 9%, transparent);
+
+    border-radius: var(--radius-card);
+    background:
+        color-mix(in srgb,
+            var(--surface) 82%, transparent);
+
+    box-shadow: 0 1px 0 rgb(255 255 255 / 80%) inset;
+    text-align: center;
+}
+
+
+/* =========================================================
+   STATE TEXT
+   ========================================================= */
+
+.recipes-page__state p {
+    max-width: 420px;
+    margin: 0;
+
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.recipes-page__state h2 {
+    margin: 0;
+    color: var(--charcoal);
+
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+
+/* =========================================================
+   STATE ICON
+   ========================================================= */
+
+.recipes-page__state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+    margin-bottom: 0.35rem;
+    border: 1px solid color-mix(in srgb,
+            var(--sage) 15%, transparent);
+
+    border-radius: 50%;
+    background:
+        color-mix(in srgb, var(--sage) 8%, var(--surface));
+    color: var(--forest);
+}
+
+.recipes-page__state--error .recipes-page__state-icon {
+
+    border-color:
+        color-mix(in srgb, var(--spice) 18%, transparent);
+    background:
+        color-mix(in srgb, var(--spice) 7%, var(--surface));
+    color: var(--spice);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.recipes-page__loader {
+    display: flex;
+    color: var(--spice);
+    animation:
+        recipes-page-spin 1s linear infinite;
+}
+
+@keyframes recipes-page-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   LOAD MORE
+   ========================================================= */
+
+.recipes-page__load-more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(3rem, 5vw, 4.5rem);
+}
+
+.recipes-page__load-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.65rem;
+    min-height: 48px;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid color-mix(in srgb,
+            var(--forest) 18%, transparent);
+
+    border-radius: 999px;
+    background:
+        color-mix(in srgb, var(--surface) 90%,transparent);
+    color: var(--forest);
+
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.06em;
+
+    cursor: pointer;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 80%) inset;
+
+    transition:
+        background 250ms ease,
+        border-color 250ms ease,
+        color 250ms ease,
+        transform 450ms var(--ease-out-expo),
+        box-shadow 250ms ease;
+}
+
+.recipes-page__load-button:hover {
+    border-color: var(--forest);
+    background: var(--forest);
+    color: var(--cream);
+    box-shadow: 0 12px 28px rgb(28 58 43 / 12%);
+    transform: translateY(-2px);
+}
+
+.recipes-page__load-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.recipes-page__load-button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .recipes-page__hero {
+        padding-top: 4rem;
+    }
+
+    .recipes-page__results-head {
+        gap: 1rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .recipes-page__hero {
+        padding-top: 3rem;
+        padding-bottom: 5rem;
+    }
+
+    .recipes-page app-recipe-filters {
+        margin-top: 2.75rem;
+    }
+
+    .recipes-page__results-head {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .recipes-page__results-line {
+        background:linear-gradient(90deg,
+                rgb(28 58 43 / 0.14),transparent);
+    }
+
+    .recipes-page__state {
+        min-height: 280px;
+        padding: 2rem 1.25rem;
+        border-radius: 18px;
+    }
+
+    .recipes-page__load-more {
+        margin-top: 3rem;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .recipes-page__results-head>div {
+        gap: 0.55rem;
+    }
+
+    .recipes-page__results-label {
+        font-size: 0.44rem;
+    }
+
+    .recipes-page__results-count {
+        font-size: 0.48rem;
+    }
+
+    .recipes-page__state {
+        min-height: 250px;
+    }
+
+    .recipes-page__load-button {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .recipes-page__loader {
+        animation: none;
+    }
+
+    .recipes-page__load-button {
+        transition: none;
+    }
+}

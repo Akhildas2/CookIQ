@@ -31,6 +31,12 @@ export const routes: Routes = [
                 loadChildren: () =>
                     import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
             },
+            // Recipes
+            {
+                path: 'recipes',
+                loadChildren: () =>
+                    import('./features/recipes/recipes.routes').then((m) => m.RECIPES_ROUTES),
+            },
             // My Recipes
             {
                 path: 'my-recipes',

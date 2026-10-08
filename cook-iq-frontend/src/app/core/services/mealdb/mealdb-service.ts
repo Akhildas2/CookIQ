@@ -1,138 +1,172 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { MealAreaResponse, MealCategoryResponse, MealIngredientResponse, MealResponse, MealSummaryResponse } from '../../../features/recipes/models/mealdb.models';
+import { environment } from '../../../../environments/environment';
+import { MealAreaResponse, MealCategoryListResponse, MealCategoryResponse, MealIngredientResponse, MealResponse, MealSummary, MealSummaryResponse } from '../../../features/recipes/models/mealdb.models';
+import { forkJoin, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MealdbService {
   private readonly http = inject(HttpClient);
+
   private readonly baseUrl = environment.mealDb.baseUrl;
 
-  /**
- * Get a random meal.
- */
-  getRandomMeal() {
+  /* =========================================================
+     RANDOM
+     ========================================================= */
+
+  getRandomMeal(): Observable<MealResponse> {
     return this.http.get<MealResponse>(
-      `${this.baseUrl}/random.php`,
+      `${this.baseUrl}/random.php`
     );
   }
 
-  /**
-   * Get meal by ID.
-   */
-  getMealById(id: string) {
+  /* =========================================================
+     ALL MEALS
+     ========================================================= */
+  getAllMeals(): Observable<MealSummary[]> {
+    const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+    return forkJoin(
+      letters.map(letter =>
+        this.getMealsByFirstLetter(letter)
+      )
+    ).pipe(
+      map(responses => {
+        const meals = responses.flatMap(
+          response => response.meals ?? []
+        );
+
+        const uniqueMeals = new Map(
+          meals.map(meal => [meal.idMeal, meal])
+        );
+
+        return Array.from(uniqueMeals.values());
+      })
+    );
+  }
+
+  /* =========================================================
+     SINGLE MEAL
+     ========================================================= */
+
+  getMealById(id: string): Observable<MealResponse> {
     const params = new HttpParams().set('i', id);
 
     return this.http.get<MealResponse>(
       `${this.baseUrl}/lookup.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Search meals by name.
-   */
-  searchMeals(query: string) {
-    const params = new HttpParams().set('s', query);
+  /* =========================================================
+     SEARCH
+     ========================================================= */
+
+  searchMeals(query: string): Observable<MealResponse> {
+    const params = new HttpParams().set('s', query.trim());
 
     return this.http.get<MealResponse>(
       `${this.baseUrl}/search.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get meals starting with a specific letter.
-   */
-  getMealsByFirstLetter(letter: string) {
-    const params = new HttpParams().set('f', letter);
+  /* =========================================================
+     FIRST LETTER
+     ========================================================= */
+
+  getMealsByFirstLetter(letter: string): Observable<MealResponse> {
+    const params = new HttpParams().set('f', letter.trim().charAt(0));
 
     return this.http.get<MealResponse>(
       `${this.baseUrl}/search.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get all categories.
-   */
-  getCategories() {
+  /* =========================================================
+     CATEGORIES
+     ========================================================= */
+
+  getCategories(): Observable<MealCategoryResponse> {
     return this.http.get<MealCategoryResponse>(
-      `${this.baseUrl}/categories.php`,
+      `${this.baseUrl}/categories.php`
     );
   }
 
-  /**
-   * Get category list.
-   */
-  getCategoryList() {
+  getCategoryList(): Observable<MealCategoryListResponse> {
     const params = new HttpParams().set('c', 'list');
 
-    return this.http.get<MealCategoryResponse>(
+    return this.http.get<MealCategoryListResponse>(
       `${this.baseUrl}/list.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get all areas / cuisines.
-   */
-  getAreas() {
+  /* =========================================================
+     AREAS / CUISINES
+     ========================================================= */
+
+  getAreas(): Observable<MealAreaResponse> {
     const params = new HttpParams().set('a', 'list');
 
     return this.http.get<MealAreaResponse>(
       `${this.baseUrl}/list.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get all ingredients.
-   */
-  getIngredients() {
+  /* =========================================================
+     INGREDIENTS
+     ========================================================= */
+
+  getIngredients(): Observable<MealIngredientResponse> {
     const params = new HttpParams().set('i', 'list');
 
     return this.http.get<MealIngredientResponse>(
       `${this.baseUrl}/list.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get meals by category.
-   */
-  getMealsByCategory(category: string) {
-    const params = new HttpParams().set('c', category);
+  /* =========================================================
+     FILTER BY CATEGORY
+     ========================================================= */
+
+  getMealsByCategory(category: string): Observable<MealSummaryResponse> {
+    const params = new HttpParams().set('c', category.trim());
 
     return this.http.get<MealSummaryResponse>(
       `${this.baseUrl}/filter.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get meals by cuisine / area.
-   */
-  getMealsByArea(area: string) {
-    const params = new HttpParams().set('a', area);
+  /* =========================================================
+     FILTER BY AREA
+     ========================================================= */
+
+  getMealsByArea(area: string): Observable<MealSummaryResponse> {
+    const params = new HttpParams().set('a', area.trim());
 
     return this.http.get<MealSummaryResponse>(
       `${this.baseUrl}/filter.php`,
-      { params },
+      { params }
     );
   }
 
-  /**
-   * Get meals by main ingredient.
-   */
-  getMealsByIngredient(ingredient: string) {
-    const params = new HttpParams().set('i', ingredient);
+  /* =========================================================
+     FILTER BY INGREDIENT
+     ========================================================= */
+
+  getMealsByIngredient(ingredient: string): Observable<MealSummaryResponse> {
+    const params = new HttpParams().set('i', ingredient.trim());
 
     return this.http.get<MealSummaryResponse>(
       `${this.baseUrl}/filter.php`,
-      { params },
+      { params }
     );
   }
 

@@ -1,0 +1,94 @@
+<main class="recipes-page">
+
+    <section class="recipes-page__hero section" aria-labelledby="recipes-title">
+
+        <div class="container">
+
+            <!-- ===================================================
+                 HERO
+                 =================================================== -->
+
+            <app-section-header variant="default" eyebrow="CookIQ recipes" title="Find your next" highlight="good meal."
+                description="Explore thoughtful recipes, discover new cuisines, and find something worth cooking tonight."
+                meta="Ingredient-first discovery" index="07 recipes" reveal="up" [revealDelay]="0" />
+
+            <!-- ===================================================
+                 FILTERS
+                 =================================================== -->
+
+            <app-recipe-filters [categories]="categories()" [cuisines]="cuisines()" [searchQuery]="searchQuery()"
+                [selectedCategory]="selectedCategory()" [selectedCuisine]="selectedCuisine()"
+                (search)="onSearch($event)" (categoryChange)="onCategoryChange($event)"
+                (cuisineChange)="onCuisineChange($event)" (clear)="clearFilters()" />
+
+
+            <!-- ===================================================
+            CONTENT
+            =================================================== -->
+
+            @if (loading()) {
+
+            <app-async-state state="loading" eyebrow="CookIQ recipes" title="Finding something delicious..."
+                description="Your kitchen is thinking." />
+
+            } @else if (error()) {
+
+            <app-async-state state="error" eyebrow="Something went wrong" title="We couldn't load your recipes."
+                [description]="error() ?? 'Please try again in a moment.'" actionLabel="Try again"
+                actionIcon="refresh-cw" (action)="retry()" />
+
+            } @else if (meals().length === 0) {
+
+            <app-async-state state="not-found" [eyebrow]="emptyStateEyebrow()" [title]="emptyStateTitle()"
+                [description]="emptyStateDescription()" actionLabel="Explore recipes" actionIcon="rotate-ccw"
+                (action)="clearFilters()" />
+
+            } @else {
+
+            <!-- =================================================
+            RESULTS HEADER
+            ================================================= -->
+
+            <div class="recipes-page__results-head">
+                <div>
+                    <span class="recipes-page__results-label">
+                        Curated collection
+                    </span>
+
+                    <span class="recipes-page__results-count">
+                        {{ visibleMeals().length }} recipes
+                    </span>
+                </div>
+
+                <span class="recipes-page__results-line" aria-hidden="true"></span>
+            </div>
+
+
+            <!-- =================================================
+            RECIPE GRID
+            ================================================= -->
+
+            <app-recipe-grid [meals]="visibleMeals()" />
+
+
+            <!-- =================================================
+            LOAD MORE
+            ================================================= -->
+
+            @if (hasMore()) {
+            <div class="recipes-page__load-more">
+                <button type="button" class="recipes-page__load-button" (click)="loadMore()">
+                    <span>Load more recipes</span>
+
+                    <lucide-icon name="arrow-down" [size]="17" [strokeWidth]="1.8" aria-hidden="true" />
+                </button>
+            </div>
+            }
+
+            }
+
+        </div>
+
+    </section>
+
+</main>
