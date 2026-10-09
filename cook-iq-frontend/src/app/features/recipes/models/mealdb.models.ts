@@ -68,3 +68,8 @@ export interface MealAreaResponse {
 export interface MealIngredientResponse {
   readonly meals: MealIngredient[] | null;
 }
+
+export interface RecipeIngredient {
+  readonly name: string;
+  readonly measure: string;
+}

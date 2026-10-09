@@ -89,7 +89,7 @@
                             <span>All categories</span>
 
                         </span>
-
+                        
                         @if (!selectedCategory()) {
 
                         <lucide-icon name="check" [size]="15" [strokeWidth]="2" aria-hidden="true" />
@@ -240,11 +240,7 @@
        ACTIVE FILTER
        ======================================================= -->
 
-    @if (
-    searchQuery() ||
-    selectedCategory() ||
-    selectedCuisine()
-    ) {
+    @if ( searchQuery() ||selectedCategory() ||selectedCuisine()) {
 
     <div class="recipe-filters__active">
 
