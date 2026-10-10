@@ -35,6 +35,8 @@ import {
   RotateCcw,
   RefreshCw,
   TriangleAlert,
+  MonitorPlay,
+  PlayCircle,
 
 } from 'lucide-angular';
 
@@ -73,7 +75,9 @@ import {
       SearchX,
       RotateCcw,
       RefreshCw,
-      TriangleAlert
+      TriangleAlert,
+      MonitorPlay,
+      PlayCircle
     }),
   ],
   exports: [LucideAngularModule],

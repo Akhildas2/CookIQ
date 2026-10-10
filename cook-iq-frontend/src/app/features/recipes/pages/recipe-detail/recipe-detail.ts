@@ -4,6 +4,7 @@ import { MealdbService } from '../../../../core/services/mealdb/mealdb-service';
 import { Meal, RecipeIngredient } from '../../models/mealdb.models';
 import { DecimalPipe } from '@angular/common';
 import { LucideIconsModule } from '../../../../shared/icons/lucide-icons.module';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -14,7 +15,7 @@ import { LucideIconsModule } from '../../../../shared/icons/lucide-icons.module'
 export class RecipeDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly mealdbService = inject(MealdbService);
-
+  private readonly sanitizer = inject(DomSanitizer);
   // =========================================================
   // STATE
   // =========================================================
@@ -46,10 +47,7 @@ export class RecipeDetail implements OnInit {
       return [];
     }
 
-    return rawTags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter(Boolean);
+    return rawTags.split(',').map((tag) => tag.trim()).filter(Boolean);
   });
 
   readonly instructions = computed<string[]>(() => {
@@ -143,10 +141,7 @@ export class RecipeDetail implements OnInit {
         continue;
       }
 
-      result.push({
-        name,
-        measure: amount,
-      });
+      result.push({ name, measure: amount, });
     }
 
     return result;
@@ -157,8 +152,7 @@ export class RecipeDetail implements OnInit {
   // =========================================================
 
   private splitInstructions(raw: string): string[] {
-    const normalized = raw
-      .replace(/\r\n?/g, '\n')
+    const normalized = raw.replace(/\r\n?/g, '\n')
       .replace(/\u00a0/g, ' ')
       .trim();
 
@@ -166,19 +160,11 @@ export class RecipeDetail implements OnInit {
       return [];
     }
 
-    // TheMealDB can return explicit markers such as:
-    // step 1
-    // Instructions...
-    //
-    // step 2
-    // Instructions...
 
-    const hasStepMarkers =
-      /(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/i.test(normalized);
+    const hasStepMarkers = /(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/i.test(normalized);
 
     if (hasStepMarkers) {
-      return normalized
-        .split(/(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/gi)
+      return normalized.split(/(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/gi)
         .map((step) => this.cleanInstruction(step))
         .filter(Boolean);
     }
@@ -191,8 +177,7 @@ export class RecipeDetail implements OnInit {
   }
 
   private cleanInstruction(step: string): string {
-    return step
-      .replace(/^\s*step\s+\d+\s*:?\s*/i, '')
+    return step.replace(/^\s*step\s+\d+\s*:?\s*/i, '')
       .replace(/\n+/g, ' ')
       .replace(/[ \t]+/g, ' ')
       .trim();
@@ -237,6 +222,90 @@ export class RecipeDetail implements OnInit {
     }
 
     this.loadRecipe(id);
+  }
+
+  // =========================================================
+  // SCROLL TO INGREDIENTS
+  // =========================================================
+
+  scrollToIngredients(): void {
+    document.getElementById('ingredients')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
+
+  // =========================================================
+  // SCROLL TO VIDEO
+  // =========================================================
+
+  scrollToVideo(): void {
+    document.getElementById('recipe-video')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
+  // =========================================================
+  // YOUTUBE VIDEO ID
+  // =========================================================
+
+  youtubeVideoId(url: string): string | null {
+    try {
+      const parsedUrl = new URL(url);
+      const hostname = parsedUrl.hostname.toLowerCase();
+
+      const allowedHosts = [
+        'youtube.com',
+        'www.youtube.com',
+        'm.youtube.com',
+        'youtu.be',
+        'youtube-nocookie.com',
+        'www.youtube-nocookie.com',
+      ];
+
+      if (
+        parsedUrl.protocol !== 'https:' &&
+        parsedUrl.protocol !== 'http:'
+      ) {
+        return null;
+      }
+
+      if (!allowedHosts.includes(hostname)) {
+        return null;
+      }
+
+      let videoId: string | null = null;
+
+      if (hostname === 'youtu.be') {
+        videoId = parsedUrl.pathname.split('/').filter(Boolean)[0] ?? null;
+      } else {
+        videoId =
+          parsedUrl.searchParams.get('v') ??
+          parsedUrl.pathname.match(
+            /^\/(?:embed|shorts|live)\/([^/?]+)/
+          )?.[1] ??
+          null;
+      }
+
+      // YouTube video IDs are normally 11 characters.
+      return videoId && /^[\w-]{11}$/.test(videoId)
+        ? videoId
+        : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // =========================================================
+  // YOUTUBE EMBED URL
+  // =========================================================
+
+  youtubeEmbedUrl(videoId: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://www.youtube-nocookie.com/embed/${videoId}`
+    );
   }
 
 }

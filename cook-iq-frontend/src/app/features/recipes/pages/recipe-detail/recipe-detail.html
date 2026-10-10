@@ -114,18 +114,19 @@
                 </div>
 
                 <div class="recipe-hero__actions">
-                    <a class="recipe-button recipe-button--primary" href="#ingredients">
+                    <button class="recipe-button recipe-button--primary" type="button" (click)="scrollToIngredients()">
                         Explore ingredients
                         <span aria-hidden="true">↘</span>
-                    </a>
+                    </button>
 
-                    @if (recipe.strYoutube) {
-                    <a class="recipe-button recipe-button--secondary" [href]="recipe.strYoutube" target="_blank"
-                        rel="noopener noreferrer">
-                        <span class="recipe-button__play" aria-hidden="true">▶</span>
+                    @if (recipe.strYoutube && youtubeVideoId(recipe.strYoutube)) {
+                    <button class="recipe-button recipe-button--secondary" type="button" (click)="scrollToVideo()">
+                        <lucide-icon name="play-circle" [size]="17" />
                         Watch video
-                    </a>
+                        <span aria-hidden="true">↓</span>
+                    </button>
                     }
+
                 </div>
 
                 @if (recipe.strTags) {
@@ -252,8 +253,7 @@
                 @if (instructions().length) {
                 <ol class="instruction-list">
                     @for (
-                    instruction of instructions();
-                    track $index
+                    instruction of instructions();track $index
                     ) {
                     <li class="instruction-step">
                         <div class="instruction-step__marker">
@@ -294,6 +294,50 @@
                 }
             </section>
         </div>
+
+        <!-- COOKING VIDEO -->
+        @if (recipe.strYoutube; as youtubeUrl) {
+        @if (youtubeVideoId(youtubeUrl); as videoId) {
+        <section id="recipe-video" class="recipe-video" aria-labelledby="recipe-video-title">
+            <div class="recipe-section-kicker">
+                <span>03</span>
+                <span>WATCH & COOK</span>
+            </div>
+
+            <div class="recipe-video__heading">
+                <div>
+                    <p class="recipe-section-heading__eyebrow">
+                        COOK ALONG WITH US
+                    </p>
+
+                    <h2 id="recipe-video-title">
+                        See how it's made<span>.</span>
+                    </h2>
+                </div>
+
+                <span class="recipe-video__badge">
+                    <lucide-icon name="play-circle" [size]="17" />
+                    Video tutorial
+                </span>
+            </div>
+
+            <p class="recipe-video__description">
+                Follow along with the video and bring this recipe to life.
+            </p>
+
+            <div class="recipe-video__player">
+                <iframe [src]="youtubeEmbedUrl(videoId)" [title]="recipe.strMeal + ' cooking tutorial'" loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <p class="recipe-video__caption">
+                <lucide-icon name="monitor-play" [size]="16" />
+                Watch at your own pace. Pause whenever you need to.
+            </p>
+        </section>
+        }
+        }
 
         <!-- CLOSING BANNER -->
         <section class="recipe-closing">
