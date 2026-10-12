@@ -2,25 +2,14 @@
     <div class="recipe-page__container">
 
         @if (loading()) {
-        <section class="recipe-state" aria-live="polite">
-            <span class="recipe-state__loader" aria-hidden="true"></span>
-            <p>Preparing your recipe...</p>
-        </section>
-        } @else if (error()) {
-        <section class="recipe-state" role="alert">
-            <span class="recipe-state__eyebrow">COOKIQ KITCHEN</span>
-            <h1>Something went wrong.</h1>
-            <p>{{ error() }}</p>
+        <app-async-state state="loading" eyebrow="CookIQ recipes" title="Preparing your recipe..."
+            description="Your kitchen is getting everything ready." />
 
-            <div class="recipe-state__actions">
-                <button class="recipe-button recipe-button--primary" type="button" (click)="retry()">
-                    Try again
-                </button>
-                <a class="recipe-button recipe-button--secondary" routerLink="/app/recipes">
-                    Back to recipes
-                </a>
-            </div>
-        </section>
+        } @else if (error()) {
+        <app-async-state state="error" eyebrow="Something went wrong" title="We couldn't load this recipe."
+            [description]="error() ?? 'Please try again in a moment.'" actionLabel="Try again" actionIcon="refresh-cw"
+            (action)="retry()" />
+
         } @else if (meal(); as recipe) {
 
         <!-- BREADCRUMB -->
@@ -183,17 +172,12 @@
 
                 @if (ingredients().length) {
                 <ul class="ingredient-list">
-                    @for (
-                    ingredient of ingredients();
-                    track ingredient.name + ingredient.measure
-                    ) {
+                    @for ( ingredient of ingredients(); track ingredient.name + ingredient.measure ) {
                     <li class="ingredient-item">
                         <label class="ingredient-item__label">
                             <input class="ingredient-item__checkbox" type="checkbox"
-                                [checked]="isIngredientChecked(ingredient.name)" (change)="toggleIngredient(
-                        ingredient.name,
-                        $any($event.target).checked
-                      )" />
+                                [checked]="isIngredientChecked(ingredient.name)"
+                                (change)="toggleIngredient( ingredient.name,  $any($event.target).checked )" />
 
                             <span class="ingredient-item__check" aria-hidden="true">✓</span>
 
@@ -252,9 +236,7 @@
 
                 @if (instructions().length) {
                 <ol class="instruction-list">
-                    @for (
-                    instruction of instructions();track $index
-                    ) {
+                    @for ( instruction of instructions();track $index ) {
                     <li class="instruction-step">
                         <div class="instruction-step__marker">
                             <span>{{ ($index + 1).toString().padStart(2, '0') }}</span>
@@ -348,6 +330,13 @@
                 Discover more recipes <span aria-hidden="true">→</span>
             </a>
         </section>
+
+        } @else {
+
+        <app-async-state state="not-found" eyebrow="CookIQ recipes" title="Recipe not found."
+            description="This recipe is unavailable. Try loading it again." actionLabel="Try again"
+            actionIcon="refresh-cw" (action)="retry()" />
+
         }
     </div>
 </main>

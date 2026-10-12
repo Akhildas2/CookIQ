@@ -5,10 +5,13 @@ import { Meal, RecipeIngredient } from '../../models/mealdb.models';
 import { DecimalPipe } from '@angular/common';
 import { LucideIconsModule } from '../../../../shared/icons/lucide-icons.module';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AsyncState } from '../../../../shared/ui/async-state/async-state';
+import { extractIngredients, getYoutubeVideoId, splitInstructions } from '../../utils/recipe.utils';
+import { handleAsyncRequest } from '../../../../shared/utils/async-request';
 
 @Component({
   selector: 'app-recipe-detail',
-  imports: [RouterLink, DecimalPipe, LucideIconsModule],
+  imports: [RouterLink, DecimalPipe, LucideIconsModule, AsyncState],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.css',
 })
@@ -16,6 +19,7 @@ export class RecipeDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly mealdbService = inject(MealdbService);
   private readonly sanitizer = inject(DomSanitizer);
+
   // =========================================================
   // STATE
   // =========================================================
@@ -23,7 +27,6 @@ export class RecipeDetail implements OnInit {
   readonly meal = signal<Meal | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
-
   readonly checkedIngredients = signal<Set<string>>(new Set());
 
   // =========================================================
@@ -32,32 +35,18 @@ export class RecipeDetail implements OnInit {
 
   readonly ingredients = computed<RecipeIngredient[]>(() => {
     const recipe = this.meal();
-
-    if (!recipe) {
-      return [];
-    }
-
-    return this.extractIngredients(recipe);
+    return recipe ? extractIngredients(recipe) : [];
   });
 
-  readonly tags = computed<string[]>(() => {
-    const rawTags = this.meal()?.strTags;
-
-    if (!rawTags?.trim()) {
-      return [];
-    }
-
-    return rawTags.split(',').map((tag) => tag.trim()).filter(Boolean);
-  });
+  readonly tags = computed(() =>
+    (this.meal()?.strTags ?? '').split(',')
+      .map(tag => tag.trim())
+      .filter(Boolean)
+  );
 
   readonly instructions = computed<string[]>(() => {
-    const rawInstructions = this.meal()?.strInstructions;
-
-    if (!rawInstructions?.trim()) {
-      return [];
-    }
-
-    return this.splitInstructions(rawInstructions);
+    const raw = this.meal()?.strInstructions ?? '';
+    return splitInstructions(raw);
   });
 
   readonly checkedCount = computed(
@@ -67,11 +56,7 @@ export class RecipeDetail implements OnInit {
   readonly ingredientProgress = computed(() => {
     const total = this.ingredients().length;
 
-    if (total === 0) {
-      return 0;
-    }
-
-    return Math.round((this.checkedCount() / total) * 100);
+    return total ? Math.round((this.checkedCount() / total) * 100) : 0;
   });
 
   // =========================================================
@@ -80,12 +65,6 @@ export class RecipeDetail implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
-    if (!id) {
-      this.error.set('We could not find this recipe.');
-      return;
-    }
-
     this.loadRecipe(id);
   }
 
@@ -93,94 +72,35 @@ export class RecipeDetail implements OnInit {
   // LOAD RECIPE
   // =========================================================
 
-  private loadRecipe(id: string): void {
+  private loadRecipe(id: string | null): void {
+    if (!id) {
+      this.meal.set(null);
+      this.error.set('We could not find this recipe.');
+      this.loading.set(false);
+      return;
+    }
+
     this.loading.set(true);
     this.error.set(null);
     this.meal.set(null);
     this.checkedIngredients.set(new Set());
 
-    this.mealdbService.getMealById(id).subscribe({
-      next: (response) => {
+    handleAsyncRequest({
+      request: this.mealdbService.getMealById(id),
+      loading: this.loading,
+      error: this.error,
+      errorMessage: 'We could not load this recipe right now. Please try again.',
+      onSuccess: response => {
         const recipe = response.meals?.[0] ?? null;
 
         if (!recipe) {
           this.error.set('This recipe could not be found.');
-          this.loading.set(false);
           return;
         }
 
         this.meal.set(recipe);
-        this.loading.set(false);
-      },
-
-      error: () => {
-        this.meal.set(null);
-        this.error.set(
-          'We could not load this recipe right now. Please try again.',
-        );
-        this.loading.set(false);
       },
     });
-  }
-
-  // =========================================================
-  // INGREDIENT EXTRACTION
-  // =========================================================
-
-  private extractIngredients(recipe: Meal): RecipeIngredient[] {
-    const result: RecipeIngredient[] = [];
-
-    for (let index = 1; index <= 20; index++) {
-      const ingredient = recipe[`strIngredient${index}`];
-      const measure = recipe[`strMeasure${index}`];
-
-      const name = ingredient?.trim() ?? '';
-      const amount = measure?.trim() ?? '';
-
-      if (!name) {
-        continue;
-      }
-
-      result.push({ name, measure: amount, });
-    }
-
-    return result;
-  }
-
-  // =========================================================
-  // INSTRUCTION PARSING
-  // =========================================================
-
-  private splitInstructions(raw: string): string[] {
-    const normalized = raw.replace(/\r\n?/g, '\n')
-      .replace(/\u00a0/g, ' ')
-      .trim();
-
-    if (!normalized) {
-      return [];
-    }
-
-
-    const hasStepMarkers = /(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/i.test(normalized);
-
-    if (hasStepMarkers) {
-      return normalized.split(/(?:^|\n)\s*step\s+\d+\s*:?\s*(?:\n|$)/gi)
-        .map((step) => this.cleanInstruction(step))
-        .filter(Boolean);
-    }
-
-    // Some recipes use blank lines rather than step markers.
-    return normalized
-      .split(/\n\s*\n+/)
-      .map((step) => this.cleanInstruction(step))
-      .filter(Boolean);
-  }
-
-  private cleanInstruction(step: string): string {
-    return step.replace(/^\s*step\s+\d+\s*:?\s*/i, '')
-      .replace(/\n+/g, ' ')
-      .replace(/[ \t]+/g, ' ')
-      .trim();
   }
 
   // =========================================================
@@ -195,11 +115,7 @@ export class RecipeDetail implements OnInit {
     this.checkedIngredients.update((current) => {
       const next = new Set(current);
 
-      if (checked) {
-        next.add(name);
-      } else {
-        next.delete(name);
-      }
+      checked ? next.add(name) : next.delete(name);
 
       return next;
     });
@@ -215,12 +131,6 @@ export class RecipeDetail implements OnInit {
 
   retry(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
-    if (!id) {
-      this.error.set('We could not find this recipe.');
-      return;
-    }
-
     this.loadRecipe(id);
   }
 
@@ -252,50 +162,7 @@ export class RecipeDetail implements OnInit {
   // =========================================================
 
   youtubeVideoId(url: string): string | null {
-    try {
-      const parsedUrl = new URL(url);
-      const hostname = parsedUrl.hostname.toLowerCase();
-
-      const allowedHosts = [
-        'youtube.com',
-        'www.youtube.com',
-        'm.youtube.com',
-        'youtu.be',
-        'youtube-nocookie.com',
-        'www.youtube-nocookie.com',
-      ];
-
-      if (
-        parsedUrl.protocol !== 'https:' &&
-        parsedUrl.protocol !== 'http:'
-      ) {
-        return null;
-      }
-
-      if (!allowedHosts.includes(hostname)) {
-        return null;
-      }
-
-      let videoId: string | null = null;
-
-      if (hostname === 'youtu.be') {
-        videoId = parsedUrl.pathname.split('/').filter(Boolean)[0] ?? null;
-      } else {
-        videoId =
-          parsedUrl.searchParams.get('v') ??
-          parsedUrl.pathname.match(
-            /^\/(?:embed|shorts|live)\/([^/?]+)/
-          )?.[1] ??
-          null;
-      }
-
-      // YouTube video IDs are normally 11 characters.
-      return videoId && /^[\w-]{11}$/.test(videoId)
-        ? videoId
-        : null;
-    } catch {
-      return null;
-    }
+    return getYoutubeVideoId(url);
   }
 
   // =========================================================
@@ -304,7 +171,7 @@ export class RecipeDetail implements OnInit {
 
   youtubeEmbedUrl(videoId: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube-nocookie.com/embed/${videoId}`
+      `https://www.youtube-nocookie.com/embed/${videoId}`,
     );
   }
 

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth/auth-service';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthDialog } from '../../../features/auth/components/auth-dialog/auth-dialog';
@@ -11,6 +11,7 @@ import { BillingService } from '../../../features/billing/services/billing/billi
 import { getPlanBadgeClass, getPlanIcon } from '../../../shared/utils/plan.utils';
 import { ConfirmDialog } from '../../../shared/dialogs/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
+import { ACCOUNT_NAV_ITEMS, PUBLIC_NAV_ITEMS } from './header.types';
 
 @Component({
   selector: 'app-header',
@@ -19,101 +20,92 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './header.css',
 })
 export class Header {
-  auth = inject(AuthService);
-  dialog = inject(MatDialog);
-  billingService = inject(BillingService);
-  menuOpen = signal<boolean>(false);
-  mobileMenuOpen = signal<boolean>(false);
-  plusVisible = signal(true);
-  plan = this.auth.plan;
-  subscriptionLoading = computed(() => this.billingService.subscriptionLoading());
+  readonly auth = inject(AuthService);
+  private readonly dialog = inject(MatDialog);
+  readonly billingService = inject(BillingService);
 
-  navItems: NavItem[] = [
-    { label: 'Home', route: '/', icon: 'home', exact: true },
-    { label: 'Recipes', route: '/recipes', icon: 'cookie' },
-    { label: 'AI Cook', route: '/ai', icon: 'auto_awesome' },
-  ];
+  readonly menuOpen = signal(false);
+  readonly mobileMenuOpen = signal(false);
+  readonly plusVisible = signal(true);
 
-  // show plus only if plan is free AND user didn't hide
-  showPlus = computed(() => {
-    return this.auth.plan() === 'free' && this.plusVisible();
+  readonly navItems = PUBLIC_NAV_ITEMS;
+  readonly accountNavItems = ACCOUNT_NAV_ITEMS;
+
+  readonly plan = this.auth.plan;
+
+  readonly subscriptionLoading = computed(
+    () => this.billingService.subscriptionLoading(),
+  );
+
+  readonly showPlus = computed(
+    () => this.auth.plan() === 'free' && this.plusVisible(),
+  );
+
+  readonly planBadgeClass = computed(
+    () => getPlanBadgeClass(this.auth.plan()),
+  );
+
+  readonly planIcon = computed(
+    () => getPlanIcon(this.auth.plan()),
+  );
+
+  // Computed user name
+  readonly userName = computed(() => {
+    const user = this.auth.user();
+    const fullName = user?.user_metadata?.full_name ??
+      user?.user_metadata?.name ??
+      user?.email ?? 'User';
+
+    const name = fullName.includes('@')
+      ? fullName.split('@')[0] : fullName;
+
+    return name.length > 10
+      ? `${name.slice(0, 10)}...` : name;
   });
 
-  planBadgeClass = computed(() =>
-    getPlanBadgeClass(this.auth.plan())
-  );
-
-  planIcon = computed(() =>
-    getPlanIcon(this.auth.plan())
-  );
-
   // Computed avatar
-  avatarUrl = computed(() => {
+  readonly avatarUrl = computed(() => {
     const user = this.auth.user();
     if (!user) return '';
 
-    const avatar = user?.user_metadata?.avatar_url;
+    const avatar = user.user_metadata?.avatar_url;
 
-    if (avatar && avatar.startsWith('http')) {
+    if (typeof avatar === 'string' && avatar.startsWith('https://')) {
       return avatar;
     }
 
-    const name =
-      user?.user_metadata?.full_name ||
-      user?.email ||
-      'CookIQ';
-
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name
-    )}&background=22c55e&color=ffffff`;
-  });
-
-  // Handle avatar image error
-  handleAvatarError(event: Event) {
-    const img = event.target as HTMLImageElement;
-
-    const user = this.auth.user();
-    const name =
-      user?.user_metadata?.full_name ||
-      user?.email ||
-      'CookIQ';
-
-    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name
-    )}&background=22c55e&color=ffffff`;
-  }
-
-  // Computed user name
-  userName = computed(() => {
-    const user = this.auth.user();
-    if (!user) return 'User';
-
-    let name =
-      user?.user_metadata?.full_name ||
-      user?.user_metadata?.name ||
-      user?.email ||
-      'User';
-
-    if (name.includes('@')) {
-      name = name.split('@')[0];
-    }
-
-    if (name.length >= 10) {
-      name = name.slice(0, 10) + '...';
-    }
-
-    return name;
+    return this.createAvatarUrl(
+      user.user_metadata?.full_name ?? user.user_metadata?.name ?? user.email ?? 'CookIQ',
+    );
   });
 
   constructor() {
-    const hidden = localStorage.getItem('hidePlus');
-    if (hidden === 'true') {
-      this.plusVisible.set(false);
+    try {
+      this.plusVisible.set(
+        localStorage.getItem('hidePlus') !== 'true',
+      );
+    } catch {
+      // Continue normally when storage is unavailable.
+    }
+  }
+
+  private createAvatarUrl(name: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1c3a2b&color=faf7f0`;
+  }
+
+  // Handle avatar image error
+  handleAvatarError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    const fallback = this.createAvatarUrl(this.userName());
+
+    // Prevent an infinite image-error loop.
+    if (img.src !== fallback) {
+      img.src = fallback;
     }
   }
 
   // Auth dialog
-  openAuth(mode: 'login' | 'register') {
+  openAuth(mode: 'login' | 'register'): void {
     this.dialog.open(AuthDialog, {
       data: { mode },
       width: '420px',
@@ -124,7 +116,7 @@ export class Header {
   }
 
   // Pricing modal
-  openPricingModal() {
+  openPricingModal(): void {
     this.dialog.open(PricingModal, {
       width: '95vw',
       maxWidth: '1200px',
@@ -134,26 +126,36 @@ export class Header {
   }
 
   // Menu toggles
-  toggleMobileMenu() {
-    this.mobileMenuOpen.update(v => !v);
+  toggleMobileMenu(): void {
+    this.menuOpen.set(false);
+    this.mobileMenuOpen.update((open) => !open);
   }
 
   // Toolbar menu toggle
-  toggleMenu() {
-    this.menuOpen.update(v => !v);
+  toggleMenu(): void {
+    this.mobileMenuOpen.set(false);
+    this.menuOpen.update((open) => !open);
   }
 
   // Hide plus button
-  hidePlus(event: Event) {
-    event.stopPropagation(); // prevent button click
+  hidePlus(event: Event): void {
+    event.stopPropagation();
     this.plusVisible.set(false);
 
-    // optional: remember in localStorage
-    localStorage.setItem('hidePlus', 'true');
+    try {
+      localStorage.setItem('hidePlus', 'true');
+    } catch {
+      // Hiding the button still works for this session.
+    }
+  }
+
+  closeMenus(): void {
+    this.menuOpen.set(false);
+    this.mobileMenuOpen.set(false);
   }
 
   // logout
-  async logout() {
+  async logout(): Promise<void> {
 
     const ref = this.dialog.open(ConfirmDialog, {
       disableClose: true,
@@ -172,8 +174,11 @@ export class Header {
     const confirmed = await firstValueFrom(ref.afterClosed());
     if (!confirmed) return;
 
-    await this.auth.logout();
-    this.menuOpen.set(false);
+    try {
+      await this.auth.logout();
+    } finally {
+      this.closeMenus();
+    }
   }
 
 }

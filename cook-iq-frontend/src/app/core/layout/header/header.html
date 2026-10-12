@@ -1,14 +1,14 @@
 <header class="ci-header">
-  <!-- Left / Brand -->
-  <a routerLink="/" class="ci-logo">
+  <!-- Brand -->
+  <a routerLink="/" class="ci-logo" aria-label="CookIQ home">
     <span class="ci-logo-icon">🍳</span>
     <span class="ci-logo-text">CookIQ</span>
     <span class="ci-logo-ai">AI</span>
   </a>
 
-  <!-- Center Nav -->
-  <nav class="ci-nav-desktop">
-    @for (item of navItems; track item.label){
+  <!-- Desktop Navigation -->
+  <nav class="ci-nav-desktop" aria-label="Main navigation">
+    @for (item of navItems; track item.route) {
     <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
       class="ci-link">
       {{ item.label }}
@@ -18,142 +18,155 @@
 
   <!-- Right Actions -->
   <div class="ci-actions">
-    <!-- Loading -->
-    @if(auth.loading() && !auth.user()){
-    <div class="ci-skeleton-circle"></div>
-    <div class="ci-skeleton-rect"></div>
+    <!-- Authentication Loading -->
+    @if (auth.loading() && !auth.user()) {
+    <div class="ci-skeleton-circle" aria-hidden="true"></div>
+    <div class="ci-skeleton-rect" aria-hidden="true"></div>
     }
 
     <!-- Logged Out -->
-    @if(!auth.user() && !auth.loading()){
+    @if (!auth.user() && !auth.loading()) {
     <div class="hidden sm:flex items-center gap-2">
-      <button class="ci-btn outline" (click)="openAuth('login')">Login</button>
+      <button type="button" class="ci-btn outline" (click)="openAuth('login')">
+        Login
+      </button>
     </div>
-    <button class="ci-btn primary" (click)="openAuth('register')">Get started</button>
+
+    <button type="button" class="ci-btn primary" (click)="openAuth('register')">
+      Get started
+    </button>
     }
 
     <!-- Logged In -->
-    @if(auth.user()){
-    <div class="relative flex items-center gap-2" appClickOutside (clickOutside)="menuOpen.set(false)">
-
-      <!-- Skeleton -->
-      @if(subscriptionLoading()){
-      <button class="ci-Pro-btn hidden md:inline-flex animate-pulse">
-        <div class="w-5 h-5 bg-white rounded-full"></div>
-        <div class="h-4 w-16 bg-white"></div>
-        <div class="w-4 h-4 bg-white rounded-full"></div>
+    @if (auth.user()) {
+    <div class="ci-account-actions" appClickOutside (clickOutside)="menuOpen.set(false)">
+      <!-- Pro Loading Skeleton -->
+      @if (subscriptionLoading()) {
+      <button type="button" class="ci-Pro-btn ci-pro-skeleton hidden md:inline-flex animate-pulse"
+        aria-label="Loading subscription" disabled>
+        <span class="ci-skeleton-pro-icon"></span>
+        <span class="ci-skeleton-pro-text"></span>
+        <span class="ci-skeleton-pro-icon"></span>
       </button>
       }
 
       <!-- Get Pro -->
-      @if(showPlus() && !subscriptionLoading()){
-      <button class="ci-Pro-btn hidden md:inline-flex" aria-label="Get Pro" (click)="openPricingModal()">
+      @if (showPlus() && !subscriptionLoading()) {
+      <button type="button" class="ci-Pro-btn hidden md:inline-flex" aria-label="Get Pro" (click)="openPricingModal()">
         <mat-icon class="ci-Pro-icon">auto_awesome</mat-icon>
         <span>Get Pro</span>
-        <mat-icon class="ci-Pro-close" (click)="hidePlus($event)">
+        <mat-icon class="ci-Pro-close" role="button" aria-label="Hide Get Pro button" (click)="hidePlus($event)">
           close
         </mat-icon>
       </button>
       }
 
-      <!-- Avatar -->
-      <button class="ci-avatar-wrapper" (click)="toggleMenu()" aria-label="User menu">
+      <!-- User Avatar -->
+      <button type="button" class="ci-avatar-wrapper" aria-label="User menu" aria-haspopup="true"
+        [attr.aria-expanded]="menuOpen()" (click)="toggleMenu()">
         <img class="ci-avatar" [src]="avatarUrl()" [alt]="userName()" (error)="handleAvatarError($event)" />
-        <span class="ci-status-indicator"></span>
+        <span class="ci-status-indicator" aria-hidden="true"></span>
       </button>
 
-      @if(menuOpen()){
-      <!-- Dropdown Menu -->
-      <div *ngIf="menuOpen()" class="ci-dropdown">
-
-        <!-- User Info -->
+      <!-- Account Dropdown -->
+      @if (menuOpen()) {
+      <div class="ci-dropdown">
+        <!-- User Information -->
         <div class="ci-dropdown-header">
-
-          <!-- Plan Badge -->
-          <span class="ci-plan-badge flex items-center gap-1" [ngClass]="planBadgeClass()">
-            <mat-icon>{{ planIcon() }}</mat-icon>
-            {{ plan() === 'loading' ? 'loading ...' : (plan() | uppercase) }}
-          </span>
-
-          <!-- Avatar -->
           <img class="ci-avatar-lg" [src]="avatarUrl()" [alt]="userName()" (error)="handleAvatarError($event)" />
 
-          <!-- Name + Email -->
           <div class="ci-user-info">
-            <div class="ci-user-name">
-              {{ userName() | titlecase }}
-            </div>
-
+            <div class="ci-user-name">{{ userName() }}</div>
             <div class="ci-user-email">
               {{ auth.user()?.email }}
             </div>
           </div>
 
+          <!-- Plan Badge -->
+          <span class="ci-plan-badge" [ngClass]="planBadgeClass()">
+            <mat-icon>{{ planIcon() }}</mat-icon>
+            {{ plan() === 'loading' ? 'Loading…' : (plan() | uppercase) }}
+          </span>
         </div>
 
-        <!-- Menu Items -->
-        <ul class="ci-dropdown-list space-y-1">
-          <li>
-            <a routerLink="/dashboard" class="ci-dropdown-item">
-              <mat-icon class="align-middle text-xs">dashboard</mat-icon> Dashboard
-            </a>
-          </li>
-          <li>
-            <a routerLink="/profile" class="ci-dropdown-item">
-              <mat-icon class="align-middle text-xs">person</mat-icon> Profile
-            </a>
-          </li>
-          <li>
-            <a routerLink="/settings" class="ci-dropdown-item">
-              <mat-icon class="align-middle text-xs">settings</mat-icon> Settings
-            </a>
-          </li>
-        </ul>
+        <!-- Account Navigation -->
+        <nav class="ci-dropdown-list" aria-label="Account navigation">
+          @for (item of accountNavItems; track item.route) {
+          <a [routerLink]="item.route" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.exact ?? false }" class="ci-dropdown-item" (click)="closeMenus()">
+            <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+            <span>{{ item.label }}</span>
+          </a>
+          }
+        </nav>
 
         <div class="ci-divider"></div>
 
-        <ul class="pt-2">
-          <li class="px-2">
-            <button class="ci-logout-btn" (click)="logout()">
-              <mat-icon class="align-middle text-xs">logout</mat-icon> Sign out
-            </button>
-          </li>
-        </ul>
-
+        <!-- Sign Out -->
+        <div class="ci-dropdown-footer">
+          <button type="button" class="ci-logout-btn" (click)="logout()">
+            <mat-icon aria-hidden="true">logout</mat-icon>
+            <span>Sign out</span>
+          </button>
+        </div>
       </div>
       }
     </div>
     }
 
     <!-- Mobile Menu Toggle -->
-    <button class="ci-mobile-toggle" (click)="mobileMenuOpen.set(!mobileMenuOpen())" [aria-expanded]="mobileMenuOpen()">
-      <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+    <button type="button" class="ci-mobile-toggle" aria-label="Toggle navigation menu"
+      [attr.aria-expanded]="mobileMenuOpen()" (click)="toggleMobileMenu()">
+      <mat-icon>
+        {{ mobileMenuOpen() ? 'close' : 'menu' }}
+      </mat-icon>
     </button>
   </div>
 
   <!-- Mobile Menu -->
   @if (mobileMenuOpen()) {
-  <div class="ci-mobile-overlay" appClickOutside (clickOutside)="mobileMenuOpen.set(false)">
-    <nav class="ci-mobile-menu" (click)="$event.stopPropagation()">
-      <div class="flex flex-col gap-2 w-full">
-        @for (item of navItems; track item.label) {
-        <a [routerLink]="item.route" (click)="mobileMenuOpen.set(false)" class="ci-mobile-link">
-          <mat-icon class="align-middle text-xs mr-1">{{ item.icon }}</mat-icon>
-          {{ item.label }}
+  <div class="ci-mobile-overlay" (click)="closeMenus()">
+    <nav class="ci-mobile-menu" aria-label="Mobile navigation" (click)="$event.stopPropagation()">
+      <div class="ci-mobile-menu-content">
+        <!-- Public Navigation -->
+        @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }" class="ci-mobile-link" (click)="closeMenus()">
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
         </a>
         }
-        @if(auth.user() && auth.plan() === 'free'){
-        <hr class="my-2 border-green-100" />
 
-        <button class="ci-btn primary w-full flex items-center justify-center gap-2" (click)="openPricingModal()">
+        <!-- Logged-In Actions -->
+        @if (auth.user()) {
+        @if (showPlus() && !subscriptionLoading()) {
+        <div class="ci-mobile-divider"></div>
+
+        <button type="button" class="ci-btn primary ci-mobile-upgrade" (click)="openPricingModal(); closeMenus()">
           <mat-icon>auto_awesome</mat-icon>
-          Upgrade Plan
+          <span>Upgrade to Pro</span>
         </button>
         }
 
-        @if (!auth.user()) {
-        <hr class="my-2 border-green-100" />
-        <button class="ci-btn outline w-full mt-2" (click)="openAuth('login')">Login</button>
+        @if (subscriptionLoading()) {
+        <div class="ci-mobile-divider"></div>
+        <div class="ci-mobile-upgrade-skeleton animate-pulse" aria-label="Loading subscription"></div>
+        }
+        }
+
+        <!-- Logged-Out Mobile Actions -->
+        @if (!auth.user() && !auth.loading()) {
+        <div class="ci-mobile-divider"></div>
+
+        <div class="ci-mobile-auth">
+          <button type="button" class="ci-btn outline" (click)="openAuth('login'); closeMenus()">
+            Login
+          </button>
+
+          <button type="button" class="ci-btn primary" (click)="openAuth('register'); closeMenus()">
+            Get started
+          </button>
+        </div>
         }
       </div>
     </nav>
