@@ -43,6 +43,12 @@ export const routes: Routes = [
                 loadChildren: () =>
                     import('./features/my-recipes/my-recipes.routes').then((m) => m.MY_RECIPES_ROUTES),
             },
+            // Pantry
+            {
+                path: 'pantry',
+                loadChildren: () =>
+                    import('./features/pantry/pantry.routes').then((m) => m.PANTRY_ROUTES),
+            },
         ],
 
     },

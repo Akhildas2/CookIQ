@@ -1,0 +1,387 @@
+<main class="pantry-page">
+  <div class="pantry-container">
+    <!-- Breadcrumb -->
+    <nav class="pantry-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/app/dashboard">Dashboard</a>
+      <lucide-icon name="chevron-right" [size]="14" />
+      <span>My pantry</span>
+    </nav>
+
+    <!-- Editorial hero -->
+    <section class="pantry-hero">
+      <div class="pantry-hero__copy">
+        <div class="eyebrow">
+          <span class="eyebrow__line"></span>
+          YOUR KITCHEN, IN SYNC
+        </div>
+
+        <h1>
+          A little more
+          <span>freshness.</span>
+        </h1>
+
+        <p class="pantry-hero__description">
+          Keep track of what you have, make the most of every
+          ingredient, and find something wonderful to cook.
+        </p>
+
+        <div class="pantry-hero__actions">
+          <button type="button" class="button button--primary" (click)="openAddForm()">
+            <lucide-icon name="plus" [size]="18" />
+            Add ingredient
+          </button>
+
+          <button type="button" class="button button--secondary" (click)="openScan()">
+            <lucide-icon name="scan-line" [size]="18" />
+            Scan ingredients
+          </button>
+        </div>
+
+        <div class="pantry-hero__note">
+          <lucide-icon name="leaf" [size]="16" />
+          <span>Good food starts with what you have.</span>
+        </div>
+      </div>
+
+      <div class="pantry-hero__art" aria-hidden="true">
+        <div class="hero-art__circle hero-art__circle--outer"></div>
+        <div class="hero-art__circle hero-art__circle--inner"></div>
+
+        <span class="hero-art__leaf hero-art__leaf--one">🌿</span>
+        <span class="hero-art__leaf hero-art__leaf--two">🌱</span>
+
+        <div class="hero-art__basket">
+          <span class="hero-art__produce hero-art__produce--tomato">🍅</span>
+          <span class="hero-art__produce hero-art__produce--avocado">🥑</span>
+          <span class="hero-art__produce hero-art__produce--carrot">🥕</span>
+          <span class="hero-art__produce hero-art__produce--lemon">🍋</span>
+          <span class="hero-art__produce hero-art__produce--greens">🥬</span>
+          <div class="hero-art__basket-body"></div>
+        </div>
+
+        <div class="hero-art__caption">
+          <span class="hero-art__caption-icon">✳</span>
+          <span>Fresh ideas, every day</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overview statistics -->
+    <section class="pantry-stats" aria-label="Pantry overview">
+      <article class="stat-card">
+        <div class="stat-card__icon stat-card__icon--green">
+          <lucide-icon name="package" [size]="20" />
+        </div>
+        <div>
+          <p class="stat-card__label">In your pantry</p>
+          <p class="stat-card__value">
+            {{ totalItems() }}
+            <span>ingredients</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-card__icon stat-card__icon--gold">
+          <lucide-icon name="layers-3" [size]="20" />
+        </div>
+        <div>
+          <p class="stat-card__label">Variety</p>
+          <p class="stat-card__value">
+            {{ categoryCount() }}
+            <span>categories</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="stat-card stat-card--expiry">
+        <div class="stat-card__icon stat-card__icon--spice">
+          <lucide-icon name="clock-3" [size]="20" />
+        </div>
+        <div>
+          <p class="stat-card__label">Use these soon</p>
+          <p class="stat-card__value">
+            {{ expiringCount() }}
+            <span>ingredients</span>
+          </p>
+        </div>
+        @if (expiringCount() > 0) {
+        <span class="stat-card__badge">Use first</span>
+        }
+      </article>
+    </section>
+
+    <!-- Pantry list heading -->
+    <section class="pantry-inventory">
+      <div class="inventory-heading">
+        <div>
+          <div class="eyebrow inventory-heading__eyebrow">
+            <span class="eyebrow__line"></span>
+            YOUR INGREDIENTS
+          </div>
+          <h2>Inside your pantry<span>.</span></h2>
+          <p>Everything you need, all in one place.</p>
+        </div>
+
+        <span class="inventory-heading__count">
+          {{ filteredItems().length }} items
+        </span>
+      </div>
+
+      <!-- Search -->
+      <div class="inventory-toolbar">
+        <label class="search-field">
+          <lucide-icon name="search" [size]="19" />
+          <input type="search" placeholder="Search your ingredients..." aria-label="Search ingredients"
+            [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+          @if (searchQuery()) {
+          <button type="button" class="search-field__clear" aria-label="Clear search" (click)="searchQuery.set('')">
+            <lucide-icon name="x" [size]="16" />
+          </button>
+          }
+        </label>
+
+        <button type="button" class="toolbar-add" (click)="openAddForm()">
+          <lucide-icon name="plus" [size]="17" />
+          <span>Add item</span>
+        </button>
+      </div>
+
+      <!-- Category filters -->
+      <div class="category-filters" aria-label="Filter by category">
+        @for (category of categories; track category) {
+        <button type="button" class="category-filter" [class.category-filter--active]="selectedFilter() === category"
+          [attr.aria-pressed]="selectedFilter() === category" (click)="selectFilter(category)">
+          @if (category === 'All') {
+          <lucide-icon name="layout-grid" [size]="15" />
+          } @else if (category === 'Vegetables') {
+          <span>🥦</span>
+          } @else if (category === 'Fruits') {
+          <span>🍎</span>
+          } @else if (category === 'Dairy') {
+          <span>🥛</span>
+          } @else if (category === 'Proteins') {
+          <span>🥚</span>
+          } @else if (category === 'Grains') {
+          <span>🌾</span>
+          } @else if (category === 'Spices') {
+          <span>🌶️</span>
+          } @else {
+          <span>🥣</span>
+          }
+          {{ category }}
+        </button>
+        }
+      </div>
+
+      <!-- Ingredient cards -->
+      @if (filteredItems().length > 0) {
+      <div class="pantry-grid">
+        @for (item of filteredItems(); track item.id) {
+        <app-pantry-item-card [item]="item" (edit)="openEditForm($event)" (delete)="deleteItem($event)" />
+        }
+      </div>
+      } @else {
+      <div class="pantry-empty">
+        <div class="pantry-empty__icon">
+          <lucide-icon name="search-x" [size]="30" />
+        </div>
+        <h3>No ingredients found</h3>
+        <p>
+          Try a different search or category, or add something
+          new to your pantry.
+        </p>
+        <button type="button" class="button button--primary" (click)="openAddForm()">
+          <lucide-icon name="plus" [size]="17" />
+          Add ingredient
+        </button>
+      </div>
+      }
+    </section>
+
+    <!-- Smart cooking prompt -->
+    <section class="pantry-recipe-prompt">
+      <div class="recipe-prompt__icon">
+        <lucide-icon name="sparkles" [size]="25" />
+      </div>
+
+      <div class="recipe-prompt__copy">
+        <span class="recipe-prompt__eyebrow">A LITTLE KITCHEN MAGIC</span>
+        <h2>Something delicious is already here.</h2>
+        <p>
+          Your pantry can inspire your next meal. Recipe
+          recommendations will connect here when the AI feature
+          is ready.
+        </p>
+      </div>
+
+      <a class="recipe-prompt__link" routerLink="/app/recipes">
+        Explore recipes
+        <lucide-icon name="arrow-up-right" [size]="18" />
+      </a>
+    </section>
+  </div>
+</main>
+
+<!-- Add / edit dialog -->
+@if (isFormOpen()) {
+<div class="modal-backdrop" (click)="closeForm()" (keydown.escape)="closeForm()">
+  <section class="pantry-modal" role="dialog" aria-modal="true"
+    [attr.aria-label]="editingId() ? 'Edit ingredient' : 'Add ingredient'" (click)="$event.stopPropagation()">
+    <div class="pantry-modal__header">
+      <div>
+        <span class="modal-eyebrow">
+          {{ editingId() ? 'UPDATE YOUR PANTRY' : 'A FRESH ADDITION' }}
+        </span>
+        <h2>{{ editingId() ? 'Edit ingredient' : 'Add an ingredient' }}</h2>
+        <p>Keep your kitchen inventory up to date.</p>
+      </div>
+
+      <button type="button" class="modal-close" aria-label="Close dialog" (click)="closeForm()">
+        <lucide-icon name="x" [size]="20" />
+      </button>
+    </div>
+
+    <form class="pantry-form" (ngSubmit)="saveItem()">
+      <div class="form-visual">
+        <span>{{ form.emoji }}</span>
+        <div>
+          <strong>{{ form.name || 'Your ingredient' }}</strong>
+          <small>Choose an illustration below</small>
+        </div>
+      </div>
+
+      <fieldset class="emoji-picker">
+        <legend>Ingredient illustration</legend>
+        <div class="emoji-picker__grid">
+          @for (emoji of emojiOptions; track emoji) {
+          <button type="button" class="emoji-option" [class.emoji-option--active]="form.emoji === emoji"
+            [attr.aria-label]="'Choose ' + emoji" [attr.aria-pressed]="form.emoji === emoji"
+            (click)="form.emoji = emoji">
+            {{ emoji }}
+          </button>
+          }
+        </div>
+      </fieldset>
+
+      <div class="form-field">
+        <label for="ingredient-name">Ingredient name *</label>
+        <input id="ingredient-name" name="name" type="text" [(ngModel)]="form.name" placeholder="e.g. Cherry tomatoes"
+          required maxlength="80" autocomplete="off" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="ingredient-quantity">Quantity *</label>
+          <input id="ingredient-quantity" name="quantity" type="number" [(ngModel)]="form.quantity" min="0.01"
+            step="any" required />
+        </div>
+
+        <div class="form-field">
+          <label for="ingredient-unit">Unit</label>
+          <select id="ingredient-unit" name="unit" [(ngModel)]="form.unit">
+            @for (unit of unitOptions; track unit) {
+            <option [value]="unit">{{ unit }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="ingredient-category">Category *</label>
+        <select id="ingredient-category" name="category" [(ngModel)]="form.category" required>
+          @for (category of categoryOptions; track category) {
+          <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="ingredient-expiry">
+          Expiry date
+          <span class="optional-label">Optional</span>
+        </label>
+        <input id="ingredient-expiry" name="expiryDate" type="date" [(ngModel)]="form.expiryDate"
+          [min]="'2020-01-01'" />
+      </div>
+
+      <div class="pantry-form__actions">
+        <button type="button" class="button button--secondary" (click)="closeForm()">
+          Cancel
+        </button>
+        <button type="submit" class="button button--primary">
+          <lucide-icon [name]="editingId() ? 'check' : 'plus'" [size]="17" />
+          {{ editingId() ? 'Save changes' : 'Add to pantry' }}
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+}
+
+<!-- Image scan dialog -->
+@if (isScanOpen()) {
+<div class="modal-backdrop" (click)="closeScan()" (keydown.escape)="closeScan()">
+  <section class="pantry-modal scan-modal" role="dialog" aria-modal="true" aria-label="Scan pantry ingredients"
+    (click)="$event.stopPropagation()">
+    <div class="pantry-modal__header">
+      <div>
+        <span class="modal-eyebrow">SMART PANTRY</span>
+        <h2>Scan your ingredients</h2>
+        <p>Choose a photo of the ingredients you have.</p>
+      </div>
+
+      <button type="button" class="modal-close" aria-label="Close scan dialog" [disabled]="isScanning()"
+        (click)="closeScan()">
+        <lucide-icon name="x" [size]="20" />
+      </button>
+    </div>
+
+    <label class="scan-dropzone" [class.scan-dropzone--has-image]="scanPreview()">
+      @if (scanPreview()) {
+      <img class="scan-preview" [src]="scanPreview()!" alt="Selected ingredients" />
+      } @else {
+      <span class="scan-dropzone__icon">
+        <lucide-icon name="image-plus" [size]="32" />
+      </span>
+      <strong>Choose an ingredient photo</strong>
+      <span>JPG, PNG or WebP · Up to 10 MB</span>
+      }
+
+      <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment"
+        aria-label="Choose or capture an ingredient photo" (change)="onFileSelected($event)" />
+    </label>
+
+    @if (scanMessage()) {
+    <p class="scan-message" [class.scan-message--success]="scanCompleted()" role="status">
+      <lucide-icon [name]="scanCompleted() ? 'check-circle-2' : 'info'" [size]="17" />
+      {{ scanMessage() }}
+    </p>
+    }
+
+    @if (isScanning()) {
+    <div class="scan-progress" role="status">
+      <span class="scan-progress__spinner"></span>
+      <span>Preparing your demo scan...</span>
+    </div>
+    }
+
+    <div class="scan-modal__actions">
+      <button type="button" class="button button--secondary" [disabled]="isScanning()" (click)="closeScan()">
+        Close
+      </button>
+
+      <button type="button" class="button button--primary" [disabled]="!scanPreview() || isScanning()"
+        (click)="startMockScan()">
+        <lucide-icon name="scan-line" [size]="17" />
+        {{ isScanning() ? 'Scanning...' : 'Try demo scan' }}
+      </button>
+    </div>
+
+    <p class="scan-disclaimer">
+      Demo only: this preview does not identify ingredients from
+      the photo. AI image recognition will be connected later.
+    </p>
+  </section>
+</div>
+}

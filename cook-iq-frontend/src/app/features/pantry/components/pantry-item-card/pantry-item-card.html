@@ -1,0 +1,47 @@
+<article class="pantry-card">
+    <div class="pantry-card__visual" [style.background]="item.accent">
+        <span class="pantry-card__emoji" aria-hidden="true">
+            {{ item.emoji }}
+        </span>
+
+        <span class="pantry-card__category">
+            {{ item.category }}
+        </span>
+
+        <div class="pantry-card__actions">
+            <button type="button" class="icon-button" aria-label="Edit ingredient" title="Edit ingredient"
+                (click)="edit.emit(item)">
+                <lucide-icon name="pencil" [size]="16" />
+            </button>
+
+            <button type="button" class="icon-button icon-button--delete" aria-label="Delete ingredient"
+                title="Delete ingredient" (click)="delete.emit(item)">
+                <lucide-icon name="trash-2" [size]="16" />
+            </button>
+        </div>
+    </div>
+
+    <div class="pantry-card__body">
+        <div class="pantry-card__heading">
+            <h3>{{ item.name }}</h3>
+            <span class="pantry-card__quantity">
+                {{ item.quantity }} {{ item.unit }}
+            </span>
+        </div>
+
+        <div class="pantry-card__footer">
+            <span class="freshness" [class.freshness--soon]="freshness.status === 'soon'"
+                [class.freshness--expired]="freshness.status === 'expired'"
+                [class.freshness--none]="freshness.status === 'none'">
+                <span class="freshness__dot"></span>
+                {{ freshness.label }}
+            </span>
+
+            @if (item.expiryDate) {
+            <span class="pantry-card__date">
+                {{ item.expiryDate | date: 'd MMM' }}
+            </span>
+            }
+        </div>
+    </div>
+</article>

@@ -37,6 +37,15 @@ import {
   TriangleAlert,
   MonitorPlay,
   PlayCircle,
+  ChevronRight,
+  Plus,
+  Package,
+  Clock3,
+  LayoutGrid,
+  Pencil,
+  Trash2,
+  ImagePlus,
+  CheckCircle2,
 
 } from 'lucide-angular';
 
@@ -77,7 +86,16 @@ import {
       RefreshCw,
       TriangleAlert,
       MonitorPlay,
-      PlayCircle
+      PlayCircle,
+      ChevronRight,
+      Plus,
+      Package,
+      Clock3,
+      LayoutGrid,
+      Pencil,
+      Trash2,
+      ImagePlus,
+      CheckCircle2
     }),
   ],
   exports: [LucideAngularModule],

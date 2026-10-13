@@ -1,0 +1,214 @@
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.pantry-card {
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid rgb(28 58 43 / 8%);
+    border-radius: 20px;
+    background: var(--surface, #fffdf7);
+    transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease;
+}
+
+.pantry-card:hover {
+    transform: translateY(-4px);
+    border-color: rgb(28 58 43 / 15%);
+    box-shadow: 0 14px 35px rgb(28 58 43 / 8%);
+}
+
+.pantry-card__visual {
+    position: relative;
+    display: grid;
+    min-height: 155px;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.pantry-card__visual::after {
+    position: absolute;
+    z-index: -1;
+    width: 155px;
+    height: 155px;
+    border: 1px solid rgb(255 255 255 / 45%);
+    border-radius: 50%;
+    content: '';
+}
+
+.pantry-card__emoji {
+    font-size: 76px;
+    line-height: 1;
+    filter: drop-shadow(0 8px 8px rgb(35 30 20 / 10%));
+    transition: transform 240ms ease;
+}
+
+.pantry-card:hover .pantry-card__emoji {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+.pantry-card__category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 6px 10px;
+    border: 1px solid rgb(255 255 255 / 60%);
+    border-radius: 999px;
+    background: rgb(255 253 247 / 78%);
+    color: var(--forest, #1c3a2b);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.045em;
+}
+
+.pantry-card__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.icon-button {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid rgb(28 58 43 / 9%);
+    border-radius: 50%;
+    background: rgb(255 253 247 / 90%);
+    color: var(--forest, #1c3a2b);
+    cursor: pointer;
+    transition:
+        background 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.icon-button:hover {
+    transform: translateY(-1px);
+    background: var(--forest, #1c3a2b);
+    color: white;
+}
+
+.icon-button--delete:hover {
+    background: var(--spice, #c8461a);
+}
+
+.pantry-card__body {
+    padding: 16px 16px 14px;
+}
+
+.pantry-card__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.pantry-card__heading h3 {
+    margin: 0;
+    color: var(--forest, #1c3a2b);
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.pantry-card__quantity {
+    flex-shrink: 0;
+    padding-top: 3px;
+    color: var(--text-muted, #5a5248);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.pantry-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid rgb(28 58 43 / 8%);
+}
+
+.freshness {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--sage, #6b8f71);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.freshness__dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.freshness--soon {
+    color: #b77919;
+}
+
+.freshness--expired {
+    color: var(--spice, #c8461a);
+}
+
+.freshness--none {
+    color: var(--text-muted, #5a5248);
+}
+
+.pantry-card__date {
+    color: var(--text-subtle, #6b6560);
+    font-size: 11px;
+}
+
+@media (max-width: 480px) {
+    .pantry-card__visual {
+        min-height: 125px;
+    }
+
+    .pantry-card__emoji {
+        font-size: 60px;
+    }
+
+    .pantry-card__body {
+        padding: 13px 12px;
+    }
+
+    .pantry-card__heading {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .pantry-card__heading h3 {
+        font-size: 20px;
+    }
+
+    .pantry-card__quantity {
+        text-align: left;
+    }
+
+    .pantry-card__footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pantry-card,
+    .pantry-card__emoji,
+    .icon-button {
+        transition: none;
+    }
+}
