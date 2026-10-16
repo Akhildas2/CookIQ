@@ -16,7 +16,7 @@
       "required": true
     },
     "description": {
-      "type": "blocks"
+      "type": "text"
     },
     "cuisine": {
       "type": "enumeration",
@@ -38,7 +38,7 @@
         "moroccan",
         "brazilian",
         "caribbean",
-        "middle - eastern",
+        "middle-eastern",
         "british",
         "german",
         "portuguese",

@@ -46,6 +46,12 @@ import {
   Trash2,
   ImagePlus,
   CheckCircle2,
+  Bookmark,
+  BookmarkCheck,
+  Lightbulb,
+  Lock,
+  Info,
+  AlertCircle,
 
 } from 'lucide-angular';
 
@@ -95,7 +101,13 @@ import {
       Pencil,
       Trash2,
       ImagePlus,
-      CheckCircle2
+      CheckCircle2,
+      Bookmark,
+      BookmarkCheck,
+      Lightbulb,
+      Lock,
+      Info,
+      AlertCircle
     }),
   ],
   exports: [LucideAngularModule],

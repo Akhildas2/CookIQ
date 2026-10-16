@@ -1,13 +1,12 @@
 <main class="pantry-page">
   <div class="pantry-container">
-    <!-- Breadcrumb -->
+
     <nav class="pantry-breadcrumb" aria-label="Breadcrumb">
       <a routerLink="/app/dashboard">Dashboard</a>
       <lucide-icon name="chevron-right" [size]="14" />
       <span>My pantry</span>
     </nav>
 
-    <!-- Editorial hero -->
     <section class="pantry-hero">
       <div class="pantry-hero__copy">
         <div class="eyebrow">
@@ -66,7 +65,6 @@
       </div>
     </section>
 
-    <!-- Overview statistics -->
     <section class="pantry-stats" aria-label="Pantry overview">
       <article class="stat-card">
         <div class="stat-card__icon stat-card__icon--green">
@@ -105,13 +103,13 @@
             <span>ingredients</span>
           </p>
         </div>
+
         @if (expiringCount() > 0) {
         <span class="stat-card__badge">Use first</span>
         }
       </article>
     </section>
 
-    <!-- Pantry list heading -->
     <section class="pantry-inventory">
       <div class="inventory-heading">
         <div>
@@ -124,16 +122,18 @@
         </div>
 
         <span class="inventory-heading__count">
-          {{ filteredItems().length }} items
+          {{ filteredItems().length }}
+          {{ filteredItems().length === 1 ? 'item' : 'items' }}
         </span>
       </div>
 
-      <!-- Search -->
       <div class="inventory-toolbar">
         <label class="search-field">
           <lucide-icon name="search" [size]="19" />
+
           <input type="search" placeholder="Search your ingredients..." aria-label="Search ingredients"
             [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+
           @if (searchQuery()) {
           <button type="button" class="search-field__clear" aria-label="Clear search" (click)="searchQuery.set('')">
             <lucide-icon name="x" [size]="16" />
@@ -147,11 +147,11 @@
         </button>
       </div>
 
-      <!-- Category filters -->
       <div class="category-filters" aria-label="Filter by category">
         @for (category of categories; track category) {
         <button type="button" class="category-filter" [class.category-filter--active]="selectedFilter() === category"
           [attr.aria-pressed]="selectedFilter() === category" (click)="selectFilter(category)">
+
           @if (category === 'All') {
           <lucide-icon name="layout-grid" [size]="15" />
           } @else if (category === 'Vegetables') {
@@ -169,13 +169,25 @@
           } @else {
           <span>🥣</span>
           }
+
           {{ category }}
         </button>
         }
       </div>
 
-      <!-- Ingredient cards -->
-      @if (filteredItems().length > 0) {
+      @if (loading()) {
+      <p class="pantry-status" role="status">
+        Loading your pantry…
+      </p>
+      } @else if (loadError()) {
+      <div class="pantry-empty" role="alert">
+        <div class="pantry-empty__icon">
+          <lucide-icon name="alert-circle" [size]="30" />
+        </div>
+        <h3>Unable to load your pantry</h3>
+        <p>{{ loadError() }}</p>
+      </div>
+      } @else if (filteredItems().length > 0) {
       <div class="pantry-grid">
         @for (item of filteredItems(); track item.id) {
         <app-pantry-item-card [item]="item" (edit)="openEditForm($event)" (delete)="deleteItem($event)" />
@@ -199,19 +211,19 @@
       }
     </section>
 
-    <!-- Smart cooking prompt -->
     <section class="pantry-recipe-prompt">
       <div class="recipe-prompt__icon">
         <lucide-icon name="sparkles" [size]="25" />
       </div>
 
       <div class="recipe-prompt__copy">
-        <span class="recipe-prompt__eyebrow">A LITTLE KITCHEN MAGIC</span>
+        <span class="recipe-prompt__eyebrow">
+          A LITTLE KITCHEN MAGIC
+        </span>
         <h2>Something delicious is already here.</h2>
         <p>
-          Your pantry can inspire your next meal. Recipe
-          recommendations will connect here when the AI feature
-          is ready.
+          Your pantry can inspire your next meal. Explore recipes
+          and discover what you can cook with the ingredients you have.
         </p>
       </div>
 
@@ -226,18 +238,22 @@
 <!-- Add / edit dialog -->
 @if (isFormOpen()) {
 <div class="modal-backdrop" (click)="closeForm()" (keydown.escape)="closeForm()">
+
   <section class="pantry-modal" role="dialog" aria-modal="true"
     [attr.aria-label]="editingId() ? 'Edit ingredient' : 'Add ingredient'" (click)="$event.stopPropagation()">
+
     <div class="pantry-modal__header">
       <div>
         <span class="modal-eyebrow">
           {{ editingId() ? 'UPDATE YOUR PANTRY' : 'A FRESH ADDITION' }}
         </span>
-        <h2>{{ editingId() ? 'Edit ingredient' : 'Add an ingredient' }}</h2>
+        <h2>
+          {{ editingId() ? 'Edit ingredient' : 'Add an ingredient' }}
+        </h2>
         <p>Keep your kitchen inventory up to date.</p>
       </div>
 
-      <button type="button" class="modal-close" aria-label="Close dialog" (click)="closeForm()">
+      <button type="button" class="modal-close" aria-label="Close dialog" [disabled]="isSaving()" (click)="closeForm()">
         <lucide-icon name="x" [size]="20" />
       </button>
     </div>
@@ -301,17 +317,30 @@
           Expiry date
           <span class="optional-label">Optional</span>
         </label>
-        <input id="ingredient-expiry" name="expiryDate" type="date" [(ngModel)]="form.expiryDate"
-          [min]="'2020-01-01'" />
+        <input id="ingredient-expiry" name="expiryDate" type="date" [(ngModel)]="form.expiryDate" [min]="today" />
       </div>
 
+      @if (formError()) {
+      <p class="scan-message" role="alert">
+        <lucide-icon name="alert-circle" [size]="17" />
+        {{ formError() }}
+      </p>
+      }
+
       <div class="pantry-form__actions">
-        <button type="button" class="button button--secondary" (click)="closeForm()">
+        <button type="button" class="button button--secondary" [disabled]="isSaving()" (click)="closeForm()">
           Cancel
         </button>
-        <button type="submit" class="button button--primary">
-          <lucide-icon [name]="editingId() ? 'check' : 'plus'" [size]="17" />
-          {{ editingId() ? 'Save changes' : 'Add to pantry' }}
+
+        <button type="submit" class="button button--primary" [disabled]="isSaving()">
+          <lucide-icon [name]="isSaving() ? 'loader-circle' : editingId() ? 'check' : 'plus'" [size]="17" />
+          {{
+          isSaving()
+          ? 'Saving...'
+          : editingId()
+          ? 'Save changes'
+          : 'Add to pantry'
+          }}
         </button>
       </div>
     </form>
@@ -322,24 +351,29 @@
 <!-- Image scan dialog -->
 @if (isScanOpen()) {
 <div class="modal-backdrop" (click)="closeScan()" (keydown.escape)="closeScan()">
+
   <section class="pantry-modal scan-modal" role="dialog" aria-modal="true" aria-label="Scan pantry ingredients"
     (click)="$event.stopPropagation()">
+
     <div class="pantry-modal__header">
       <div>
         <span class="modal-eyebrow">SMART PANTRY</span>
         <h2>Scan your ingredients</h2>
-        <p>Choose a photo of the ingredients you have.</p>
+        <p>Choose a photo of your fridge or pantry.</p>
       </div>
 
-      <button type="button" class="modal-close" aria-label="Close scan dialog" [disabled]="isScanning()"
-        (click)="closeScan()">
+      <button type="button" class="modal-close" aria-label="Close scan dialog"
+        [disabled]="isScanning() || isSavingScan()" (click)="closeScan()">
         <lucide-icon name="x" [size]="20" />
       </button>
     </div>
 
+    @if (!scanCompleted()) {
     <label class="scan-dropzone" [class.scan-dropzone--has-image]="scanPreview()">
+
       @if (scanPreview()) {
-      <img class="scan-preview" [src]="scanPreview()!" alt="Selected ingredients" />
+      <img class="scan-preview" [src]="scanPreview()!" alt="Preview of the selected ingredient photo" />
+      <strong>Choose another photo</strong>
       } @else {
       <span class="scan-dropzone__icon">
         <lucide-icon name="image-plus" [size]="32" />
@@ -349,12 +383,44 @@
       }
 
       <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment"
-        aria-label="Choose or capture an ingredient photo" (change)="onFileSelected($event)" />
+        aria-label="Choose or capture an ingredient photo" [disabled]="isScanning() || isSavingScan()"
+        (change)="onFileSelected($event)" />
     </label>
+    } @else if (scanResults().length > 0) {
+    <ul class="scan-review">
+      @for (item of scanResults(); track $index) {
+      <li>
+        <span class="scan-review__emoji">{{ item.emoji }}</span>
+
+        <div class="scan-review__info">
+          <strong>{{ item.name }}</strong>
+          <small>
+            {{ item.quantity }} {{ item.unit }}
+            · {{ item.category }}
+            · {{ (item.confidence * 100).toFixed(0) }}%
+          </small>
+        </div>
+
+        <button type="button" class="icon-button" [attr.aria-label]="'Remove ' + item.name" [disabled]="isSavingScan()"
+          (click)="removeScanned($index)">
+          <lucide-icon name="x" [size]="15" />
+        </button>
+      </li>
+      }
+    </ul>
+    } @else {
+    <div class="pantry-empty">
+      <div class="pantry-empty__icon">
+        <lucide-icon name="scan-search" [size]="30" />
+      </div>
+      <h3>No ingredients to review</h3>
+      <p>Choose another photo to scan your ingredients.</p>
+    </div>
+    }
 
     @if (scanMessage()) {
-    <p class="scan-message" [class.scan-message--success]="scanCompleted()" role="status">
-      <lucide-icon [name]="scanCompleted() ? 'check-circle-2' : 'info'" [size]="17" />
+    <p class="scan-message" [class.scan-message--success]="scanCompleted() && scanResults().length > 0" role="status">
+      <lucide-icon [name]="scanCompleted() && scanResults().length > 0 ? 'check-circle-2' : 'info'" [size]="17" />
       {{ scanMessage() }}
     </p>
     }
@@ -362,25 +428,38 @@
     @if (isScanning()) {
     <div class="scan-progress" role="status">
       <span class="scan-progress__spinner"></span>
-      <span>Preparing your demo scan...</span>
+      <span>Our AI chef is looking at your photo…</span>
     </div>
     }
 
     <div class="scan-modal__actions">
-      <button type="button" class="button button--secondary" [disabled]="isScanning()" (click)="closeScan()">
+      <button type="button" class="button button--secondary" [disabled]="isScanning() || isSavingScan()"
+        (click)="closeScan()">
         Close
       </button>
 
-      <button type="button" class="button button--primary" [disabled]="!scanPreview() || isScanning()"
-        (click)="startMockScan()">
+      @if (!scanCompleted()) {
+      <button type="button" class="button button--primary"
+        [disabled]="!scanFile() || !scanPreview() || isScanning() || isSavingScan()" (click)="startScan()">
         <lucide-icon name="scan-line" [size]="17" />
-        {{ isScanning() ? 'Scanning...' : 'Try demo scan' }}
+        {{ isScanning() ? 'Scanning...' : 'Scan with AI' }}
       </button>
+      } @else {
+      <button type="button" class="button button--secondary" [disabled]="isSavingScan() || isScanning()"
+        (click)="resetScanForRetry()">
+        Scan again
+      </button>
+
+      <button type="button" class="button button--primary"
+        [disabled]="scanResults().length === 0 || isSavingScan() || isScanning()" (click)="saveScanned()">
+        <lucide-icon name="check" [size]="17" />
+        {{ isSavingScan() ? 'Saving...' : 'Save ' + scanResults().length + ' items' }}
+      </button>
+      }
     </div>
 
     <p class="scan-disclaimer">
-      Demo only: this preview does not identify ingredients from
-      the photo. AI image recognition will be connected later.
+      AI can make mistakes. Please review the items before saving.
     </p>
   </section>
 </div>

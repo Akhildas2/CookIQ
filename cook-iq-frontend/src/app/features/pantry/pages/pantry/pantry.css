@@ -4,6 +4,152 @@
   color: var(--text, #1c1c1c);
 }
 
+.pantry-status {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.pantry-status--error {
+  color: var(--spice);
+}
+
+.scan-review {
+  display: grid;
+  gap: 8px;
+  max-height: 340px;
+  margin: 22px 25px 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.scan-review li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgb(28 58 43 / 8%);
+  border-radius: 13px;
+  background: #f7f5ec;
+}
+
+.scan-review__emoji {
+  font-size: 26px;
+}
+
+.scan-review__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.scan-review__info strong {
+  display: block;
+  color: var(--forest);
+  font-size: 13px;
+}
+
+.scan-review__info small {
+  color: var(--text-subtle);
+  font-size: 10px;
+}
+
+
+/* Additional accessibility and interaction fixes */
+
+.button:focus-visible,
+.icon-button:focus-visible,
+.category-filter:focus-visible,
+.toolbar-add:focus-visible,
+.modal-close:focus-visible,
+.emoji-option:focus-visible,
+.search-field__clear:focus-visible {
+  outline: 3px solid rgb(201 151 58 / 65%);
+  outline-offset: 3px;
+}
+
+.icon-button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(28 58 43 / 10%);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--forest, #1c3a2b);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.icon-button:hover:not(:disabled) {
+  border-color: rgb(200 70 26 / 20%);
+  background: #f8e4dc;
+  color: var(--spice, #c8461a);
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pantry-status[role="status"] {
+  padding-block: 12px;
+}
+
+.pantry-status--error {
+  color: var(--spice, #c8461a);
+}
+
+.pantry-form .scan-message {
+  margin: 0;
+}
+
+.pantry-form .scan-message lucide-icon {
+  flex-shrink: 0;
+}
+
+.pantry-form__actions {
+  flex-wrap: wrap;
+}
+
+.scan-modal .pantry-empty {
+  min-height: 200px;
+  margin: 22px 25px 0;
+  padding: 24px;
+}
+
+.scan-modal .scan-dropzone input:focus-visible {
+  outline: 3px solid var(--sage, #6b8f71);
+  outline-offset: 4px;
+}
+
+@media (max-width: 420px) {
+  .scan-modal .pantry-empty {
+    margin-inline: 17px;
+  }
+
+  .pantry-form__actions .button {
+    flex: 1;
+  }
+
+  .scan-modal__actions {
+    flex-wrap: wrap;
+  }
+
+  .scan-modal__actions .button {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-button {
+    transition: none;
+  }
+}
+
 .pantry-page {
   min-height: 100%;
   padding: clamp(1.25rem, 3vw, 2.5rem) var(--section-x, 2rem) clamp(4rem, 7vw, 7rem);

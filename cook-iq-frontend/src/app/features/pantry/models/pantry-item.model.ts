@@ -30,3 +30,7 @@ export interface PantryItemForm {
     emoji: string;
     expiryDate: string;
 }
+
+export interface ScannedItem extends PantryItemForm {
+  confidence: number;
+}

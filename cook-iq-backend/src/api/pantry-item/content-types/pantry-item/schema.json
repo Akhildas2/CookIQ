@@ -16,7 +16,31 @@
       "required": true
     },
     "quantity": {
+      "type": "decimal",
+      "min": 0.01
+    },
+    "unit": {
+      "type": "string",
+      "default": "pieces"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Vegetables",
+        "Fruits",
+        "Dairy",
+        "Proteins",
+        "Grains",
+        "Spices",
+        "Other"
+      ],
+      "default": "Other"
+    },
+    "emoji": {
       "type": "string"
+    },
+    "expiryDate": {
+      "type": "date"
     },
     "imageUrl": {
       "type": "string"

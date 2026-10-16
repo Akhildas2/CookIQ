@@ -478,9 +478,15 @@ export interface ApiPantryItemPantryItem extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['Vegetables', 'Fruits', 'Dairy', 'Proteins', 'Grains', 'Spices', 'Other']
+    > &
+      Schema.Attribute.DefaultTo<'Other'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    emoji: Schema.Attribute.String;
+    expiryDate: Schema.Attribute.Date;
     imageUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -494,7 +500,14 @@ export interface ApiPantryItemPantryItem extends Struct.CollectionTypeSchema {
       'plugin::users-permissions.user'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    quantity: Schema.Attribute.String;
+    quantity: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0.01;
+        },
+        number
+      >;
+    unit: Schema.Attribute.String & Schema.Attribute.DefaultTo<'pieces'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -542,14 +555,14 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
         'moroccan',
         'brazilian',
         'caribbean',
-        'middle - eastern',
+        'middle-eastern',
         'british',
         'german',
         'portuguese',
         'other',
       ]
     >;
-    description: Schema.Attribute.Blocks;
+    description: Schema.Attribute.Text;
     imageUrl: Schema.Attribute.String;
     ingredients: Schema.Attribute.JSON & Schema.Attribute.Required;
     instructions: Schema.Attribute.JSON & Schema.Attribute.Required;
