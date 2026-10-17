@@ -1,0 +1,186 @@
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.search-field {
+    display: flex;
+    min-width: 0;
+    min-height: 48px;
+    flex: 1;
+    align-items: center;
+    gap: 10px;
+    padding: 0 15px;
+    border: 1px solid rgb(28 58 43 / 11%);
+    border-radius: 13px;
+    background: var(--surface, #fffdf7);
+    color: var(--text-subtle, #6b6560);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.search-field:focus-within {
+    border-color: var(--sage, #6b8f71);
+    box-shadow: 0 0 0 3px rgb(107 143 113 / 10%);
+}
+
+.search-field lucide-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.search-field input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--forest, #1c3a2b);
+    font: inherit;
+    font-size: 12px;
+}
+
+.search-field input::placeholder {
+    color: var(--text-subtle, #6b6560);
+    opacity: 0.8;
+}
+
+.search-field__clear {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-muted, #5a5248);
+    cursor: pointer;
+}
+
+.search-field__clear:hover {
+    background: var(--mist, #ede8de);
+}
+
+.sort-field select {
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid rgb(28 58 43 / 11%);
+    border-radius: 13px;
+    background: var(--surface, #fffdf7);
+    color: var(--forest, #1c3a2b);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.toolbar-action {
+    display: inline-flex;
+    min-height: 48px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 17px;
+    border: 1px solid rgb(28 58 43 / 15%);
+    border-radius: 13px;
+    background: var(--surface, #fffdf7);
+    color: var(--forest, #1c3a2b);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease;
+}
+
+.toolbar-action:hover {
+    border-color: var(--forest, #1c3a2b);
+    background: #f0f3e9;
+}
+
+.toolbar-action lucide-icon {
+    display: inline-flex;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    margin: 19px 0 23px;
+    padding: 2px 0 6px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(28 58 43 / 20%) transparent;
+}
+
+.filter {
+    display: inline-flex;
+    min-height: 38px;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 7px;
+    padding: 0 13px;
+    border: 1px solid rgb(28 58 43 / 10%);
+    border-radius: 999px;
+    background: rgb(255 253 247 / 75%);
+    color: var(--text-muted, #5a5248);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.filter>span {
+    font-size: 14px;
+}
+
+.filter lucide-icon {
+    display: inline-flex;
+}
+
+.filter:hover {
+    border-color: rgb(28 58 43 / 24%);
+}
+
+.filter--active {
+    border-color: var(--forest, #1c3a2b);
+    background: var(--forest, #1c3a2b);
+    color: #fff;
+}
+
+.search-field__clear:focus-visible,
+.toolbar-action:focus-visible,
+.filter:focus-visible,
+.sort-field select:focus-visible {
+    outline: 3px solid rgb(201 151 58 / 65%);
+    outline-offset: 3px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+    .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .search-field,
+    .toolbar-action,
+    .filter {
+        transition: none;
+    }
+}

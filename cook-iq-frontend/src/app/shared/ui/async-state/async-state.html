@@ -1,87 +1,61 @@
-<section class="async-state" [class.async-state--loading]="state() === 'loading'"
-    [class.async-state--error]="state() === 'error'" [class.async-state--empty]="state() === 'empty'"
-    [class.async-state--not-found]="state() === 'not-found'" aria-live="polite">
-    <!-- =======================================================
-       TOP RULE
-       ======================================================= -->
+<section class="async-state" [class.async-state--compact]="compact()"
+    [class.async-state--loading]="state() === 'loading'" [class.async-state--error]="state() === 'error'"
+    [class.async-state--empty]="state() === 'empty'" [class.async-state--not-found]="state() === 'not-found'"
+    [attr.aria-busy]="state() === 'loading' ? 'true' : null" [attr.role]="state() === 'error' ? 'alert' : 'status'">
 
-    <div class="async-state__rule" aria-hidden="true">
-        <span class="async-state__rule-line"></span>
+    <span class="async-state__corner async-state__corner--top" aria-hidden="true"></span>
+    <span class="async-state__corner async-state__corner--bottom" aria-hidden="true"></span>
 
-        <span class="async-state__rule-label">
+    <div class="async-state__content" appReveal="up" [revealDelay]="0.08">
+        @if (eyebrow()) {
+        <p class="async-state__eyebrow">
+            <span class="async-state__eyebrow-dot"></span>
             {{ eyebrow() }}
-        </span>
-
-        <span class="async-state__rule-line"></span>
-    </div>
-
-
-    <!-- =======================================================
-       ICON
-       ======================================================= -->
-
-    <div class="async-state__icon-wrap">
-
-        @if (state() === 'loading') {
-
-        <div class="async-state__loader" aria-hidden="true">
-            <lucide-icon name="loader-circle" [size]="25" [strokeWidth]="1.5" />
-        </div>
-
-        } @else if (state() === 'error') {
-
-        <div class="async-state__icon async-state__icon--error">
-            <lucide-icon name="triangle-alert" [size]="24" [strokeWidth]="1.6" aria-hidden="true" />
-        </div>
-
-        } @else if (state() === 'not-found') {
-
-        <div class="async-state__icon async-state__icon--not-found">
-            <lucide-icon name="search-x" [size]="25" [strokeWidth]="1.5" aria-hidden="true" />
-        </div>
-
-        } @else {
-
-        <div class="async-state__icon async-state__icon--empty">
-            <lucide-icon name="search" [size]="24" [strokeWidth]="1.5" aria-hidden="true" />
-        </div>
-
-        }
-
-    </div>
-
-
-    <!-- =======================================================
-       CONTENT
-       ======================================================= -->
-
-    <div class="async-state__content">
-
-        <h2 class="async-state__title">
-            {{ title() }}
-        </h2>
-
-        @if (description()) {
-        <p class="async-state__description">
-            {{ description() }}
         </p>
         }
 
+        <div class="async-state__icon-stage" aria-hidden="true">
+            <div class="async-state__icon-orbit"></div>
+
+            <div class="async-state__icon-wrap">
+                <lucide-icon [name]="currentConfig.icon" [size]="compact() ? 25 : 30" [strokeWidth]="1.65"
+                    class="async-state__icon" [class.async-state__icon--spinning]="state() === 'loading'" />
+            </div>
+
+        </div>
+
+        <div class="async-state__copy">
+            <h2 class="async-state__title">
+                {{ displayTitle }}
+            </h2>
+
+            <p class="async-state__description">
+                {{ displayDescription }}
+            </p>
+        </div>
+
+        @if (actionLabel()) {
+        <button type="button" class="async-state__action" [disabled]="actionDisabled() || state() === 'loading'"
+            (click)="onAction()">
+            <span>{{ actionLabel() }}</span>
+
+            @if (actionIcon() || state() !== 'loading') {
+            <lucide-icon [name]="displayActionIcon" [size]="16" [strokeWidth]="1.9" />
+            }
+        </button>
+        }
+
+        <div class="async-state__custom-content">
+            <ng-content />
+        </div>
+
+        @if (state() === 'loading') {
+        <div class="async-state__progress" aria-hidden="true">
+            <span></span>
+        </div>
+        }
     </div>
 
-
-    <!-- =======================================================
-       ACTION
-       ======================================================= -->
-
-    @if (actionLabel()) {
-
-    <button type="button" class="async-state__action" [disabled]="actionDisabled()" (click)="onAction()">
-        <span>{{ actionLabel() }}</span>
-
-        <lucide-icon [name]="actionIcon()" [size]="16" [strokeWidth]="1.8" aria-hidden="true" />
-    </button>
-
-    }
-
+    <span class="async-state__corner async-state__corner--top" aria-hidden="true"></span>
+    <span class="async-state__corner async-state__corner--bottom" aria-hidden="true"></span>
 </section>

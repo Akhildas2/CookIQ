@@ -1,0 +1,19 @@
+<article class="stat-card" [class.stat-card--has-badge]="badge()">
+    <div class="stat-card__icon" [class]="'stat-card__icon stat-card__icon--' + tone()">
+        <lucide-icon [name]="icon()" [size]="20" />
+    </div>
+
+    <div>
+        <p class="stat-card__label">{{ label() }}</p>
+        <p class="stat-card__value">
+            {{ value() }}
+            @if (unit()) {
+            <span>{{ unit() }}</span>
+            }
+        </p>
+    </div>
+
+    @if (badge()) {
+    <span class="stat-card__badge">{{ badge() }}</span>
+    }
+</article>

@@ -1,0 +1,202 @@
+.scan-dropzone {
+    position: relative;
+    display: flex;
+    min-height: 225px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    overflow: hidden;
+    border: 1px dashed rgb(28 58 43 / 25%);
+    border-radius: 17px;
+    background: #f3f2e9;
+    color: var(--forest, #1c3a2b);
+    text-align: center;
+    cursor: pointer;
+}
+
+.scan-dropzone:hover {
+    border-color: var(--sage, #6b8f71);
+    background: #edf1e6;
+}
+
+.scan-dropzone--has-image {
+    border-style: solid;
+    background: #f8f7f1;
+}
+
+.scan-dropzone strong {
+    font-size: 13px;
+}
+
+.scan-dropzone>span:last-of-type {
+    color: var(--text-subtle, #6b6560);
+    font-size: 10px;
+}
+
+.scan-dropzone__icon {
+    display: grid;
+    width: 60px;
+    height: 60px;
+    place-items: center;
+    border-radius: 19px;
+    background: #e1ead9;
+    color: var(--forest, #1c3a2b);
+}
+
+.scan-dropzone__icon lucide-icon {
+    display: inline-flex;
+}
+
+.scan-dropzone input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.scan-dropzone input:focus-visible {
+    outline: 3px solid var(--sage, #6b8f71);
+    outline-offset: 4px;
+}
+
+.scan-preview {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    border-radius: 11px;
+    object-fit: contain;
+}
+
+.scan-review {
+    display: grid;
+    gap: 8px;
+    max-height: 340px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.scan-review li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgb(28 58 43 / 8%);
+    border-radius: 13px;
+    background: #f7f5ec;
+}
+
+.scan-review__emoji {
+    font-size: 26px;
+}
+
+.scan-review__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.scan-review__info strong {
+    display: block;
+    color: var(--forest, #1c3a2b);
+    font-size: 13px;
+}
+
+.scan-review__info small {
+    color: var(--text-subtle, #6b6560);
+    font-size: 10px;
+}
+
+.icon-button {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid rgb(28 58 43 / 10%);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--forest, #1c3a2b);
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease;
+}
+
+.icon-button:hover:not(:disabled) {
+    border-color: rgb(200 70 26 / 20%);
+    background: #f8e4dc;
+    color: var(--spice, #c8461a);
+}
+
+.icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.icon-button:focus-visible {
+    outline: 3px solid rgb(201 151 58 / 65%);
+    outline-offset: 3px;
+}
+
+.scan-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 14px 0 0;
+    color: var(--spice, #c8461a);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.scan-message lucide-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.scan-message--success {
+    color: var(--forest, #1c3a2b);
+}
+
+.scan-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    color: var(--forest, #1c3a2b);
+    font-size: 11px;
+}
+
+.scan-progress__spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgb(28 58 43 / 15%);
+    border-top-color: var(--spice, #c8461a);
+    border-radius: 50%;
+    animation: spin 700ms linear infinite;
+}
+
+.scan-disclaimer {
+    margin: 15px 0 0;
+    color: var(--text-subtle, #6b6560);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .icon-button {
+        transition: none;
+    }
+
+    .scan-progress__spinner {
+        animation: none;
+    }
+}

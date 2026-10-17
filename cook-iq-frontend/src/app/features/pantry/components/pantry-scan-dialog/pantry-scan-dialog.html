@@ -1,0 +1,85 @@
+<app-modal-shell eyebrow="SMART PANTRY" title="Scan your ingredients"
+    subtitle="Choose a photo of your fridge or pantry." size="lg" [closeDisabled]="isBusy()" (closed)="closed.emit()">
+    @if (!completed()) {
+    <label class="scan-dropzone" [class.scan-dropzone--has-image]="preview()">
+        @if (preview()) {
+        <img class="scan-preview" [src]="preview()!" alt="Preview of the selected ingredient photo" />
+        <strong>Choose another photo</strong>
+        } @else {
+        <span class="scan-dropzone__icon">
+            <lucide-icon name="image-plus" [size]="32" />
+        </span>
+        <strong>Choose an ingredient photo</strong>
+        <span>JPG, PNG or WebP · Up to 10 MB</span>
+        }
+
+        <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment"
+            aria-label="Choose or capture an ingredient photo" [disabled]="isBusy()"
+            (change)="onFileSelected($event)" />
+    </label>
+    } @else if (results().length > 0) {
+    <ul class="scan-review">
+        @for (item of results(); track $index) {
+        <li>
+            <span class="scan-review__emoji">{{ item.emoji }}</span>
+
+            <div class="scan-review__info">
+                <strong>{{ item.name }}</strong>
+                <small>
+                    {{ item.quantity }} {{ item.unit }} · {{ item.category }} ·
+                    {{ (item.confidence * 100).toFixed(0) }}%
+                </small>
+            </div>
+
+            <button type="button" class="icon-button" [attr.aria-label]="'Remove ' + item.name" [disabled]="isSaving()"
+                (click)="removeScanned($index)">
+                <lucide-icon name="x" [size]="15" />
+            </button>
+        </li>
+        }
+    </ul>
+    } @else {
+    <app-empty-state icon="scan-search" title="No ingredients to review"
+        description="Choose another photo to scan your ingredients." [compact]="true" />
+    }
+
+    @if (message()) {
+    <p class="scan-message" [class.scan-message--success]="hasResults()" role="status">
+        <lucide-icon [name]="hasResults() ? 'check-circle-2' : 'info'" [size]="17" />
+        {{ message() }}
+    </p>
+    }
+
+    @if (isScanning()) {
+    <div class="scan-progress" role="status">
+        <span class="scan-progress__spinner"></span>
+        <span>Our AI chef is looking at your photo…</span>
+    </div>
+    }
+
+    <p class="scan-disclaimer">AI can make mistakes. Please review the items before saving.</p>
+
+    <ng-container ngProjectAs="[modal-footer]">
+        <button type="button" class="button button--secondary" [disabled]="isBusy()" (click)="closed.emit()">
+            Close
+        </button>
+
+        @if (!completed()) {
+        <button type="button" class="button button--primary" [disabled]="!file() || !preview() || isBusy()"
+            (click)="startScan()">
+            <lucide-icon name="scan-line" [size]="17" />
+            {{ isScanning() ? 'Scanning...' : 'Scan with AI' }}
+        </button>
+        } @else {
+        <button type="button" class="button button--secondary" [disabled]="isBusy()" (click)="scanAgain()">
+            Scan again
+        </button>
+
+        <button type="button" class="button button--primary" [disabled]="results().length === 0 || isBusy()"
+            (click)="saveScanned()">
+            <lucide-icon name="check" [size]="17" />
+            {{ isSaving() ? 'Saving...' : 'Save ' + results().length + ' items' }}
+        </button>
+        }
+    </ng-container>
+</app-modal-shell>

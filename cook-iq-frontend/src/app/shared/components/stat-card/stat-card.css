@@ -1,0 +1,105 @@
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.stat-card {
+    position: relative;
+    display: flex;
+    height: 100%;
+    min-width: 0;
+    align-items: center;
+    gap: 14px;
+    padding: 22px;
+    border: 1px solid rgb(28 58 43 / 8%);
+    border-radius: 18px;
+    background: var(--surface, #fffdf7);
+}
+
+.stat-card__icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 14px;
+}
+
+.stat-card__icon lucide-icon {
+    display: inline-flex;
+}
+
+.stat-card__icon--green {
+    background: #e5eddf;
+    color: var(--forest, #1c3a2b);
+}
+
+.stat-card__icon--gold {
+    background: #f5ebd5;
+    color: #946d22;
+}
+
+.stat-card__icon--spice {
+    background: #f8e4dc;
+    color: var(--spice, #c8461a);
+}
+
+.stat-card__label {
+    margin: 0 0 5px;
+    color: var(--text-subtle, #6b6560);
+    font-size: 11px;
+}
+
+.stat-card__value {
+    margin: 0;
+    color: var(--forest, #1c3a2b);
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 29px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.stat-card__value span {
+    color: var(--text-muted, #5a5248);
+    font-family: var(--font-body, system-ui, sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.stat-card__badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #f8e4dc;
+    color: var(--spice, #c8461a);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .stat-card {
+        padding: 16px 13px;
+    }
+}
+
+@media (max-width: 420px) {
+    .stat-card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .stat-card--has-badge {
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .stat-card__badge {
+        top: auto;
+        right: 10px;
+        bottom: 10px;
+    }
+}

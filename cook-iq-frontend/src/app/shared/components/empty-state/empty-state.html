@@ -1,0 +1,11 @@
+<div class="empty" [class.empty--error]="variant() === 'error'" [class.empty--compact]="compact()"
+    [attr.role]="variant() === 'error' ? 'alert' : null">
+    <div class="empty__icon">
+        <lucide-icon [name]="icon()" [size]="30" />
+    </div>
+    <h3>{{ title() }}</h3>
+    @if (description()) {
+    <p>{{ description() }}</p>
+    }
+    <ng-content />
+</div>

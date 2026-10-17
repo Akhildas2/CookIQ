@@ -1,0 +1,84 @@
+<app-modal-shell [eyebrow]="isEdit ? 'UPDATE YOUR PANTRY' : 'A FRESH ADDITION'"
+    [title]="isEdit ? 'Edit ingredient' : 'Add an ingredient'" subtitle="Keep your kitchen inventory up to date."
+    [closeDisabled]="isSaving()" (closed)="closed.emit()">
+    <form id="pantry-item-form" class="pantry-form" (ngSubmit)="save()">
+        <div class="form-visual">
+            <span>{{ form.emoji }}</span>
+            <div>
+                <strong>{{ form.name || 'Your ingredient' }}</strong>
+                <small>Choose an illustration below</small>
+            </div>
+        </div>
+
+        <fieldset class="emoji-picker">
+            <legend>Ingredient illustration</legend>
+            <div class="emoji-picker__grid">
+                @for (emoji of emojiOptions; track emoji) {
+                <button type="button" class="emoji-option" [class.emoji-option--active]="form.emoji === emoji"
+                    [attr.aria-label]="'Choose ' + emoji" [attr.aria-pressed]="form.emoji === emoji"
+                    (click)="form.emoji = emoji">
+                    {{ emoji }}
+                </button>
+                }
+            </div>
+        </fieldset>
+
+        <div class="form-field">
+            <label for="ingredient-name">Ingredient name *</label>
+            <input id="ingredient-name" name="name" type="text" [(ngModel)]="form.name"
+                placeholder="e.g. Cherry tomatoes" required maxlength="80" autocomplete="off" />
+        </div>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="ingredient-quantity">Quantity *</label>
+                <input id="ingredient-quantity" name="quantity" type="number" [(ngModel)]="form.quantity" min="0.01"
+                    step="any" required />
+            </div>
+
+            <div class="form-field">
+                <label for="ingredient-unit">Unit</label>
+                <select id="ingredient-unit" name="unit" [(ngModel)]="form.unit">
+                    @for (unit of unitOptions; track unit) {
+                    <option [value]="unit">{{ unit }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="ingredient-category">Category *</label>
+            <select id="ingredient-category" name="category" [(ngModel)]="form.category" required>
+                @for (category of categoryOptions; track category) {
+                <option [value]="category">{{ category }}</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="ingredient-expiry">
+                Expiry date
+                <span class="optional-label">Optional</span>
+            </label>
+            <input id="ingredient-expiry" name="expiryDate" type="date" [(ngModel)]="form.expiryDate" [min]="today" />
+        </div>
+
+        @if (formError()) {
+        <p class="form-message" role="alert">
+            <lucide-icon name="alert-circle" [size]="17" />
+            {{ formError() }}
+        </p>
+        }
+    </form>
+
+    <ng-container ngProjectAs="[modal-footer]">
+        <button type="button" class="button button--secondary" [disabled]="isSaving()" (click)="closed.emit()">
+            Cancel
+        </button>
+
+        <button type="submit" form="pantry-item-form" class="button button--primary" [disabled]="isSaving()">
+            <lucide-icon [name]="isSaving() ? 'loader-circle' : isEdit ? 'check' : 'plus'" [size]="17" />
+            {{ isSaving() ? 'Saving...' : isEdit ? 'Save changes' : 'Add to pantry' }}
+        </button>
+    </ng-container>
+</app-modal-shell>

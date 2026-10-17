@@ -1,51 +1,120 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { LucideIconsModule } from '../../icons/lucide-icons.module';
+import { ScrollReveal } from '../../directives/scroll-reveal/scroll-reveal';
 
 export type AsyncStateType = 'loading' | 'error' | 'empty' | 'not-found';
 
+interface AsyncStateConfig {
+  icon: string;
+  defaultTitle: string;
+  defaultDescription: string;
+}
+
 @Component({
   selector: 'app-async-state',
-  imports: [LucideIconsModule],
+  imports: [LucideIconsModule, ScrollReveal],
   templateUrl: './async-state.html',
   styleUrl: './async-state.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AsyncState {
-
-  /* =========================================================
-     STATE
-     ========================================================= */
+  /** Determines the current UI state. */
   readonly state = input<AsyncStateType>('loading');
 
+  /** Optional small heading above the icon. */
+  readonly eyebrow = input<string>('');
 
-  /* =========================================================
-     CONTENT
-     ========================================================= */
+  /** Optional custom title. */
+  readonly title = input<string>('');
 
-  readonly eyebrow = input('');
-  readonly title = input('');
-  readonly description = input('');
+  /** Optional custom description. */
+  readonly description = input<string>('');
 
+  /** Reduces the component's height and spacing. */
+  readonly compact = input<boolean>(false);
 
-  /* =========================================================
-     ACTION
-     ========================================================= */
+  /** Optional action button label. */
+  readonly actionLabel = input<string>('');
 
-  readonly actionLabel = input('');
-  readonly actionIcon = input('arrow-up-right');
-  readonly actionDisabled = input(false);
+  /** Optional Lucide action icon. */
+  readonly actionIcon = input<string>('');
+
+  /** Disables the action button when true. */
+  readonly actionDisabled = input<boolean>(false);
+
+  /** Emitted when the action button is clicked. */
   readonly action = output<void>();
 
+  protected readonly stateConfig: Record<
+    AsyncStateType,
+    AsyncStateConfig
+  > = {
+      loading: {
+        icon: 'loader-circle',
+        defaultTitle: 'Preparing something good',
+        defaultDescription:
+          'We are getting everything ready for you. This will only take a moment.',
+      },
 
-  /* =========================================================
-     EVENTS
-     ========================================================= */
+      error: {
+        icon: 'alert-circle',
+        defaultTitle: 'Something went wrong',
+        defaultDescription:
+          'We could not load this content. Please try again in a moment.',
+      },
 
-  onAction(): void {
-    if (this.actionDisabled()) {
-      return;
+      empty: {
+        icon: 'package-open',
+        defaultTitle: 'A little room for something good',
+        defaultDescription:
+          'Nothing has been added here just yet. Your next great idea can start here.',
+      },
+
+      'not-found': {
+        icon: 'search-x',
+        defaultTitle: 'Nothing on the menu',
+        defaultDescription:
+          'We could not find a match. Try changing your search or adjusting your filters.',
+      },
+    };
+
+  protected get currentConfig(): AsyncStateConfig {
+    return this.stateConfig[this.state()];
+  }
+
+  protected get displayTitle(): string {
+    return (
+      this.title().trim() ||
+      this.currentConfig.defaultTitle
+    );
+  }
+
+  protected get displayDescription(): string {
+    return (
+      this.description().trim() ||
+      this.currentConfig.defaultDescription
+    );
+  }
+
+  protected get displayActionIcon(): string {
+    const customIcon = this.actionIcon().trim();
+
+    if (customIcon) {
+      return customIcon;
     }
 
-    this.action.emit();
+    return this.state() === 'error'
+      ? 'refresh-cw'
+      : 'arrow-right';
+  }
+
+  protected onAction(): void {
+    if (
+      !this.actionDisabled() &&
+      this.state() !== 'loading'
+    ) {
+      this.action.emit();
+    }
   }
 
 }

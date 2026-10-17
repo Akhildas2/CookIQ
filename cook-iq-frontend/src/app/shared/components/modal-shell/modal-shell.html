@@ -1,0 +1,29 @@
+<div class="modal-backdrop" (click)="requestClose()">
+    <section #dialog class="modal" [class.modal--sm]="size() === 'sm'" [class.modal--lg]="size() === 'lg'" role="dialog"
+        aria-modal="true" tabindex="-1" [attr.aria-labelledby]="titleId" (click)="$event.stopPropagation()">
+        <header class="modal__header">
+            <div>
+                @if (eyebrow()) {
+                <span class="modal__eyebrow">{{ eyebrow() }}</span>
+                }
+                <h2 [id]="titleId">{{ title() }}</h2>
+                @if (subtitle()) {
+                <p>{{ subtitle() }}</p>
+                }
+            </div>
+
+            <button type="button" class="modal__close" aria-label="Close dialog" [disabled]="closeDisabled()"
+                (click)="requestClose()">
+                <lucide-icon name="x" [size]="20" />
+            </button>
+        </header>
+
+        <div class="modal__body">
+            <ng-content />
+        </div>
+
+        <footer class="modal__footer">
+            <ng-content select="[modal-footer]" />
+        </footer>
+    </section>
+</div>

@@ -1,0 +1,50 @@
+<div class="toolbar">
+    <label class="search-field">
+        <lucide-icon name="search" [size]="19" />
+
+        <input type="search" [placeholder]="searchPlaceholder()" [attr.aria-label]="searchLabel()"
+            [value]="searchValue()" (input)="onSearch($event)" />
+
+        @if (searchValue()) {
+        <button type="button" class="search-field__clear" aria-label="Clear search" (click)="searchChange.emit('')">
+            <lucide-icon name="x" [size]="16" />
+        </button>
+        }
+    </label>
+
+    @if (sortOptions().length > 0) {
+    <label class="sort-field">
+        <span class="sr-only">Sort by</span>
+        <select [value]="selectedSort()" (change)="onSort($event)">
+            @for (option of sortOptions(); track option.value) {
+            <option [value]="option.value" [selected]="option.value === selectedSort()">
+                {{ option.label }}
+            </option>
+            }
+        </select>
+    </label>
+    }
+
+    @if (actionLabel()) {
+    <button type="button" class="toolbar-action" (click)="action.emit()">
+        <lucide-icon [name]="actionIcon()" [size]="17" />
+        <span>{{ actionLabel() }}</span>
+    </button>
+    }
+</div>
+
+@if (filters().length > 0) {
+<div class="filters" [attr.aria-label]="filtersLabel()">
+    @for (filter of filters(); track filter.value) {
+    <button type="button" class="filter" [class.filter--active]="selectedFilter() === filter.value"
+        [attr.aria-pressed]="selectedFilter() === filter.value" (click)="filterChange.emit(filter.value)">
+        @if (filter.icon) {
+        <lucide-icon [name]="filter.icon" [size]="15" />
+        } @else if (filter.emoji) {
+        <span aria-hidden="true">{{ filter.emoji }}</span>
+        }
+        {{ filter.label }}
+    </button>
+    }
+</div>
+}
